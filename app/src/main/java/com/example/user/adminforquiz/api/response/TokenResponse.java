@@ -1,14 +1,16 @@
 package com.example.user.adminforquiz.api.response;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TokenResponse {
-    @JsonClass(generateAdapter = true)
-    @Json(name = "access_token")
-    val accessToken: String,
-    @Json(name = "token_type")
-    val tokenType: String,
-    @Json(name = "expires_in")
-    val expiresIn: Int,
-    @Json(name = "scope")
-    val scope: String
-)
+
+    @SerializedName("access_token")
+    public String accessToken;
+    @SerializedName("token_type")
+    public String tokenType;
+    @SerializedName("expires_in")
+    public int expiresIn;
+    @SerializedName("scope")
+    public String scope;
+
 }
