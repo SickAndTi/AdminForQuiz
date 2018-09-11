@@ -16,7 +16,8 @@ import retrofit2.Retrofit;
 
 public class ApiClient {
     private QuizApi quizApi;
-    private MyPreferenceManager preferences;
+    @Inject
+    MyPreferenceManager preferences;
 
     @Inject
     ApiClient(Retrofit retrofit) {
