@@ -24,7 +24,7 @@ public class ApiClient {
         quizApi = retrofit.create(QuizApi.class);
     }
 
-    public Single<TokenResponse> getAccessToken() {
+    private Single<TokenResponse> getAccessToken() {
         return quizApi.getAccessToken(okhttp3.Credentials.basic(BuildConfig.USER, BuildConfig.PASSWORD), BuildConfig.GRANT_TYPE)
                 .doOnSuccess(accessToken -> preferences.setToken(String.valueOf(accessToken)));
     }

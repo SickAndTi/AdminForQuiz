@@ -8,7 +8,7 @@ import java.util.List;
 public class NwQuiz {
     //db
     @SerializedName("id")
-    Long id;
+    public Long id;
     //content
     @SerializedName("scpNumber")
     public String scpNumber;
