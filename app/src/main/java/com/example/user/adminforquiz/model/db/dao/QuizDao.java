@@ -12,6 +12,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -31,7 +32,7 @@ public abstract class QuizDao {
      * returns all quizes, sorted by ID ASC
      */
     @Query("SELECT * FROM Quiz ORDER BY id ASC")
-    abstract Flowable<List<Quiz>> getAll();
+    public abstract Flowable<List<Quiz>> getAll();
 
     @Query("SELECT * FROM Quiz ORDER BY RANDOM() LIMIT :count")
     abstract Flowable<List<Quiz>> getRandomQuizes(int count);
@@ -57,6 +58,9 @@ public abstract class QuizDao {
     @Query("SELECT * FROM quiz ORDER BY id ASC LIMIT 1")
     abstract Single<Quiz> getFirst();
 
+    @Query("SELECT id FROM quiz WHERE id > :quizId ORDER BY id ASC LIMIT 1")
+    abstract Single<Long> getNextQuizId(Long quizId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract Long insert(Quiz quiz);
 
@@ -74,44 +78,43 @@ public abstract class QuizDao {
 
     @Transaction
     public Long insertQuizWithQuizTranslations(Quiz quiz) {
-        insert(quiz);
-        insertQuizTranslations(quiz.quizTranslations);
+
+        if (quiz.quizTranslations != null) {
+
+            for (int i = 0; i < quiz.quizTranslations.size(); i++) {
+                quiz.quizTranslations.get(i).quizId = quiz.id;
+
+                if (quiz.quizTranslations != null) {
+                    QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
+
+                    for (int j = 0; j < quizTranslation.quizTranslationPhrases.size(); j++) {
+                        quizTranslation.quizTranslationPhrases.get(j).quizTranslationId = quizTranslation.id;
+                    }
+                    insertQuizTranslationPhrases(quizTranslation.quizTranslationPhrases);
+                }
+                insertQuizTranslations(quiz.quizTranslations);
+            }
+        }
         return insert(quiz);
     }
+
+    @Transaction
+    public List<Long> insertQuizesWithQuizTranslations(List<Quiz> quizes) {
+        List<Long> longList = new ArrayList<>();
+        for (int i = 0; i < quizes.size(); i++) {
+            longList.add(insertQuizWithQuizTranslations(quizes.get(i)));
+        }
+        return longList;
+    }
+
+    @Transaction
+    Quiz getQuizWithTranslationsAndPhrases(Long id) {
+        Quiz quiz = getById(id);
+        quiz.quizTranslations = getQuizTranslationsByQuizId(id);
+        for (int i = 0; i < quiz.quizTranslations.size(); i++) {
+            QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
+            quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(id);
+        }
+        return quiz;
+    }
 }
-
-
-//    @Transaction
-//    public List<Long> insertQuizesWithQuizTranslations(List<Quiz> quizes) {
-//        quizes.stream().map(insertQuizWithQuizTranslations((Quiz) quizes));
-
-
-//        @Transaction
-//        public Quiz getQuizWithTranslationsAndPhrases (Long id)
-
-//        {
-//            val quiz = getById(id)
-//            quiz.quizTranslations = getQuizTranslationsByQuizId(id)
-//            quiz.quizTranslations ?.forEach {
-//            quizTranslation ->
-//                    quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id)
-//        }
-//            return quiz
-//        }
-//
-//        @Transaction
-//        fun getQuizWithTranslationsAndPhrases (id:Long, lang:String):Quiz
-//
-//        {
-//            val quiz = getById(id)
-//            quiz.quizTranslations = getQuizTranslationsByQuizIdAndLang(id, lang)
-//            quiz.quizTranslations ?.forEach {
-//            quizTranslation ->
-//                    quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id)
-//        }
-//            return quiz
-//        }
-//
-//        @Query("SELECT id FROM quiz WHERE id > :quizId ORDER BY id ASC LIMIT 1")
-//        fun getNextQuizId (quizId:Long):Single<Long>
-//    }

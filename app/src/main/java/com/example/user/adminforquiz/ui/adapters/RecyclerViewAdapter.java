@@ -14,21 +14,21 @@ import android.widget.TextView;
 
 import com.example.user.adminforquiz.GlideApp;
 import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.model.api.NwQuiz;
+import com.example.user.adminforquiz.model.db.Quiz;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<NwQuiz> nwQuizList = new ArrayList<>();
+    private List<Quiz> quizList = new ArrayList<>();
 
-    public List<NwQuiz> getNwQuizList() {
-        return nwQuizList;
+    public List<Quiz> getQuizList() {
+        return quizList;
     }
 
-    public void setNwQuizList(List<NwQuiz> nwQuizList) {
-        this.nwQuizList = nwQuizList;
+    public void setQuizList(List<Quiz> quizList) {
+        this.quizList = quizList;
     }
 
     @NonNull
@@ -41,20 +41,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        NwQuiz nwQuiz = nwQuizList.get(position);
-        viewHolder.tvScpNumber.setText(nwQuiz.scpNumber);
-        viewHolder.approved.setChecked(nwQuiz.approved);
-        viewHolder.authorId.setText(Math.toIntExact(nwQuiz.authorId));
-        viewHolder.approverId.setText(Math.toIntExact(nwQuiz.approverId));
-        viewHolder.dateCreated.setText((CharSequence) nwQuiz.created);
-        viewHolder.dateUpdated.setText((CharSequence) nwQuiz.updated);
+        Quiz quiz = quizList.get(position);
+        viewHolder.tvScpNumber.setText(quiz.scpNumber);
+        viewHolder.approved.setChecked(quiz.approved);
+        viewHolder.authorId.setText(String.valueOf(quiz.authorId));
+        viewHolder.approverId.setText(String.valueOf(quiz.approverId));
+        viewHolder.dateCreated.setText(quiz.created.toString());
+        viewHolder.dateUpdated.setText(quiz.updated.toString());
         viewHolder.ruTranslation.setImageResource(R.drawable.rflag);
         viewHolder.enTranslation.setImageResource(R.drawable.gbrflag);
         viewHolder.btnAdd.setImageResource(R.drawable.btnadd);
         viewHolder.btnDelete.setImageResource(R.drawable.btndelete);
         GlideApp
                 .with(holder.itemView.getContext())
-                .load(nwQuiz.imageUrl)
+                .load(quiz.imageUrl)
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(viewHolder.imageView);
@@ -63,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return nwQuizList.size();
+        return quizList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -8,20 +8,20 @@ public class NwQuizTranslationPhrase {
 
     //db
     @SerializedName("id")
-    Long id;
+    public Long id;
     //content
     @SerializedName("translation")
-    String translation;
+    public String translation;
     //status
     @SerializedName("approved")
-    Boolean approved;
+    public Boolean approved;
     @SerializedName("authorId")
-    Long authorId;
+    public Long authorId;
     @SerializedName("approverId")
-    Long approverId;
+    public Long approverId;
     //dates
     @SerializedName("created")
-    Date created;
+    public Date created;
     @SerializedName("updated")
-    Date updated;
+    public Date updated;
 }

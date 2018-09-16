@@ -26,7 +26,7 @@ public class ApiClient {
 
     private Single<TokenResponse> getAccessToken() {
         return quizApi.getAccessToken(okhttp3.Credentials.basic(BuildConfig.USER, BuildConfig.PASSWORD), BuildConfig.GRANT_TYPE)
-                .doOnSuccess(accessToken -> preferences.setToken(String.valueOf(accessToken)));
+                .doOnSuccess(tokenResponse -> preferences.setToken(tokenResponse.accessToken));
     }
 
     public Single<List<NwQuiz>> getNwQuizList() {

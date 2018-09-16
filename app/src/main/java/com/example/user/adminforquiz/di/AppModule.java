@@ -7,6 +7,7 @@ import com.example.user.adminforquiz.BuildConfig;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
 import com.example.user.adminforquiz.model.db.DataBase;
+import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
 import okhttp3.OkHttpClient;
@@ -37,6 +38,10 @@ public class AppModule extends Module {
                 .client(okHttpClient)
                 .build());
         bind(ApiClient.class).singletonInScope();
+
+        bind(Context.class).toInstance(context);
+
+        bind(QuizDao.class).toInstance(dataBase.quizDao());
 
         bind(MyPreferenceManager.class).singletonInScope();
 

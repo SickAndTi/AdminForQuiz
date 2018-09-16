@@ -8,26 +8,26 @@ import java.util.List;
 public class NwQuizTranslation {
     //db
     @SerializedName("id")
-    Long id;
+    public Long id;
     //content
     @SerializedName("langCode")
-    String langCode;
+    public String langCode;
     @SerializedName("translation")
-    String translation;
+    public String translation;
     @SerializedName("description")
-    String description;
+    public String description;
     @SerializedName("quizTranslationPhrases")
-    List<NwQuizTranslationPhrase> quizTranslationPhrases;
+    public List<NwQuizTranslationPhrase> quizTranslationPhrases;
     //status
     @SerializedName("approved")
-    Boolean approved;
+    public Boolean approved;
     @SerializedName("authorId")
-    Long authorId;
+    public Long authorId;
     @SerializedName("approverId")
-    Long approverId;
+    public Long approverId;
     //dates
     @SerializedName("created")
-    Date created;
+    public Date created;
     @SerializedName("updated")
-    Date updated;
+    public Date updated;
 }

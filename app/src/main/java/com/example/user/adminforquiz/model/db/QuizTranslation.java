@@ -3,6 +3,9 @@ package com.example.user.adminforquiz.model.db;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.example.user.adminforquiz.util.DateTypeConverter;
 
 import java.util.Date;
 import java.util.List;
@@ -22,9 +25,11 @@ public class QuizTranslation {
     public Long authorId;
     public Long approverId;
     //dates
+    @TypeConverters(DateTypeConverter.class)
     public Date created;
+    @TypeConverters(DateTypeConverter.class)
     public Date updated;
 
     @Ignore
-    List<QuizTranslationPhrase> quizTranslationPhrases;
+    public List<QuizTranslationPhrase> quizTranslationPhrases;
 }

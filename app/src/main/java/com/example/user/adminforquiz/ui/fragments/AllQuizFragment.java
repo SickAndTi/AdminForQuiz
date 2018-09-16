@@ -16,6 +16,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.model.api.NwQuiz;
+import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.mvp.AllQuizPresenter;
 import com.example.user.adminforquiz.mvp.AllQuizView;
 import com.example.user.adminforquiz.ui.adapters.RecyclerViewAdapter;
@@ -57,14 +58,14 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     }
 
     @Override
-    public void showNwQuizList(List<NwQuiz> nwQuizList) {
+    public void showQuizList(List<Quiz> quizList) {
         if (recyclerView.getAdapter() == null) {
             RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter();
-            recyclerViewAdapter.setNwQuizList(nwQuizList);
+            recyclerViewAdapter.setQuizList(quizList);
             recyclerView.setAdapter(recyclerViewAdapter);
         } else {
             RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
-            adapter.setNwQuizList(nwQuizList);
+            adapter.setQuizList(quizList);
             recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
