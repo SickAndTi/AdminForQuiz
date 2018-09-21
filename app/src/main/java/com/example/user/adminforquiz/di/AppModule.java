@@ -15,6 +15,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.terrakok.cicerone.Cicerone;
+import ru.terrakok.cicerone.NavigatorHolder;
+import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 import toothpick.config.Module;
 
@@ -38,6 +41,11 @@ public class AppModule extends Module {
                 .client(okHttpClient)
                 .build());
         bind(ApiClient.class).singletonInScope();
+
+        Cicerone<Router> cicerone = Cicerone.create();
+        bind(Cicerone.class).toInstance(cicerone);
+        bind(Router.class).toInstance(cicerone.getRouter());
+        bind(NavigatorHolder.class).toInstance(cicerone.getNavigatorHolder());
 
         bind(Context.class).toInstance(context);
 

@@ -7,14 +7,14 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
+import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 
 import javax.inject.Inject;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.http.GET;
+import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
@@ -26,6 +26,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     QuizConverter quizConverter;
     @Inject
     QuizDao quizDao;
+    @Inject
+    Router router;
 
 
     @SuppressLint("CheckResult")
@@ -59,5 +61,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                             getViewState().showProgressBar(false);
                         }
                 );
+    }
+
+    public void goToQuiz(Quiz quiz) {
+        router.navigateTo(Constants.ONE_QUIZ_SCREEN, quiz.id);
     }
 }

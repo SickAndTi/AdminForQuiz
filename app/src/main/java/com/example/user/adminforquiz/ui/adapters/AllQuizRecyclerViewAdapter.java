@@ -6,22 +6,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.user.adminforquiz.GlideApp;
 import com.example.user.adminforquiz.R;
+import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.util.DateTypeConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Quiz> quizList = new ArrayList<>();
+    private OnQuizClickListener onQuizClickListener;
+
+    public AllQuizRecyclerViewAdapter(OnQuizClickListener onQuizClickListener) {
+        this.onQuizClickListener = onQuizClickListener;
+
+    }
 
     public List<Quiz> getQuizList() {
         return quizList;
@@ -34,20 +39,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz, parent, false));
+        return new QuizViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz_inlist, parent, false));
     }
 
     @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
+        QuizViewHolder viewHolder = (QuizViewHolder) holder;
         Quiz quiz = quizList.get(position);
         viewHolder.tvScpNumber.setText(quiz.scpNumber);
         viewHolder.approved.setChecked(quiz.approved);
-        viewHolder.authorId.setText(String.valueOf(quiz.authorId));
-        viewHolder.approverId.setText(String.valueOf(quiz.approverId));
-        viewHolder.dateCreated.setText(quiz.created.toString());
-        viewHolder.dateUpdated.setText(quiz.updated.toString());
+        viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
+        viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
         viewHolder.ruTranslation.setImageResource(R.drawable.rflag);
         viewHolder.enTranslation.setImageResource(R.drawable.gbrflag);
         viewHolder.btnAdd.setImageResource(R.drawable.btnadd);
@@ -58,6 +61,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 .centerCrop()
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(viewHolder.imageView);
+        viewHolder.itemView.setOnClickListener(view ->
+                onQuizClickListener.onQuizClick(quiz)
+        );
 
     }
 
@@ -66,16 +72,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return quizList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class QuizViewHolder extends RecyclerView.ViewHolder {
 
-        EditText tvScpNumber;
+        TextView tvScpNumber;
         Switch approved;
-        ImageButton btnDelete, btnAdd, ruTranslation, enTranslation;
+        ImageView btnDelete, btnAdd, ruTranslation, enTranslation;
         ImageView imageView;
-        TextView authorId, approverId, dateCreated, dateUpdated;
+        TextView dateCreated, dateUpdated;
 
 
-        ViewHolder(@NonNull View itemView) {
+        QuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
             approved = itemView.findViewById(R.id.approved);
@@ -84,12 +90,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ruTranslation = itemView.findViewById(R.id.ruTranslation);
             enTranslation = itemView.findViewById(R.id.enTranslation);
             imageView = itemView.findViewById(R.id.imageView);
-            authorId = itemView.findViewById(R.id.authorId);
-            approverId = itemView.findViewById(R.id.approverId);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
         }
 
 
+    }
+
+    public interface OnQuizClickListener {
+        void onQuizClick(Quiz quiz);
     }
 }

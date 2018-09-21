@@ -15,11 +15,10 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.mvp.AllQuizPresenter;
 import com.example.user.adminforquiz.mvp.AllQuizView;
-import com.example.user.adminforquiz.ui.adapters.RecyclerViewAdapter;
+import com.example.user.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -29,9 +28,13 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @InjectPresenter
     AllQuizPresenter allQuizPresenter;
     RecyclerView recyclerView;
-    RecyclerViewAdapter recyclerViewAdapter;
+    AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    public static AllQuizFragment newInstance() {
+        return new AllQuizFragment();
+    }
 
     @Nullable
     @Override
@@ -40,8 +43,13 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        recyclerViewAdapter = new RecyclerViewAdapter();
-        recyclerView.setAdapter(recyclerViewAdapter);
+        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(new AllQuizRecyclerViewAdapter.OnQuizClickListener() {
+            @Override
+            public void onQuizClick(Quiz quiz) {
+                allQuizPresenter.goToQuiz(quiz);
+            }
+        });
+        recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         return view;
     }
 
@@ -60,11 +68,15 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showQuizList(List<Quiz> quizList) {
         if (recyclerView.getAdapter() == null) {
-            RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter();
-            recyclerViewAdapter.setQuizList(quizList);
-            recyclerView.setAdapter(recyclerViewAdapter);
+            AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(new AllQuizRecyclerViewAdapter.OnQuizClickListener() {
+                @Override
+                public void onQuizClick(Quiz quiz) {
+                }
+            });
+            allQuizRecyclerViewAdapter.setQuizList(quizList);
+            recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         } else {
-            RecyclerViewAdapter adapter = (RecyclerViewAdapter) recyclerView.getAdapter();
+            AllQuizRecyclerViewAdapter adapter = (AllQuizRecyclerViewAdapter) recyclerView.getAdapter();
             adapter.setQuizList(quizList);
             recyclerView.getAdapter().notifyDataSetChanged();
         }

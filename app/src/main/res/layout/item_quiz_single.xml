@@ -2,40 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:id="@+id/tvScpNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:inputType="numberSigned"
             android:padding="8dp"
             tools:ignore="LabelFor,NestedWeights"
             tools:text="1209" />
 
         <Switch
             android:id="@+id/approved"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             tools:text="Switch" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btnDelete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:padding="8dp"
-            tools:ignore="ContentDescription"
-            android:src="@drawable/btndelete"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/btndelete"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
@@ -45,56 +42,55 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/enTranslation"
-            android:layout_width="0dp"
-            android:src="@drawable/gbrflag"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
             android:padding="8dp"
+            android:scaleType="centerInside"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/enTranslation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/gbrflag"
             tools:ignore="ContentDescription,NestedWeights" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/ruTranslation"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:scaleType="centerInside"
             android:src="@drawable/rflag"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp"
             tools:ignore="ContentDescription" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btnAdd"
-            android:src="@drawable/btnadd"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/btnadd"
             tools:ignore="ContentDescription" />
-
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/authorId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp"
-            tools:ignore="LabelFor,NestedWeights" />
-
-        <TextView
-            android:id="@+id/approverId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp" />
 
         <TextView
             android:id="@+id/dateCreated"
@@ -109,22 +105,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="8dp" />
-    </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/authorId"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="8dp"
-            tools:ignore="ContentDescription" />
+            android:layout_weight="1"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/approverId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="8dp"/>
 
     </LinearLayout>
 

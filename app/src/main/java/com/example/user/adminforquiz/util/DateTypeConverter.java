@@ -12,10 +12,15 @@ public class DateTypeConverter {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", Locale.getDefault());
 
+    private static final SimpleDateFormat DATE_SHOW = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.getDefault());
+
+    public static String formatDate(Date date) {
+        return DATE_SHOW.format(date);
+    }
+
     @TypeConverter
     public Date fromTimestamp(Long value) {
         return new Date(value);
-
     }
 
     @TypeConverter

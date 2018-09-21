@@ -22,11 +22,11 @@ import io.reactivex.Single;
 public abstract class QuizDao {
 
     @Query("SELECT COUNT(*) FROM Quiz")
-    abstract Flowable<Long> getCountFlowable();
+    public abstract Flowable<Long> getCountFlowable();
 
 
     @Query("SELECT COUNT(*) FROM Quiz")
-    abstract Long getCount();
+    public abstract Long getCount();
 
     /**
      * returns all quizes, sorted by ID ASC
@@ -35,46 +35,49 @@ public abstract class QuizDao {
     public abstract Flowable<List<Quiz>> getAll();
 
     @Query("SELECT * FROM Quiz ORDER BY RANDOM() LIMIT :count")
-    abstract Flowable<List<Quiz>> getRandomQuizes(int count);
+    public abstract Flowable<List<Quiz>> getRandomQuizes(int count);
 
     @Query("SELECT * FROM Quiz WHERE id = :id")
-    abstract Flowable<List<Quiz>> getByIdWithUpdates(Long id);
+    public abstract Flowable<List<Quiz>> getByIdWithUpdates(Long id);
 
     @Query("SELECT * FROM Quiz WHERE id = :id")
-    abstract Quiz getById(Long id);
+    public abstract Quiz getById(Long id);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
-    abstract List<QuizTranslation> getQuizTranslationsByQuizId(Long id);
+    public abstract List<QuizTranslation> getQuizTranslationsByQuizId(Long id);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id AND langCode = :lang")
-    abstract List<QuizTranslation> getQuizTranslationsByQuizIdAndLang(Long id, String lang);
+    public abstract List<QuizTranslation> getQuizTranslationsByQuizIdAndLang(Long id, String lang);
 
     @Query("SELECT * FROM QuizTranslationPhrase WHERE quizTranslationId = :id")
-    abstract List<QuizTranslationPhrase> getQuizTranslationPhrasesByQuizTranslationId(Long id);
+    public abstract List<QuizTranslationPhrase> getQuizTranslationPhrasesByQuizTranslationId(Long id);
 
     @Query("SELECT * FROM quiz WHERE id = :id")
-    abstract Single<Quiz> getByIdOrErrorOnce(Long id);
+    public abstract Single<Quiz> getByIdOrErrorOnce(Long id);
+
+    @Query("SELECT * FROM quiz WHERE id = :id")
+    public abstract Flowable<Quiz> getQuizByIdOrErrorWithUpdates(Long id);
 
     @Query("SELECT * FROM quiz ORDER BY id ASC LIMIT 1")
-    abstract Single<Quiz> getFirst();
+    public abstract Single<Quiz> getFirst();
 
     @Query("SELECT id FROM quiz WHERE id > :quizId ORDER BY id ASC LIMIT 1")
-    abstract Single<Long> getNextQuizId(Long quizId);
+    public abstract Single<Long> getNextQuizId(Long quizId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract Long insert(Quiz quiz);
+    public abstract Long insert(Quiz quiz);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract List<Long> insertQuizTranslations(List<QuizTranslation> list);
+    public abstract List<Long> insertQuizTranslations(List<QuizTranslation> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract List<Long> insertQuizTranslationPhrases(List<QuizTranslationPhrase> list);
+    public abstract List<Long> insertQuizTranslationPhrases(List<QuizTranslationPhrase> list);
 
     @Update
-    abstract int update(Quiz quiz);
+    public abstract int update(Quiz quiz);
 
     @Delete
-    abstract int delete(Quiz quiz);
+    public abstract int delete(Quiz quiz);
 
     @Transaction
     public Long insertQuizWithQuizTranslations(Quiz quiz) {
