@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,15 +20,18 @@ import com.example.user.adminforquiz.util.DateTypeConverter;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private List<OneQuizRecyclerViewItem> oneQuizRecyclerViewItemList = new ArrayList<>();
 
-    public void setQuiz(Quiz quiz) {    //TODO Logic of adding Translations
+    public void setQuiz(Quiz quiz) {
+        oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ));
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
-            oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
+            oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz.quizTranslations.get(i), OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
         }
-
+        notifyDataSetChanged();
     }
 
 
@@ -76,12 +80,17 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             case QUIZ_TRANSLATION:
                 OneQuizTranslationViewHolder oneQuizTranslationViewHolder = (OneQuizTranslationViewHolder) holder;
                 QuizTranslation quizTranslation = (QuizTranslation) oneQuizRecyclerViewItemList.get(position).data;
-                oneQuizTranslationViewHolder.ruTranslation.setText(quizTranslation.description);
-                oneQuizTranslationViewHolder.enTranslation.setText(quizTranslation.translation);
+                oneQuizTranslationViewHolder.quizTitle.setText(quizTranslation.translation);
+                oneQuizTranslationViewHolder.quizDescription.setText(quizTranslation.description);
+                oneQuizTranslationViewHolder.phrasesLayout.removeAllViews();
+                for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
+                    TextView textView = new TextView(oneQuizTranslationViewHolder.phrasesLayout.getContext());
+                    textView.setText(quizTranslation.quizTranslationPhrases.get(i).translation);
+                    oneQuizTranslationViewHolder.phrasesLayout.addView(textView);
+                }
+                Timber.d(quizTranslation.toString());
                 break;
         }
-
-
     }
 
     @Override
@@ -114,13 +123,15 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     static class OneQuizTranslationViewHolder extends RecyclerView.ViewHolder {
-        TextView ruTranslation;
-        TextView enTranslation;
+        TextView quizTitle;
+        TextView quizDescription;
+        LinearLayout phrasesLayout;
 
         OneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
-            ruTranslation = itemView.findViewById(R.id.ruTranslation);
-            enTranslation = itemView.findViewById(R.id.enTranslation);
+            phrasesLayout = itemView.findViewById(R.id.phrasesLayout);
+            quizTitle = itemView.findViewById(R.id.quizTitle);
+            quizDescription = itemView.findViewById(R.id.quizDescription);
         }
     }
 }

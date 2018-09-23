@@ -3,6 +3,7 @@ package com.example.user.adminforquiz.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,25 +42,26 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.item_quiz_single, container, false);
-        recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
-        return view;
+        return inflater.inflate(R.layout.fragment_one_quiz, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
+        recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
+        oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();
+        recyclerViewOneQuiz.setAdapter(oneQuizRecyclerViewAdapter);
     }
 
 
-    @ProvidePresenterTag(presenterClass = OneQuizPresenter.class, type = PresenterType.GLOBAL)
+    @ProvidePresenterTag(presenterClass = OneQuizPresenter.class)
     String provideQuizPresenterTag() {
         Timber.d("provodePresenterTag");
         return String.valueOf(getArguments().getLong(EXTRA_QUIZID));
     }
 
-    @ProvidePresenter(type = PresenterType.GLOBAL)
+    @ProvidePresenter
     OneQuizPresenter provideQuizPresenter() {
         Timber.d("providePresenter");
         OneQuizPresenter oneQuizPresenter = new OneQuizPresenter();
@@ -69,15 +71,8 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
 
     @Override
     public void showQuiz(Quiz quiz) {
-        if (recyclerViewOneQuiz.getAdapter() == null) {
-            OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();
-            oneQuizRecyclerViewAdapter.setQuiz(quiz);
-            recyclerViewOneQuiz.setAdapter(oneQuizRecyclerViewAdapter);
-        } else {
-            OneQuizRecyclerViewAdapter adapter = (OneQuizRecyclerViewAdapter) recyclerViewOneQuiz.getAdapter();
-            adapter.setQuiz(quiz);
-            recyclerViewOneQuiz.getAdapter().notifyDataSetChanged();
-        }
+        Timber.d("showQuiz from OneQuizFragment");
+        oneQuizRecyclerViewAdapter.setQuiz(quiz);
     }
 
     @Override

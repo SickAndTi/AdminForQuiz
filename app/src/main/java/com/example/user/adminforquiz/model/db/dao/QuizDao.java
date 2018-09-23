@@ -111,12 +111,12 @@ public abstract class QuizDao {
     }
 
     @Transaction
-    Quiz getQuizWithTranslationsAndPhrases(Long id) {
+    public Quiz getQuizWithTranslationsAndPhrases(Long id) {
         Quiz quiz = getById(id);
         quiz.quizTranslations = getQuizTranslationsByQuizId(id);
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
-            quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(id);
+            quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id);
         }
         return quiz;
     }

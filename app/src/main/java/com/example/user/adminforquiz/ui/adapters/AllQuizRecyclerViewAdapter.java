@@ -34,6 +34,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public void setQuizList(List<Quiz> quizList) {
         this.quizList = quizList;
+        notifyDataSetChanged();
     }
 
     @NonNull

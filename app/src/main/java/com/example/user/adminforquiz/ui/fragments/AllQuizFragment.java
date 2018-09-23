@@ -43,12 +43,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(new AllQuizRecyclerViewAdapter.OnQuizClickListener() {
-            @Override
-            public void onQuizClick(Quiz quiz) {
-                allQuizPresenter.goToQuiz(quiz);
-            }
-        });
+        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuiz(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         return view;
     }
@@ -67,19 +62,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showQuizList(List<Quiz> quizList) {
-        if (recyclerView.getAdapter() == null) {
-            AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(new AllQuizRecyclerViewAdapter.OnQuizClickListener() {
-                @Override
-                public void onQuizClick(Quiz quiz) {
-                }
-            });
-            allQuizRecyclerViewAdapter.setQuizList(quizList);
-            recyclerView.setAdapter(allQuizRecyclerViewAdapter);
-        } else {
-            AllQuizRecyclerViewAdapter adapter = (AllQuizRecyclerViewAdapter) recyclerView.getAdapter();
-            adapter.setQuizList(quizList);
-            recyclerView.getAdapter().notifyDataSetChanged();
-        }
+        allQuizRecyclerViewAdapter.setQuizList(quizList);
     }
 
     @Override

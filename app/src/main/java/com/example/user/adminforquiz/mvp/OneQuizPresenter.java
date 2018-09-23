@@ -9,8 +9,10 @@ import com.example.user.adminforquiz.model.db.dao.QuizDao;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -31,13 +33,12 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
+        Timber.d("onFirstViewAttach:%s", quizId);
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        quizDao.getQuizByIdOrErrorWithUpdates(quizId)
+        Flowable.fromCallable(() -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(quiz -> getViewState().showQuiz(quiz));
     }
-
-
 }

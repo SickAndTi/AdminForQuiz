@@ -30,6 +30,23 @@ public class QuizTranslation {
     @TypeConverters(DateTypeConverter.class)
     public Date updated;
 
+    @Override
+    public String toString() {
+        return "QuizTranslation{" +
+                "id=" + id +
+                ", quizId=" + quizId +
+                ", langCode='" + langCode + '\'' +
+                ", translation='" + translation + '\'' +
+                ", description='" + description + '\'' +
+                ", approved=" + approved +
+                ", authorId=" + authorId +
+                ", approverId=" + approverId +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", quizTranslationPhrases=" + quizTranslationPhrases +
+                '}';
+    }
+
     @Ignore
     public List<QuizTranslationPhrase> quizTranslationPhrases;
 }

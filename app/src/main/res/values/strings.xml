@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AdminForQuiz</string>
+    <string name="dateCreated">dateCreated</string>
+    <string name="dateUpdated">dateUpdated</string>
+    <string name="authorID">authorID</string>
+    <string name="approverID">approverID</string>
 </resources>

@@ -25,4 +25,18 @@ public class QuizTranslationPhrase {
     public Date created;
     @TypeConverters(DateTypeConverter.class)
     public Date updated;
+
+    @Override
+    public String toString() {
+        return "QuizTranslationPhrase{" +
+                "id=" + id +
+                ", quizTranslationId=" + quizTranslationId +
+                ", translation='" + translation + '\'' +
+                ", approved=" + approved +
+                ", authorId=" + authorId +
+                ", approverId=" + approverId +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
+    }
 }
