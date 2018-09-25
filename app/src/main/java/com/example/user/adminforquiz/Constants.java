@@ -7,4 +7,5 @@ public class Constants {
     //Screens
     public static final String ALL_QUIZ_SCREEN = "ALL_QUIZ_SCREEN";
     public static final String ONE_QUIZ_SCREEN = "ONE_QUIZ_SCREEN";
+    public static final String EDIT_SCREEN = "EDIT_SCREEN";
 }

@@ -79,6 +79,22 @@ public abstract class QuizDao {
     @Delete
     public abstract int delete(Quiz quiz);
 
+    @Query("DELETE FROM Quiz")
+    public abstract void deleteQuizTable();
+
+    @Query("DELETE FROM QuizTranslation")
+    public abstract void deleteQuizTranslationTable();
+
+    @Query("DELETE FROM QuizTranslationPhrase")
+    public abstract void deleteQuizTranslationPhraseTable();
+
+    @Transaction
+    public void deleteAllTables() {
+        deleteQuizTable();
+        deleteQuizTranslationTable();
+        deleteQuizTranslationPhraseTable();
+    }
+
     @Transaction
     public Long insertQuizWithQuizTranslations(Quiz quiz) {
 

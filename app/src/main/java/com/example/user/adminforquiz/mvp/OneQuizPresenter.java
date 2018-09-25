@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
+import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 import toothpick.Toothpick;
 
@@ -20,6 +22,8 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
 
     @Inject
     QuizDao quizDao;
+    @Inject
+    Router router;
     private Long quizId;
 
     public Long getQuizId() {
@@ -40,5 +44,9 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(quiz -> getViewState().showQuiz(quiz));
+    }
+
+    public void goToEditQuiz(Quiz quiz) {
+        router.navigateTo(Constants.EDIT_SCREEN, quiz.id);
     }
 }

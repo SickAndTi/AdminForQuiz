@@ -4,4 +4,9 @@
     <string name="dateUpdated">dateUpdated</string>
     <string name="authorID">authorID</string>
     <string name="approverID">approverID</string>
+    <string name="ScpNumber">ScpNumber</string>
+    <string name="Translation">Translation</string>
+    <string name="Phrases">Phrases</string>
+    <string name="Approved">Approved</string>
+    <string name="editQuiz">Edit Quiz</string>
 </resources>

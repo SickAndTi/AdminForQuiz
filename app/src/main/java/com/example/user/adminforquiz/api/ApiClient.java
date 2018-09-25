@@ -3,6 +3,7 @@ package com.example.user.adminforquiz.api;
 import com.example.user.adminforquiz.BuildConfig;
 import com.example.user.adminforquiz.api.response.TokenResponse;
 import com.example.user.adminforquiz.model.api.NwQuiz;
+import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
 import java.net.HttpURLConnection;
@@ -11,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
+import okhttp3.Response;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
 
@@ -18,6 +20,8 @@ public class ApiClient {
     private QuizApi quizApi;
     @Inject
     MyPreferenceManager preferences;
+    @Inject
+    QuizDao quizDao;
 
     @Inject
     ApiClient(Retrofit retrofit) {
@@ -31,6 +35,7 @@ public class ApiClient {
 
     public Single<List<NwQuiz>> getNwQuizList() {
         return quizApi.getNwQuizList("Bearer" + preferences.getToken())
+                .doOnSuccess(nwQuizs -> quizDao.deleteAllTables())
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
                         getAccessToken().flatMap(tokenResponse -> getNwQuizList()) : Single.error(error));
     }

@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.PresenterType;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
 import com.example.user.adminforquiz.R;
@@ -28,6 +28,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     OneQuizPresenter oneQuizPresenter;
     RecyclerView recyclerViewOneQuiz;
     OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter;
+    Button editQuiz;
     public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
 
 
@@ -48,6 +49,8 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        editQuiz = view.findViewById(R.id.editQuiz);
+        editQuiz.setOnClickListener(v -> oneQuizPresenter.goToEditQuiz(quiz));
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
         recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
         oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();

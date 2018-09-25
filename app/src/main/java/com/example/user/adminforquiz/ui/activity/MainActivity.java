@@ -12,6 +12,7 @@ import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
+import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
 
 import javax.inject.Inject;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                     return AllQuizFragment.newInstance();
                 case Constants.ONE_QUIZ_SCREEN:
                     return OneQuizFragment.newInstance((Long) data);
+                case Constants.EDIT_SCREEN:
+                    return EditFragment.newInstance((Long) data);
                 default:
                     throw new RuntimeException("Unknown screen key !");
             }
