@@ -46,7 +46,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                 .subscribe(quiz -> getViewState().showQuiz(quiz));
     }
 
-    public void goToEditQuiz(Quiz quiz) {
-        router.navigateTo(Constants.EDIT_SCREEN, quiz.id);
+    public void goToEditQuiz() {
+        router.navigateTo(Constants.EDIT_SCREEN, quizId);
     }
 }

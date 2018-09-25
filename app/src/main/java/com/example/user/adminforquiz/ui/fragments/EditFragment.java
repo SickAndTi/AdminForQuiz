@@ -17,8 +17,11 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -26,6 +29,9 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
     @InjectPresenter
     EditPresenter editPresenter;
     public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
+    @Inject
+    QuizDao quizDao;
+    Quiz quiz;
 
     public static EditFragment newInstance(Long quizId) {
         EditFragment fragment = new EditFragment();

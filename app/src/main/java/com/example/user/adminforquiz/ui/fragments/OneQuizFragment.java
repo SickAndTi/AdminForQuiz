@@ -50,7 +50,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editQuiz = view.findViewById(R.id.editQuiz);
-        editQuiz.setOnClickListener(v -> oneQuizPresenter.goToEditQuiz(quiz));
+        editQuiz.setOnClickListener(v -> oneQuizPresenter.goToEditQuiz());
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
         recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
         oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();
