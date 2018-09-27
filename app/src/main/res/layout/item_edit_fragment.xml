@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etScpNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/ScpNumber"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:padding="8dp"
+            tools:ignore="LabelFor,NestedWeights"
+            tools:targetApi="o" />
+
+        <Switch
+            android:id="@+id/approved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/Approved" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/etTranslation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="8dp"
+            tools:targetApi="o"
+            android:hint="@string/Translation"/>
+
+        <EditText
+            android:id="@+id/etPhrases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="8dp"
+            tools:targetApi="o"
+            android:hint="@string/Phrases"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etDateCreated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/dateCreated"
+            android:importantForAutofill="no"
+            android:inputType="datetime"
+            android:padding="8dp"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/etDateUpdated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/dateUpdated"
+            android:importantForAutofill="no"
+            android:inputType="datetime"
+            android:padding="8dp"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/etAuthorId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/authorID"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:padding="8dp"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/etApproverId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/approverID"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:padding="8dp"
+            tools:targetApi="o" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -3,6 +3,8 @@ package com.example.user.adminforquiz.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +22,21 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
+import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
 
 import javax.inject.Inject;
 
 import timber.log.Timber;
 
 public class EditFragment extends MvpAppCompatFragment implements EditView {
+    public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
     @InjectPresenter
     EditPresenter editPresenter;
-    public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
     @Inject
     QuizDao quizDao;
-    Quiz quiz;
+    RecyclerView recyclerViewEditQuiz;
+    EditQuizRecyclerViewAdapter editQuizRecyclerViewAdapter;
+
 
     public static EditFragment newInstance(Long quizId) {
         EditFragment fragment = new EditFragment();
@@ -50,15 +55,10 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EditText etScpNumber = view.findViewById(R.id.etScpNumber);
-        Switch approved = view.findViewById(R.id.approved);
-        ImageView imageView = view.findViewById(R.id.imageView);
-        EditText etTranslation = view.findViewById(R.id.etTranslation);
-        EditText etPhrases = view.findViewById(R.id.etPhrases);
-        EditText etDateCreated = view.findViewById(R.id.etDateCreated);
-        EditText etDateUpdated = view.findViewById(R.id.etDateUpdated);
-        EditText etAuthorId = view.findViewById(R.id.etAuthorId);
-        EditText etApproverId = view.findViewById(R.id.etApproverId);
+        recyclerViewEditQuiz = view.findViewById(R.id.recyclerViewEditQuiz);
+        recyclerViewEditQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
+        editQuizRecyclerViewAdapter = new EditQuizRecyclerViewAdapter();
+        recyclerViewEditQuiz.setAdapter(editQuizRecyclerViewAdapter);
     }
 
     @ProvidePresenter
@@ -81,6 +81,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
 
     @Override
     public void showQuiz(Quiz quiz) {
-
+        editQuizRecyclerViewAdapter.setEditQuiz(quiz);
     }
 }
