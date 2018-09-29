@@ -95,6 +95,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        Timber.d("%s getItemCount", oneQuizRecyclerViewItemList.size());
         return oneQuizRecyclerViewItemList.size();
     }
 

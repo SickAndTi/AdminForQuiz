@@ -6,5 +6,11 @@ import com.example.user.adminforquiz.model.db.Quiz;
 public interface EditView extends MvpView {
     void showError(String errorMessage);
 
-    void showQuiz(Quiz quiz);
+    void showEditQuiz(Quiz quiz);
+
+    void saveChanges();
+
+    void addTranslation();
+
+    void addTranslationPhrase();
 }

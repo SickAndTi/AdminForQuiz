@@ -9,4 +9,7 @@
     <string name="Phrases">Phrases</string>
     <string name="Approved">Approved</string>
     <string name="editQuiz">Edit Quiz</string>
+    <string name="SaveChanges">Save Changes</string>
+    <string name="addTranslation">Add Translation</string>
+    <string name="addTranslationPhrase">Add TranslationPhrase</string>
 </resources>

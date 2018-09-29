@@ -15,10 +15,11 @@ import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.OneQuizRecyclerViewItem;
-import com.example.user.adminforquiz.util.DateTypeConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
@@ -26,7 +27,7 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     public void setEditQuiz(Quiz quiz) {
         oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ));
-        for (int i = 0; i < oneQuizRecyclerViewItemList.size(); i++) {
+        for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz.quizTranslations.get(i), OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
         }
         notifyDataSetChanged();
@@ -53,10 +54,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
                 editOneQuizViewHolder.approved.setChecked(quiz.approved);
                 editOneQuizViewHolder.etScpNumber.setText(quiz.scpNumber);
-                editOneQuizViewHolder.etApproverId.setText(String.valueOf(quiz.approverId));
-                editOneQuizViewHolder.etAuthorId.setText(String.valueOf(quiz.authorId));
-                editOneQuizViewHolder.etDateCreated.setText(DateTypeConverter.formatDate(quiz.created));
-                editOneQuizViewHolder.etDateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
                 GlideApp
                         .with(viewHolder.itemView.getContext())
                         .load(quiz.imageUrl)
@@ -75,13 +72,16 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     editText.setText(quizTranslation.quizTranslationPhrases.get(i).translation);
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
                 }
+                Timber.d("quizTranslations:%s", quizTranslation.toString());
                 break;
         }
     }
 
     @Override
     public int getItemCount() {
+        Timber.d("%s getItemCount", oneQuizRecyclerViewItemList.size());
         return oneQuizRecyclerViewItemList.size();
+
     }
 
     @Override
@@ -92,7 +92,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     static class EditOneQuizViewHolder extends RecyclerView.ViewHolder {
 
         EditText etScpNumber;
-        EditText etAuthorId, etApproverId, etDateCreated, etDateUpdated;
         Switch approved;
         ImageView imageView;
 
@@ -101,10 +100,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             etScpNumber = itemView.findViewById(R.id.etScpNumber);
             approved = itemView.findViewById(R.id.approved);
             imageView = itemView.findViewById(R.id.imageView);
-            etDateCreated = itemView.findViewById(R.id.etDateCreated);
-            etDateUpdated = itemView.findViewById(R.id.etDateUpdated);
-            etAuthorId = itemView.findViewById(R.id.etAuthorId);
-            etApproverId = itemView.findViewById(R.id.etApproverId);
         }
     }
 
