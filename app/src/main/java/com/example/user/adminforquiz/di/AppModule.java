@@ -35,7 +35,7 @@ public class AppModule extends Module {
         bind(DataBase.class).toInstance(dataBase);
 
         bind(Retrofit.class).toInstance(new Retrofit.Builder()
-                .baseUrl(BuildConfig.VPS_API_URL)
+                .baseUrl(BuildConfig.TEST_API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
