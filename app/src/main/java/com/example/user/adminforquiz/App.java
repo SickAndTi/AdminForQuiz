@@ -2,8 +2,13 @@ package com.example.user.adminforquiz;
 
 import android.app.Application;
 
+import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.di.AppModule;
 
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;

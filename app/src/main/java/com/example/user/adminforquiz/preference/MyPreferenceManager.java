@@ -17,16 +17,21 @@ public class MyPreferenceManager {
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    public void setTestAccessToken(String testAccessToken) {
+        preferences.edit().putString(Constants.ACCESS_TOKEN, testAccessToken).apply();
+    }
 
-    public String getToken() {
+    public String getTestAccessToken() {
         return preferences.getString(Constants.ACCESS_TOKEN, null);
     }
 
-    public void setToken(String accessToken) {
-        preferences.edit().putString(Constants.ACCESS_TOKEN, accessToken).apply();
+    public void setTestRefreshToken(String testRefreshToken) {
+        preferences.edit().putString(Constants.REFRESH_TOKEN, testRefreshToken).apply();
     }
 
-
+    public String getTestRefreshToken() {
+        return preferences.getString(Constants.REFRESH_TOKEN, null);
+    }
 }
 
 

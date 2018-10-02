@@ -7,26 +7,35 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatActivity;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.user.adminforquiz.App;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
+import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.mvp.MainPresenter;
+import com.example.user.adminforquiz.mvp.MainView;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 import toothpick.Toothpick;
 
-public class MainActivity extends AppCompatActivity {
-    FrameLayout container;
+public class MainActivity extends MvpAppCompatActivity implements MainView {
+
     @Inject
     NavigatorHolder navigatorHolder;
+    @InjectPresenter
+    MainPresenter mainPresenter;
 
 
     @Override
@@ -34,13 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        container = findViewById(R.id.container);
-        if (savedInstanceState == null) {
-            Fragment allQuizFragment = new AllQuizFragment();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.container, allQuizFragment);
-            fragmentTransaction.commit();
-        }
     }
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(), R.id.container) {

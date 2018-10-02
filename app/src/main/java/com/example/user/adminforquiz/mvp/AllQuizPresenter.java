@@ -9,6 +9,7 @@ import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
+import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     QuizDao quizDao;
     @Inject
     Router router;
+    @Inject
+    MyPreferenceManager preferences;
 
 
     @SuppressLint("CheckResult")
@@ -48,7 +51,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     @SuppressLint("CheckResult")
     public void loadDataFromApi() {
-        apiClient.getNwQuizList()
+        apiClient.getTestAccessToken()
+                .flatMap(tokenResponseTest -> apiClient.getNwQuizList())
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
                 .subscribeOn(Schedulers.io())

@@ -20,8 +20,11 @@ android {
 
             //quiz api auth
             buildConfigField('String', 'USER', '"' + properties.get("user") + '"')
+            buildConfigField('String', 'CLIENT_ID', '"' + properties.get("clientId") + '"')
             buildConfigField('String', 'PASSWORD', '"' + properties.get("password") + '"')
+            buildConfigField('String', 'CLIENT_SECRET', '"' + properties.get("clientSecret") + '"')
             buildConfigField('String', 'GRANT_TYPE', '"' + properties.get("grantType") + '"')
+            buildConfigField('String', 'GRANT_TYPE_REFRESH_TOKEN', '"' + properties.get("refreshTokenGrantType") + '"')
 
         } else {
             throw new GradleException(
