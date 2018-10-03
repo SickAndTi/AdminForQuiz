@@ -51,8 +51,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     @SuppressLint("CheckResult")
     public void loadDataFromApi() {
-        apiClient.getTestAccessToken()
-                .flatMap(tokenResponseTest -> apiClient.getNwQuizList())
+        apiClient.getAccessToken()
+                .flatMap(tokenResponse -> apiClient.getNwQuizList())
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
                 .subscribeOn(Schedulers.io())
