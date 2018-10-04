@@ -129,11 +129,11 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> approveNwQuizById()) : Single.error(error));
     }
 
-    public Single<NwQuiz> addNwQuizTranslation() {
+    public Single<NwQuiz> addNwQuizTranslation(Long nwQuizTranslationId, String nwQuizTranslationLangCode, String nwQuizTranslationText, String nwQuizTranslationDescription) {
         return quizApi.addNwQuizTranslation("Bearer" + preferences.getAccessToken(),
-                nwQuizTranslation.id, nwQuizTranslation.langCode, nwQuizTranslation.translation, nwQuizTranslation.description)
+                nwQuizTranslationId, nwQuizTranslationLangCode, nwQuizTranslationText, nwQuizTranslationDescription)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslation()) : Single.error(error));
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslation(nwQuizTranslationId, nwQuizTranslationLangCode, nwQuizTranslationText, nwQuizTranslationDescription)) : Single.error(error));
     }
 
     public Single<NwQuizTranslation> updateNwQuizTranslationDescription() {
@@ -142,10 +142,10 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> updateNwQuizTranslationDescription()) : Single.error(error));
     }
 
-    public Single<NwQuizTranslation> addNwQuizTranslationPhrase() {
-        return quizApi.addNwQuizTranslationPhrase("Bearer" + preferences.getAccessToken(), nwQuizTranslation.id, nwQuizTranslationPhrase.translation)
+    public Single<NwQuizTranslation> addNwQuizTranslationPhrase(Long nwQuizTranslationId, String nwQuizTranslationPhrase) {
+        return quizApi.addNwQuizTranslationPhrase("Bearer" + preferences.getAccessToken(), nwQuizTranslationId, nwQuizTranslationPhrase)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslationPhrase()) : Single.error(error));
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslationPhrase(nwQuizTranslationId, nwQuizTranslationPhrase)) : Single.error(error));
     }
 }
 

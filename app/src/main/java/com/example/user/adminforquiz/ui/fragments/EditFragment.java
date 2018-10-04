@@ -1,8 +1,10 @@
 package com.example.user.adminforquiz.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -18,11 +21,14 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
 import com.example.user.adminforquiz.R;
+import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
 import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -34,6 +40,8 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
     EditPresenter editPresenter;
     @Inject
     QuizDao quizDao;
+    @Inject
+    ApiClient apiClient;
     RecyclerView recyclerViewEditQuiz;
     EditQuizRecyclerViewAdapter editQuizRecyclerViewAdapter;
 
@@ -61,9 +69,45 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addTranslation:
-                addTranslation();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_add_translation, null);
+                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                mDialogBuilder.setView(view);
+                final EditText etEnterLangCode = view.findViewById(R.id.etEnterLangCode);
+                final EditText etEnterText = view.findViewById(R.id.etEnterText);
+                final EditText etEnterDescription = view.findViewById(R.id.etEnterDescription);
+                mDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                (dialog, id) -> {
+                                    editPresenter.addTranslation(etEnterLangCode.getText().toString(), etEnterText.getText().toString(), etEnterDescription.getText().toString());
+                                })
+                        .setNegativeButton("Cancel",
+                                (dialog, id) -> dialog.cancel());
+
+                AlertDialog alertDialog = mDialogBuilder.create();
+                alertDialog.show();
+                break;
             case R.id.addTranslationPhrase:
-                addTranslationPhrase();
+                LayoutInflater inflaterPhrase = LayoutInflater.from(getContext());
+                @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
+                AlertDialog.Builder mDialogBuilderPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                mDialogBuilderPhrase.setView(viewPhrase);
+                final EditText etAddingTextPhrase = (EditText) viewPhrase.findViewById(R.id.etAddingText);
+
+                mDialogBuilderPhrase
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                (dialog, id) -> {
+                                    editPresenter.addTranslationPhrase(etAddingTextPhrase.getText().toString());
+                                })
+                        .setNegativeButton("Cancel",
+                                (dialog, id) -> dialog.cancel());
+
+                AlertDialog alertDialogPhrase = mDialogBuilderPhrase.create();
+                alertDialogPhrase.show();
+                break;
+
             case R.id.saveChanges:
                 saveChanges();
         }
@@ -124,6 +168,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
 
     @Override
     public void addTranslationPhrase() {
-        //TODO logic addTranslationPhrase
+
     }
 }

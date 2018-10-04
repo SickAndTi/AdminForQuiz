@@ -12,4 +12,10 @@
     <string name="SaveChanges">Save Changes</string>
     <string name="addTranslation">Add Translation</string>
     <string name="addTranslationPhrase">Add TranslationPhrase</string>
+    <string name="addText">Add Text</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="enterText">Enter Text</string>
+    <string name="enterLangCode">Enter Language</string>
+    <string name="enterDescription">Enter Description</string>
 </resources>
