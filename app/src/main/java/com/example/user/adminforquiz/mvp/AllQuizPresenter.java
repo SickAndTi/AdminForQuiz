@@ -1,19 +1,22 @@
 package com.example.user.adminforquiz.mvp;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
+import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
@@ -33,7 +36,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     MyPreferenceManager preferences;
 
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -49,7 +51,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 });
     }
 
-    @SuppressLint("CheckResult")
     public void loadDataFromApi() {
         apiClient.getAccessToken()
                 .flatMap(tokenResponse -> apiClient.getNwQuizList())
@@ -69,5 +70,21 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void goToQuiz(Quiz quiz) {
         router.navigateTo(Constants.ONE_QUIZ_SCREEN, quiz.id);
+    }
+
+    public Disposable createNwQuiz(String scpNumber, String imageUrl) {
+        NwQuiz nwQuiz = new NwQuiz();
+        nwQuiz.scpNumber = scpNumber;
+        nwQuiz.imageUrl = imageUrl;
+        return apiClient.createNwQuiz(nwQuiz)
+                .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
+                .map(quiz -> quizDao.insert(quiz))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> goToAllQuizFragment());
+    }
+
+    private void goToAllQuizFragment() {
+        router.navigateTo(Constants.ALL_QUIZ_SCREEN);
     }
 }

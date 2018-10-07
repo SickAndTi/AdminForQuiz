@@ -75,8 +75,9 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 mDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("OK",
-                                (dialog, id) -> {//TODO create Quiz logic
-                                    editPresenter.addTranslation(etEnterLangCode.getText().toString(), etEnterText.getText().toString(), etEnterDescription.getText().toString());
+                                (dialog, id) -> {
+                                    allQuizPresenter.createNwQuiz(etEnterScpNumber.getText().toString(), etEnterImageUrl.getText().toString());
+                                    dialog.cancel();
                                 })
                         .setNegativeButton("Cancel",
                                 (dialog, id) -> dialog.cancel());

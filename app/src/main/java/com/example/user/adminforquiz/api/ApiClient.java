@@ -107,10 +107,10 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizTranslationPhraseById()) : Single.error(error));
     }
 
-    public Single<NwQuiz> createNwQuiz() {
+    public Single<NwQuiz> createNwQuiz(NwQuiz nwQuiz) {
         return quizApi.createNwQuiz("Bearer" + preferences.getAccessToken(), nwQuiz)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> createNwQuiz()) : Single.error(error));
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> createNwQuiz(nwQuiz)) : Single.error(error));
     }
 
     public Single<NwQuiz> approveNwQuizById() {
