@@ -13,6 +13,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Single;
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
@@ -41,7 +43,7 @@ public class ApiClient {
                 });
     }
 
-    private Single<TokenResponse> getAccessTokenByRefreshToken() {
+    public Single<TokenResponse> getAccessTokenByRefreshToken() {
         return quizApi.getAccessTokenByRefreshToken(okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
                 BuildConfig.GRANT_TYPE_REFRESH_TOKEN, preferences.getRefreshToken())
                 .doOnSuccess(tokenResponse -> {
@@ -57,10 +59,10 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizList()) : Single.error(error));
     }
 
-    public Single<NwQuiz> getNwQuizById() {
-        return quizApi.getNwQuizById("Bearer" + preferences.getAccessToken(), nwQuiz.id)
+    public Single<NwQuiz> getNwQuizById(Long nwQuizId) {
+        return quizApi.getNwQuizById("Bearer" + preferences.getAccessToken(), nwQuizId)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizById()) : Single.error(error));
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizById(nwQuizId)) : Single.error(error));
     }
 
     public Single<NwQuiz> getNwQuizByQuizTranslationId() {
@@ -75,18 +77,6 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizListByLangCode()) : Single.error(error));
     }
 
-    public void deleteNwQuizById() {
-        //TODO
-    }
-
-    public void deleteNwQuizTranslationById() {
-        //TODO
-    }
-
-    public void deleteQuizTranslationPhraseById() {
-        //TODO
-    }
-
     public Single<List<NwQuiz>> getNwQuizListSorted() {
         return quizApi.getNwQuizListSorted("Bearer" + preferences.getAccessToken(), "sortFieldName", true)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
@@ -99,10 +89,10 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizTranslationList()) : Single.error(error));
     }
 
-    public Single<NwQuizTranslation> getNwQuizTranslationById() {
-        return quizApi.getNwQuizTranslationById("Bearer" + preferences.getAccessToken(), nwQuiz.id)
+    public Single<NwQuizTranslation> getNwQuizTranslationById(Long nwQuizId) {
+        return quizApi.getNwQuizTranslationById("Bearer" + preferences.getAccessToken(), nwQuizId)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizTranslationById()) : Single.error(error));
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizTranslationById(nwQuizId)) : Single.error(error));
     }
 
     public Single<List<NwQuizTranslationPhrase>> getNwQuizTranslationPhraseList() {
@@ -136,16 +126,35 @@ public class ApiClient {
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslation(nwQuizTranslationId, nwQuizTranslationLangCode, nwQuizTranslationText, nwQuizTranslationDescription)) : Single.error(error));
     }
 
-    public Single<NwQuizTranslation> updateNwQuizTranslationDescription() {
-        return quizApi.updateNwQuizTranslationDescription("Bearer" + preferences.getAccessToken(), nwQuizTranslation.id, nwQuizTranslation.description)
+    public Single<NwQuizTranslation> updateNwQuizTranslationDescription(Long nwQuizTranslationId, String description) {
+        return quizApi.updateNwQuizTranslationDescription("Bearer" + preferences.getAccessToken(), nwQuizTranslationId, description)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> updateNwQuizTranslationDescription()) : Single.error(error));
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> updateNwQuizTranslationDescription(nwQuizTranslationId, description)) : Single.error(error));
     }
 
     public Single<NwQuizTranslation> addNwQuizTranslationPhrase(Long nwQuizTranslationId, String nwQuizTranslationPhrase) {
         return quizApi.addNwQuizTranslationPhrase("Bearer" + preferences.getAccessToken(), nwQuizTranslationId, nwQuizTranslationPhrase)
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslationPhrase(nwQuizTranslationId, nwQuizTranslationPhrase)) : Single.error(error));
+    }
+
+    public Single<Boolean> deleteNwQuizById(Long nwQuizId) {
+        return quizApi.deleteNwQuizById("Bearer" + preferences.getAccessToken(), nwQuizId)
+                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> deleteNwQuizById(nwQuizId)) : Single.error(error));
+
+    }
+
+    public Single<Boolean> deleteNwQuizTranslationById(Long nwQuizTranslationId) {
+        return quizApi.deleteNwQuizTranslationById("Bearer" + preferences.getAccessToken(), nwQuizTranslationId)
+                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> deleteNwQuizTranslationById(nwQuizTranslationId)) : Single.error(error));
+    }
+
+    public Single<Boolean> deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
+        return quizApi.deleteNwQuizTranslationPhraseById("Bearer" + preferences.getAccessToken(), nwQuizTranslationPhraseId)
+                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
+                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)) : Single.error(error));
     }
 }
 

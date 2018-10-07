@@ -7,9 +7,9 @@ import com.example.user.adminforquiz.model.api.NwQuizTranslationPhrase;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -60,23 +60,6 @@ public interface QuizApi {
             @Query("langCode") String langCode
     );
 
-    @DELETE("quiz/delete/{id}")
-    void deleteNwQuizById(
-            @Header("Authorization") String authorization,
-            @Path("id") Long id
-    );
-
-    @DELETE("quiz/translations/delete/{id}")
-    void deleteNwQuizTranslationById(
-            @Header("Authorization") String authorization,
-            @Path("id") Long id
-    );
-
-    @DELETE("quiz/translations/phrases/delete/{id}")
-    void deleteQuizTranslationPhraseById(
-            @Header("Authorization") String authorization,
-            @Path("id") Long id
-    );
 
     @GET("quiz/allSorted")
     Single<List<NwQuiz>> getNwQuizListSorted(
@@ -142,4 +125,23 @@ public interface QuizApi {
             @Query("quizTranslationId") Long quizTranslationId,
             @Query("text") String text
     );
+
+    @GET("quiz/delete/{id}")
+    Single<Boolean> deleteNwQuizById(
+            @Header("Authorization") String authorization,
+            @Path("id") Long id
+    );
+
+    @GET("quiz/translations/delete/{id}")
+    Single<Boolean>deleteNwQuizTranslationById(
+            @Header("Authorization") String authorization,
+            @Path("id") Long id
+    );
+
+    @GET("quiz/translations/phrases/delete/{id}")
+    Single<Boolean> deleteNwQuizTranslationPhraseById(
+            @Header("Authorization") String authorization,
+            @Path("id") Long id
+    );
+
 }

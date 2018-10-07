@@ -11,7 +11,8 @@
         android:title="@string/addTranslationPhrase"
         app:showAsAction="never" />
     <item
-        android:id="@+id/saveChanges"
-        android:title="@string/SaveChanges"
+        android:id="@+id/deleteNwQuiz"
+        android:title="@string/deleteNwQuiz"
         app:showAsAction="never" />
+
 </menu>

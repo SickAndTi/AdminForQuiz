@@ -21,61 +21,73 @@ public class QuizConverter {
         List<Quiz> quizList = new ArrayList<>();
         for (int i = 0; i < nwQuizList.size(); i++) {
             NwQuiz nwQuiz = nwQuizList.get(i);
-            Quiz quiz = new Quiz();
-            quiz.id = nwQuiz.id;
-            quiz.scpNumber = nwQuiz.scpNumber;
-            quiz.imageUrl = nwQuiz.imageUrl;
-            quiz.authorId = nwQuiz.authorId;
-            quiz.approved = nwQuiz.approved;
-            quiz.approverId = nwQuiz.approverId;
-            quiz.created = nwQuiz.created;
-            quiz.updated = nwQuiz.updated;
-            quiz.quizTranslations = convert1(nwQuiz.quizTranslations);
+            Quiz quiz = convert(nwQuiz);
             quizList.add(quiz);
         }
 
         return quizList;
     }
 
-    private List<QuizTranslation> convert1(List<NwQuizTranslation> nwQuizTranslationList) {
+    public Quiz convert(NwQuiz nwQuiz) {
+        Quiz quiz = new Quiz();
+        quiz.id = nwQuiz.id;
+        quiz.scpNumber = nwQuiz.scpNumber;
+        quiz.imageUrl = nwQuiz.imageUrl;
+        quiz.authorId = nwQuiz.authorId;
+        quiz.approved = nwQuiz.approved;
+        quiz.approverId = nwQuiz.approverId;
+        quiz.created = nwQuiz.created;
+        quiz.updated = nwQuiz.updated;
+        quiz.quizTranslations = convertTranslation(nwQuiz.quizTranslations);
+        return quiz;
+    }
+
+    private List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList) {
         List<QuizTranslation> quizTranslationList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationList.size(); i++) {
             NwQuizTranslation nwQuizTranslation = nwQuizTranslationList.get(i);
-            QuizTranslation quizTranslation = new QuizTranslation();
-            quizTranslation.id = nwQuizTranslation.id;
-            quizTranslation.langCode = nwQuizTranslation.langCode;
-            quizTranslation.approved = nwQuizTranslation.approved;
-            quizTranslation.approverId = nwQuizTranslation.approverId;
-            quizTranslation.authorId = nwQuizTranslation.authorId;
-            quizTranslation.created = nwQuizTranslation.created;
-            quizTranslation.description = nwQuizTranslation.description;
-            quizTranslation.updated = nwQuizTranslation.updated;
-            quizTranslation.quizId = null;
-            quizTranslation.translation = nwQuizTranslation.translation;
-            quizTranslation.quizTranslationPhrases = convert2(nwQuizTranslation.quizTranslationPhrases);
+            QuizTranslation quizTranslation = convertTranslation(nwQuizTranslation);
             quizTranslationList.add(quizTranslation);
         }
-
         return quizTranslationList;
     }
 
-    private List<QuizTranslationPhrase> convert2(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList) {
+    public QuizTranslation convertTranslation(NwQuizTranslation nwQuizTranslation) {
+        QuizTranslation quizTranslation = new QuizTranslation();
+        quizTranslation.id = nwQuizTranslation.id;
+        quizTranslation.langCode = nwQuizTranslation.langCode;
+        quizTranslation.approved = nwQuizTranslation.approved;
+        quizTranslation.approverId = nwQuizTranslation.approverId;
+        quizTranslation.authorId = nwQuizTranslation.authorId;
+        quizTranslation.created = nwQuizTranslation.created;
+        quizTranslation.description = nwQuizTranslation.description;
+        quizTranslation.updated = nwQuizTranslation.updated;
+        quizTranslation.quizId = null;
+        quizTranslation.translation = nwQuizTranslation.translation;
+        quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases);
+        return quizTranslation;
+    }
+
+    private List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList) {
         List<QuizTranslationPhrase> quizTranslationPhraseList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationPhraseList.size(); i++) {
             NwQuizTranslationPhrase nwQuizTranslationPhrase = nwQuizTranslationPhraseList.get(i);
-            QuizTranslationPhrase quizTranslationPhrase = new QuizTranslationPhrase();
-            quizTranslationPhrase.id = nwQuizTranslationPhrase.id;
-            quizTranslationPhrase.approved = nwQuizTranslationPhrase.approved;
-            quizTranslationPhrase.approverId = nwQuizTranslationPhrase.approverId;
-            quizTranslationPhrase.authorId = nwQuizTranslationPhrase.authorId;
-            quizTranslationPhrase.created = nwQuizTranslationPhrase.created;
-            quizTranslationPhrase.updated = nwQuizTranslationPhrase.updated;
-            quizTranslationPhrase.quizTranslationId = null;
-            quizTranslationPhrase.translation = nwQuizTranslationPhrase.translation;
+            QuizTranslationPhrase quizTranslationPhrase = convertTranslationPhrase(nwQuizTranslationPhrase);
             quizTranslationPhraseList.add(quizTranslationPhrase);
         }
-
         return quizTranslationPhraseList;
     }
 
+    public QuizTranslationPhrase convertTranslationPhrase(NwQuizTranslationPhrase nwQuizTranslationPhrase) {
+        QuizTranslationPhrase quizTranslationPhrase = new QuizTranslationPhrase();
+        quizTranslationPhrase.id = nwQuizTranslationPhrase.id;
+        quizTranslationPhrase.approved = nwQuizTranslationPhrase.approved;
+        quizTranslationPhrase.approverId = nwQuizTranslationPhrase.approverId;
+        quizTranslationPhrase.authorId = nwQuizTranslationPhrase.authorId;
+        quizTranslationPhrase.created = nwQuizTranslationPhrase.created;
+        quizTranslationPhrase.updated = nwQuizTranslationPhrase.updated;
+        quizTranslationPhrase.quizTranslationId = null;
+        quizTranslationPhrase.translation = nwQuizTranslationPhrase.translation;
+        return quizTranslationPhrase;
+    }
 }

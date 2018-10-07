@@ -23,6 +23,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenterTag;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
@@ -32,9 +33,10 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 
-public class EditFragment extends MvpAppCompatFragment implements EditView {
+public class EditFragment extends MvpAppCompatFragment implements EditView, EditQuizRecyclerViewAdapter.EditInterface {
     public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
     @InjectPresenter
     EditPresenter editPresenter;
@@ -42,7 +44,10 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
     QuizDao quizDao;
     @Inject
     ApiClient apiClient;
+    @Inject
+    Router router;
     RecyclerView recyclerViewEditQuiz;
+    View progressView;
     EditQuizRecyclerViewAdapter editQuizRecyclerViewAdapter;
 
     public static EditFragment newInstance(Long quizId) {
@@ -88,6 +93,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
                 AlertDialog alertDialog = mDialogBuilder.create();
                 alertDialog.show();
                 break;
+
             case R.id.addTranslationPhrase:
                 LayoutInflater inflaterPhrase = LayoutInflater.from(getContext());
                 @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
@@ -100,6 +106,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
                         .setPositiveButton("OK",
                                 (dialog, id) -> {
                                     editPresenter.addTranslationPhrase(etAddingTextPhrase.getText().toString());
+                                    dialog.cancel();
                                 })
                         .setNegativeButton("Cancel",
                                 (dialog, id) -> dialog.cancel());
@@ -108,8 +115,25 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
                 alertDialogPhrase.show();
                 break;
 
-            case R.id.saveChanges:
-                saveChanges();
+            case R.id.deleteNwQuiz:
+                LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
+                @SuppressLint("InflateParams") View viewDelete = inflaterDelete.inflate(R.layout.dialog_delete, null);
+                AlertDialog.Builder mDialogBuilderDelete = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                mDialogBuilderDelete.setView(viewDelete);
+
+                mDialogBuilderDelete
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                (dialog, id) -> {
+                                    editPresenter.deleteNwQuizById();
+                                    dialog.cancel();
+                                })
+                        .setNegativeButton("Cancel",
+                                (dialog, id) -> dialog.cancel());
+
+                AlertDialog alertDialogDelete = mDialogBuilderDelete.create();
+                alertDialogDelete.show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -125,8 +149,10 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewEditQuiz = view.findViewById(R.id.recyclerViewEditQuiz);
         recyclerViewEditQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
-        editQuizRecyclerViewAdapter = new EditQuizRecyclerViewAdapter();
+        editQuizRecyclerViewAdapter = new EditQuizRecyclerViewAdapter(this);
         recyclerViewEditQuiz.setAdapter(editQuizRecyclerViewAdapter);
+
+        progressView = view.findViewById(R.id.flProgressBar);
     }
 
     @ProvidePresenter
@@ -155,19 +181,33 @@ public class EditFragment extends MvpAppCompatFragment implements EditView {
         editQuizRecyclerViewAdapter.setEditQuiz(quiz);
     }
 
+
+
     @Override
-    public void saveChanges() {
-        //TODO saveChanges logic
+    public void showProgress(boolean showProgress) {
+        progressView.setVisibility(showProgress ? View.VISIBLE : View.GONE);
     }
 
 
     @Override
-    public void addTranslation() {
-        //TODO logic addTranslation
-    }
+    public void onTranslationEditClicked(QuizTranslation quizTranslation) {
 
-    @Override
-    public void addTranslationPhrase() {
+        LayoutInflater inflaterUpDescription = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewUpDescription = inflaterUpDescription.inflate(R.layout.dialog_add_translation_phrase, null);
+        AlertDialog.Builder mDialogBuilderUpDescription = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderUpDescription.setView(viewUpDescription);
+        final EditText etUpdateDescription = viewUpDescription.findViewById(R.id.etAddingText);
+        etUpdateDescription.setText(quizTranslation.description);
+        mDialogBuilderUpDescription
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            editPresenter.updateTranslationDescription(quizTranslation.id, etUpdateDescription.getText().toString());
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
 
+        AlertDialog alertDialogUpDescription = mDialogBuilderUpDescription.create();
+        alertDialogUpDescription.show();
     }
 }

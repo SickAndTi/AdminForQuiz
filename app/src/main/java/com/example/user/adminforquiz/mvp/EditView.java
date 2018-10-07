@@ -8,9 +8,5 @@ public interface EditView extends MvpView {
 
     void showEditQuiz(Quiz quiz);
 
-    void saveChanges();
-
-    void addTranslation();
-
-    void addTranslationPhrase();
+    void showProgress(boolean showProgress);
 }

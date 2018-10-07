@@ -18,4 +18,10 @@
     <string name="enterText">Enter Text</string>
     <string name="enterLangCode">Enter Language</string>
     <string name="enterDescription">Enter Description</string>
+    <string name="createNwQuiz">Create Quiz</string>
+    <string name="updateNwQuizTranslationDescription">Update Description</string>
+    <string name="delete">Delete?</string>
+    <string name="deleteNwQuiz">Delete Quiz</string>
+    <string name="enterScpNumber">Enter ScpNumber</string>
+    <string name="enterImageUrl">Enter Image Url</string>
 </resources>

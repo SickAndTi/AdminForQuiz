@@ -23,6 +23,16 @@ import timber.log.Timber;
 
 public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
+    public interface EditInterface {
+        void onTranslationEditClicked(QuizTranslation quizTranslation);
+    }
+
+    EditInterface editInterface;
+
+    public EditQuizRecyclerViewAdapter(EditInterface editInterface){
+        this.editInterface = editInterface;
+    }
+
     private List<OneQuizRecyclerViewItem> oneQuizRecyclerViewItemList = new ArrayList<>();
 
     public void setEditQuiz(Quiz quiz) {
@@ -73,6 +83,8 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
                 }
                 Timber.d("quizTranslations:%s", quizTranslation.toString());
+
+                editOneQuizTranslationViewHolder.etQuizDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
                 break;
         }
     }
