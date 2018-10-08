@@ -24,6 +24,7 @@ import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
+import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
@@ -86,33 +87,13 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                         .setPositiveButton("OK",
                                 (dialog, id) -> {
                                     editPresenter.addTranslation(etEnterLangCode.getText().toString(), etEnterText.getText().toString(), etEnterDescription.getText().toString());
+                                    dialog.cancel();
                                 })
                         .setNegativeButton("Cancel",
                                 (dialog, id) -> dialog.cancel());
 
                 AlertDialog alertDialog = mDialogBuilder.create();
                 alertDialog.show();
-                break;
-
-            case R.id.addTranslationPhrase:
-                LayoutInflater inflaterPhrase = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
-                AlertDialog.Builder mDialogBuilderPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                mDialogBuilderPhrase.setView(viewPhrase);
-                final EditText etAddingTextPhrase = (EditText) viewPhrase.findViewById(R.id.etAddingText);
-
-                mDialogBuilderPhrase
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                (dialog, id) -> {
-                                    editPresenter.addTranslationPhrase(etAddingTextPhrase.getText().toString());
-                                    dialog.cancel();
-                                })
-                        .setNegativeButton("Cancel",
-                                (dialog, id) -> dialog.cancel());
-
-                AlertDialog alertDialogPhrase = mDialogBuilderPhrase.create();
-                alertDialogPhrase.show();
                 break;
 
             case R.id.deleteNwQuiz:
@@ -182,7 +163,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     }
 
 
-
     @Override
     public void showProgress(boolean showProgress) {
         progressView.setVisibility(showProgress ? View.VISIBLE : View.GONE);
@@ -203,11 +183,74 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                 .setPositiveButton("OK",
                         (dialog, id) -> {
                             editPresenter.updateTranslationDescription(quizTranslation.id, etUpdateDescription.getText().toString());
+                            dialog.cancel();
                         })
                 .setNegativeButton("Cancel",
                         (dialog, id) -> dialog.cancel());
 
         AlertDialog alertDialogUpDescription = mDialogBuilderUpDescription.create();
         alertDialogUpDescription.show();
+    }
+
+    @Override
+    public void onTranslationDeleteClicked(QuizTranslation quizTranslation) {
+        LayoutInflater inflaterDeleteTranslation = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewDeleteTranslation = inflaterDeleteTranslation.inflate(R.layout.dialog_delete, null);
+        AlertDialog.Builder mDialogBuilderDeleteTranslation = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderDeleteTranslation.setView(viewDeleteTranslation);
+        mDialogBuilderDeleteTranslation
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            editPresenter.deleteNwQuizTranslationById(quizTranslation.id);
+                            dialog.cancel();
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+
+        AlertDialog alertDialogDeleteTranslation = mDialogBuilderDeleteTranslation.create();
+        alertDialogDeleteTranslation.show();
+    }
+
+    @Override
+    public void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase) {
+        LayoutInflater inflaterDeleteTranslationPhrase = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewDeleteTranslationPhrase = inflaterDeleteTranslationPhrase.inflate(R.layout.dialog_delete, null);
+        AlertDialog.Builder mDialogBuilderDeleteTranslationPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderDeleteTranslationPhrase.setView(viewDeleteTranslationPhrase);
+        mDialogBuilderDeleteTranslationPhrase
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            editPresenter.deleteNwQuizTranslationPhraseById(quizTranslationPhrase.id);
+                            dialog.cancel();
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+
+        AlertDialog alertDialogDeleteTranslationPhrase = mDialogBuilderDeleteTranslationPhrase.create();
+        alertDialogDeleteTranslationPhrase.show();
+    }
+
+    @Override
+    public void onTranslationAddPhraseClicked(QuizTranslation quizTranslation) {
+        LayoutInflater inflaterPhrase = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
+        AlertDialog.Builder mDialogBuilderPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderPhrase.setView(viewPhrase);
+        final EditText etAddingTextPhrase = (EditText) viewPhrase.findViewById(R.id.etAddingText);
+
+        mDialogBuilderPhrase
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            editPresenter.addTranslationPhrase(quizTranslation.id, etAddingTextPhrase.getText().toString());
+                            dialog.cancel();
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+
+        AlertDialog alertDialogPhrase = mDialogBuilderPhrase.create();
+        alertDialogPhrase.show();
     }
 }

@@ -68,7 +68,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 );
     }
 
-    public void goToQuiz(Quiz quiz) {
+    public void goToQuizFragment(Quiz quiz) {
         router.navigateTo(Constants.ONE_QUIZ_SCREEN, quiz.id);
     }
 

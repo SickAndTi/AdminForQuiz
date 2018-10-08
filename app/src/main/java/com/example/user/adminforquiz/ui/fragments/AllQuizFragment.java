@@ -50,7 +50,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuiz(quiz));
+        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         return view;
     }

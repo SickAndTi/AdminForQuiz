@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,22 +15,26 @@ import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
+import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 import com.example.user.adminforquiz.model.ui.OneQuizRecyclerViewItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
+    EditInterface editInterface;
 
     public interface EditInterface {
         void onTranslationEditClicked(QuizTranslation quizTranslation);
+
+        void onTranslationDeleteClicked(QuizTranslation quizTranslation);
+
+        void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase);
+
+        void onTranslationAddPhraseClicked(QuizTranslation quizTranslation);
     }
 
-    EditInterface editInterface;
-
-    public EditQuizRecyclerViewAdapter(EditInterface editInterface){
+    public EditQuizRecyclerViewAdapter(EditInterface editInterface) {
         this.editInterface = editInterface;
     }
 
@@ -76,22 +81,25 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 QuizTranslation quizTranslation = (QuizTranslation) oneQuizRecyclerViewItemList.get(position).data;
                 editOneQuizTranslationViewHolder.etQuizTitle.setText(quizTranslation.translation);
                 editOneQuizTranslationViewHolder.etQuizDescription.setText(quizTranslation.description);
+                editOneQuizTranslationViewHolder.btnDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 editOneQuizTranslationViewHolder.etPhrasesLayout.removeAllViews();
                 for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
                     EditText editText = new EditText(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
                     editText.setText(quizTranslation.quizTranslationPhrases.get(i).translation);
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
+                    Button btnDeleteTranslationPhrase = ((EditOneQuizTranslationViewHolder) viewHolder).btnDeleteTranslationPhrase;
+//                    btnDeleteTranslationPhrase.setOnClickListener(v->editInterface.onTranslationPhraseDeleteClicked());
+                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
+                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
                 }
-                Timber.d("quizTranslations:%s", quizTranslation.toString());
-
                 editOneQuizTranslationViewHolder.etQuizDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
+                editOneQuizTranslationViewHolder.etQuizTitle.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
                 break;
         }
     }
 
     @Override
     public int getItemCount() {
-        Timber.d("%s getItemCount", oneQuizRecyclerViewItemList.size());
         return oneQuizRecyclerViewItemList.size();
 
     }
@@ -119,12 +127,16 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         EditText etQuizTitle;
         EditText etQuizDescription;
         LinearLayout etPhrasesLayout;
+        Button btnDeleteTranslation;
+        Button btnDeleteTranslationPhrase;
 
         EditOneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
             etPhrasesLayout = itemView.findViewById(R.id.etPhrasesLayout);
             etQuizTitle = itemView.findViewById(R.id.etQuizTitle);
             etQuizDescription = itemView.findViewById(R.id.etQuizDescription);
+            btnDeleteTranslation = itemView.findViewById(R.id.btnDeleteTranslation);
+            btnDeleteTranslationPhrase = itemView.findViewById(R.id.btnDeleteTranslationPhrase);
         }
     }
 }

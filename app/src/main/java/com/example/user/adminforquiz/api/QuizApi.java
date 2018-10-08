@@ -7,7 +7,6 @@ import com.example.user.adminforquiz.model.api.NwQuizTranslationPhrase;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.Field;

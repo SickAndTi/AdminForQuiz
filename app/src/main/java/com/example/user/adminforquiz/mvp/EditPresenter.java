@@ -57,6 +57,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
         this.quizId = quizId;
     }
 
+
     @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
@@ -79,9 +80,9 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void addTranslationPhrase(String translationPhrase) {
-        apiClient.addNwQuizTranslationPhrase(quizId, translationPhrase)
-                .flatMap(nwQuizTranslation -> apiClient.getNwQuizById(quizId))
+    public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
+        apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
+                .flatMap(nwQuizTranslation -> apiClient.getNwQuizByQuizTranslationId(nwQuizTranslation.id))
                 .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
                 .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io())
@@ -96,14 +97,31 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     public void addTranslation(String langCode, String translationText, String translationDescription) {
         apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
-
+                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doOnSuccess(quiz1 -> getViewState().showProgress(false))
+                .subscribe(quiz1 -> {
+                    this.quiz = quiz1;
+                    getViewState().showEditQuiz(this.quiz);
+                });
     }
 
     public void updateTranslationDescription(Long quizTranslationId, String description) {
-        apiClient.updateNwQuizTranslationDescription(quizTranslationId, description).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        apiClient.updateNwQuizTranslationDescription(quizTranslationId, description)
+                .flatMap(nwQuiz -> apiClient.getNwQuizById(quizId))
+                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .flatMap(aLong -> getQuizFRomDbSingle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doOnSuccess(quiz1 -> getViewState().showProgress(false))
+                .subscribe(quiz1 -> {
+                    this.quiz = quiz1;
+                    getViewState().showEditQuiz(this.quiz);
+                });
     }
 
     public void deleteNwQuizById() {
@@ -113,7 +131,26 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribe((integer) -> goToAllQuizFragment());
     }
 
+    public void deleteNwQuizTranslationById(Long nwQuizTranslationId) {
+        apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
+                .map(aBoolean -> quizDao.deleteQuizTranslationById(nwQuizTranslationId))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> goToEditFragment());
+    }
+
+    public void deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
+        apiClient.deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)
+                .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(nwQuizTranslationPhraseId))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> goToEditFragment());
+    }
+
     private void goToAllQuizFragment() {
         router.navigateTo(Constants.ALL_QUIZ_SCREEN);
     }
+
+    private void goToEditFragment() {
+        router.navigateTo(Constants.EDIT_SCREEN, quizId);
+    }
+
 }

@@ -82,6 +82,12 @@ public abstract class QuizDao {
     @Query("DELETE FROM quiz WHERE id = :quizId")
     public abstract int deleteQuizById(Long quizId);
 
+    @Query("DELETE FROM QuizTranslation WHERE id = :quizTranslationId")
+    public abstract int deleteQuizTranslationById(Long quizTranslationId);
+
+    @Query("DELETE FROM QuizTranslationPhrase WHERE id = :quizTranslationPhraseId")
+    public abstract int deleteQuizTranslationPhraseById(Long quizTranslationPhraseId);
+
     @Query("DELETE FROM Quiz")
     public abstract void deleteQuizTable();
 

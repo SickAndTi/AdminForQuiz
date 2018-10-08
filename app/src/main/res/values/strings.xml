@@ -24,4 +24,7 @@
     <string name="deleteNwQuiz">Delete Quiz</string>
     <string name="enterScpNumber">Enter ScpNumber</string>
     <string name="enterImageUrl">Enter Image Url</string>
+    <string name="deleteTranslation">Delete Translation</string>
+    <string name="deleteTranslationPhrase">Delete Phrase</string>
+    <string name="enterTranslationPhrase">Enter Translation Phrase</string>
 </resources>

@@ -6,10 +6,7 @@
         android:id="@+id/addTranslation"
         android:title="@string/addTranslation"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/addTranslationPhrase"
-        android:title="@string/addTranslationPhrase"
-        app:showAsAction="never" />
+
     <item
         android:id="@+id/deleteNwQuiz"
         android:title="@string/deleteNwQuiz"
