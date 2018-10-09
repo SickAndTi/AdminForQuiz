@@ -70,17 +70,20 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
         apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
-//                .flatMap(nwQuizTranslation -> apiClient.getNwQuizByQuizTranslationId(nwQuizTranslation.id))
-                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
+                .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnDispose(() -> getViewState().showProgress(false))
+                .doFinally(() -> getViewState().showProgress(false))
                 .subscribe(
                         quiz1 -> {
                             this.quiz = quiz1;
                             getViewState().showEditQuiz(quiz1);
+                            quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(quizTranslationPhraseList -> Timber.d("FAK PHRASES %s,", quizTranslationPhraseList));
                         },
                         error -> getViewState().showError(error.getMessage())
                 );
@@ -88,12 +91,12 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     public void addTranslation(String langCode, String translationText, String translationDescription) {
         apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
-                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .map(nwQuiz -> quizDao.insertQuizWithQuizTranslations(quizConverter.convert(nwQuiz)))
                 .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnSuccess(quiz1 -> getViewState().showProgress(false))
+                .doFinally(() -> getViewState().showProgress(false))
                 .subscribe(
                         quiz1 -> {
                             this.quiz = quiz1;
@@ -105,13 +108,12 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     public void updateTranslationDescription(Long quizTranslationId, String description) {
         apiClient.updateNwQuizTranslationDescription(quizTranslationId, description)
-                .flatMap(nwQuiz -> apiClient.getNwQuizById(quizId))
-                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .flatMap(aLong -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnDispose(() -> getViewState().showProgress(false))
+                .doFinally(() -> getViewState().showProgress(false))
                 .subscribe(
                         quiz1 -> {
                             this.quiz = quiz1;
@@ -153,7 +155,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnDispose(() -> getViewState().showProgress(false))
+                .doFinally(() -> getViewState().showProgress(false))
                 .subscribe(
                         quiz1 -> {
                             this.quiz = quiz1;

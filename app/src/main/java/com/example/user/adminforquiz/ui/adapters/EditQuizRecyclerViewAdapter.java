@@ -89,7 +89,7 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     EditText editText = new EditText(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
                     editText.setText(quizTranslationPhrase.translation);
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
-                    Button btnDeleteTranslationPhrase = ((EditOneQuizTranslationViewHolder) viewHolder).btnDeleteTranslationPhrase;
+                    Button btnDeleteTranslationPhrase = new Button(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
                     btnDeleteTranslationPhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
                 }
@@ -129,7 +129,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         EditText etQuizDescription;
         LinearLayout etPhrasesLayout;
         Button btnDeleteTranslation;
-        Button btnDeleteTranslationPhrase;
 
         EditOneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -137,7 +136,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             etQuizTitle = itemView.findViewById(R.id.etQuizTitle);
             etQuizDescription = itemView.findViewById(R.id.etQuizDescription);
             btnDeleteTranslation = itemView.findViewById(R.id.btnDeleteTranslation);
-            btnDeleteTranslationPhrase = itemView.findViewById(R.id.btnDeleteTranslationPhrase);
         }
     }
 }

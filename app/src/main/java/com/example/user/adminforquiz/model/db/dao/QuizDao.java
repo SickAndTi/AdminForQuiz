@@ -46,6 +46,9 @@ public abstract class QuizDao {
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
     public abstract List<QuizTranslation> getQuizTranslationsByQuizId(Long id);
 
+    @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
+    public abstract Flowable<List<QuizTranslation>> getQuizTranslationsByQuizIdWithUpdates(Long id);
+
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id AND langCode = :lang")
     public abstract List<QuizTranslation> getQuizTranslationsByQuizIdAndLang(Long id, String lang);
 
@@ -63,6 +66,9 @@ public abstract class QuizDao {
 
     @Query("SELECT id FROM quiz WHERE id > :quizId ORDER BY id ASC LIMIT 1")
     public abstract Single<Long> getNextQuizId(Long quizId);
+
+    @Query("SELECT * FROM QuizTranslationPhrase WHERE quizTranslationId IN (SELECT tr.id FROM QuizTranslation tr WHERE tr.quizId = :quizId)")
+    public abstract Flowable<List<QuizTranslationPhrase>> getQuizTranslationPhrasesByQuizIdWithUpdates(Long quizId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract Long insert(Quiz quiz);
@@ -127,6 +133,15 @@ public abstract class QuizDao {
             }
         }
         return insert(quiz);
+    }
+
+    @Transaction
+    public Long insertQuizTranslationWithPhrases(QuizTranslation quizTranslation) {
+        for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
+            quizTranslation.quizTranslationPhrases.get(i).quizTranslationId = quizTranslation.id;
+        }
+        insertQuizTranslationPhrases(quizTranslation.quizTranslationPhrases);
+        return insertQuizTranslation(quizTranslation);
     }
 
     @Transaction

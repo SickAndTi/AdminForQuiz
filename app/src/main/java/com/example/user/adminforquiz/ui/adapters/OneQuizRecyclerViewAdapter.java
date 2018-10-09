@@ -27,6 +27,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     private List<OneQuizRecyclerViewItem> oneQuizRecyclerViewItemList = new ArrayList<>();
 
     public void setQuiz(Quiz quiz) {
+        oneQuizRecyclerViewItemList.clear();
         oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ));
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz.quizTranslations.get(i), OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));

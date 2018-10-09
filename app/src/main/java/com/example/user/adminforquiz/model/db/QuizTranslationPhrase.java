@@ -32,11 +32,11 @@ public class QuizTranslationPhrase {
                 "id=" + id +
                 ", quizTranslationId=" + quizTranslationId +
                 ", translation='" + translation + '\'' +
-                ", approved=" + approved +
-                ", authorId=" + authorId +
-                ", approverId=" + approverId +
-                ", created=" + created +
-                ", updated=" + updated +
+//                ", approved=" + approved +
+//                ", authorId=" + authorId +
+//                ", approverId=" + approverId +
+//                ", created=" + created +
+//                ", updated=" + updated +
                 '}';
     }
 }

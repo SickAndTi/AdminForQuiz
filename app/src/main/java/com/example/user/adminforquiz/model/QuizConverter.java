@@ -62,24 +62,23 @@ public class QuizConverter {
         quizTranslation.created = nwQuizTranslation.created;
         quizTranslation.description = nwQuizTranslation.description;
         quizTranslation.updated = nwQuizTranslation.updated;
-        quizTranslation.quizId = null;
-        quizTranslation.translation = nwQuizTranslation.translation;
-        quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases);
         quizTranslation.quizId = quizId;
+        quizTranslation.translation = nwQuizTranslation.translation;
+        quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases, nwQuizTranslation.id);
         return quizTranslation;
     }
 
-    public List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList) {
+    public List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList, Long nwQuizTranslationId) {
         List<QuizTranslationPhrase> quizTranslationPhraseList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationPhraseList.size(); i++) {
             NwQuizTranslationPhrase nwQuizTranslationPhrase = nwQuizTranslationPhraseList.get(i);
-            QuizTranslationPhrase quizTranslationPhrase = convertTranslationPhrase(nwQuizTranslationPhrase);
+            QuizTranslationPhrase quizTranslationPhrase = convertTranslationPhrase(nwQuizTranslationPhrase, nwQuizTranslationId);
             quizTranslationPhraseList.add(quizTranslationPhrase);
         }
         return quizTranslationPhraseList;
     }
 
-    public QuizTranslationPhrase convertTranslationPhrase(NwQuizTranslationPhrase nwQuizTranslationPhrase) {
+    public QuizTranslationPhrase convertTranslationPhrase(NwQuizTranslationPhrase nwQuizTranslationPhrase, Long nwQuizTranslationId) {
         QuizTranslationPhrase quizTranslationPhrase = new QuizTranslationPhrase();
         quizTranslationPhrase.id = nwQuizTranslationPhrase.id;
         quizTranslationPhrase.approved = nwQuizTranslationPhrase.approved;
@@ -87,7 +86,7 @@ public class QuizConverter {
         quizTranslationPhrase.authorId = nwQuizTranslationPhrase.authorId;
         quizTranslationPhrase.created = nwQuizTranslationPhrase.created;
         quizTranslationPhrase.updated = nwQuizTranslationPhrase.updated;
-        quizTranslationPhrase.quizTranslationId = null;
+        quizTranslationPhrase.quizTranslationId = nwQuizTranslationId;
         quizTranslationPhrase.translation = nwQuizTranslationPhrase.translation;
         return quizTranslationPhrase;
     }

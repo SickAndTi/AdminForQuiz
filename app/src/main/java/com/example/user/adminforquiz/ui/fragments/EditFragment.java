@@ -173,7 +173,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     public void onTranslationEditClicked(QuizTranslation quizTranslation) {
 
         LayoutInflater inflaterUpDescription = LayoutInflater.from(getContext());
-        @SuppressLint("InflateParams") View viewUpDescription = inflaterUpDescription.inflate(R.layout.dialog_add_translation_phrase, null);
+        @SuppressLint("InflateParams") View viewUpDescription = inflaterUpDescription.inflate(R.layout.dialog_edit_translation_description, null);
         AlertDialog.Builder mDialogBuilderUpDescription = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         mDialogBuilderUpDescription.setView(viewUpDescription);
         final EditText etUpdateDescription = viewUpDescription.findViewById(R.id.etAddingText);

@@ -35,15 +35,15 @@ public class QuizTranslation {
         return "QuizTranslation{" +
                 "id=" + id +
                 ", quizId=" + quizId +
-                ", langCode='" + langCode + '\'' +
+//                ", langCode='" + langCode + '\'' +
                 ", translation='" + translation + '\'' +
-                ", description='" + description + '\'' +
-                ", approved=" + approved +
-                ", authorId=" + authorId +
-                ", approverId=" + approverId +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", quizTranslationPhrases=" + quizTranslationPhrases +
+//                ", description='" + description + '\'' +
+//                ", approved=" + approved +
+//                ", authorId=" + authorId +
+//                ", approverId=" + approverId +
+//                ", created=" + created +
+//                ", updated=" + updated +
+//                ", quizTranslationPhrases=" + quizTranslationPhrases +
                 '}';
     }
 

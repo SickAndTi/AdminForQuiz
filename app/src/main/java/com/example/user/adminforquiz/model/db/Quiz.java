@@ -29,6 +29,21 @@ public class Quiz {
     @TypeConverters(DateTypeConverter.class)
     public Date updated;
 
+    @Override
+    public String toString() {
+        return "Quiz{" +
+                "id=" + id +
+                ", scpNumber='" + scpNumber + '\'' +
+//                ", imageUrl='" + imageUrl + '\'' +
+//                ", authorId=" + authorId +
+//                ", approved=" + approved +
+//                ", approverId=" + approverId +
+//                ", created=" + created +
+//                ", updated=" + updated +
+//                ", quizTranslations=" + quizTranslations +
+                '}';
+    }
+
     @Ignore
     public List<QuizTranslation> quizTranslations;
 }
