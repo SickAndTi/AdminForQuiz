@@ -41,6 +41,7 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     private List<OneQuizRecyclerViewItem> oneQuizRecyclerViewItemList = new ArrayList<>();
 
     public void setEditQuiz(Quiz quiz) {
+        oneQuizRecyclerViewItemList.clear();
         oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ));
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz.quizTranslations.get(i), OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
@@ -83,13 +84,13 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 editOneQuizTranslationViewHolder.etQuizDescription.setText(quizTranslation.description);
                 editOneQuizTranslationViewHolder.btnDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 editOneQuizTranslationViewHolder.etPhrasesLayout.removeAllViews();
-                for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
+//                for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
+                for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
                     EditText editText = new EditText(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
-                    editText.setText(quizTranslation.quizTranslationPhrases.get(i).translation);
+                    editText.setText(quizTranslationPhrase.translation);
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
                     Button btnDeleteTranslationPhrase = ((EditOneQuizTranslationViewHolder) viewHolder).btnDeleteTranslationPhrase;
-//                    btnDeleteTranslationPhrase.setOnClickListener(v->editInterface.onTranslationPhraseDeleteClicked());
-                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
+                    btnDeleteTranslationPhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
                 }
                 editOneQuizTranslationViewHolder.etQuizDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));

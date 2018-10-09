@@ -27,4 +27,5 @@
     <string name="deleteTranslation">Delete Translation</string>
     <string name="deleteTranslationPhrase">Delete Phrase</string>
     <string name="enterTranslationPhrase">Enter Translation Phrase</string>
+    <string name="enterTitle">Enter Title</string>
 </resources>

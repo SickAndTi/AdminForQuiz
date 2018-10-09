@@ -38,21 +38,21 @@ public class QuizConverter {
         quiz.approverId = nwQuiz.approverId;
         quiz.created = nwQuiz.created;
         quiz.updated = nwQuiz.updated;
-        quiz.quizTranslations = convertTranslation(nwQuiz.quizTranslations);
+        quiz.quizTranslations = convertTranslation(nwQuiz.quizTranslations, nwQuiz.id);
         return quiz;
     }
 
-    private List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList) {
+    public List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList, Long quizId) {
         List<QuizTranslation> quizTranslationList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationList.size(); i++) {
             NwQuizTranslation nwQuizTranslation = nwQuizTranslationList.get(i);
-            QuizTranslation quizTranslation = convertTranslation(nwQuizTranslation);
+            QuizTranslation quizTranslation = convertTranslation(nwQuizTranslation, quizId);
             quizTranslationList.add(quizTranslation);
         }
         return quizTranslationList;
     }
 
-    public QuizTranslation convertTranslation(NwQuizTranslation nwQuizTranslation) {
+    public QuizTranslation convertTranslation(NwQuizTranslation nwQuizTranslation, Long quizId) {
         QuizTranslation quizTranslation = new QuizTranslation();
         quizTranslation.id = nwQuizTranslation.id;
         quizTranslation.langCode = nwQuizTranslation.langCode;
@@ -65,10 +65,11 @@ public class QuizConverter {
         quizTranslation.quizId = null;
         quizTranslation.translation = nwQuizTranslation.translation;
         quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases);
+        quizTranslation.quizId = quizId;
         return quizTranslation;
     }
 
-    private List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList) {
+    public List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList) {
         List<QuizTranslationPhrase> quizTranslationPhraseList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationPhraseList.size(); i++) {
             NwQuizTranslationPhrase nwQuizTranslationPhrase = nwQuizTranslationPhraseList.get(i);

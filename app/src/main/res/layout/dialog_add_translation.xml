@@ -6,17 +6,18 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tvEnterLangCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enterLangCode"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <!--<TextView-->
+        <!--android:id="@+id/tvEnterLangCode"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/enterLangCode"-->
+        <!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
 
     <EditText
         android:id="@+id/etEnterLangCode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="@string/enterLangCode">
 
         <requestFocus />
     </EditText>
@@ -25,7 +26,7 @@
         android:id="@+id/tvEnterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enterText"
+        android:text="@string/enterTitle"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText

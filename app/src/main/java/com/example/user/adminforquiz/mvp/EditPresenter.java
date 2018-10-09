@@ -1,32 +1,20 @@
 package com.example.user.adminforquiz.mvp;
 
 import android.annotation.SuppressLint;
-import android.widget.EditText;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
-import com.example.user.adminforquiz.model.api.NwQuiz;
-import com.example.user.adminforquiz.model.api.NwQuizTranslation;
 import com.example.user.adminforquiz.model.db.Quiz;
-import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
-
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -82,17 +70,20 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
         apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
-                .flatMap(nwQuizTranslation -> apiClient.getNwQuizByQuizTranslationId(nwQuizTranslation.id))
-                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+//                .flatMap(nwQuizTranslation -> apiClient.getNwQuizByQuizTranslationId(nwQuizTranslation.id))
+                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnSuccess(quiz1 -> getViewState().showProgress(false))
-                .subscribe(quiz1 -> {
-                    this.quiz = quiz1;
-                    getViewState().showEditQuiz(this.quiz);
-                });
+                .doOnDispose(() -> getViewState().showProgress(false))
+                .subscribe(
+                        quiz1 -> {
+                            this.quiz = quiz1;
+                            getViewState().showEditQuiz(quiz1);
+                        },
+                        error -> getViewState().showError(error.getMessage())
+                );
     }
 
     public void addTranslation(String langCode, String translationText, String translationDescription) {
@@ -103,10 +94,13 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
                 .doOnSuccess(quiz1 -> getViewState().showProgress(false))
-                .subscribe(quiz1 -> {
-                    this.quiz = quiz1;
-                    getViewState().showEditQuiz(this.quiz);
-                });
+                .subscribe(
+                        quiz1 -> {
+                            this.quiz = quiz1;
+                            getViewState().showEditQuiz(this.quiz);
+                        },
+                        error -> getViewState().showError(error.getMessage())
+                );
     }
 
     public void updateTranslationDescription(Long quizTranslationId, String description) {
@@ -117,40 +111,59 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnSuccess(quiz1 -> getViewState().showProgress(false))
-                .subscribe(quiz1 -> {
-                    this.quiz = quiz1;
-                    getViewState().showEditQuiz(this.quiz);
-                });
+                .doOnDispose(() -> getViewState().showProgress(false))
+                .subscribe(
+                        quiz1 -> {
+                            this.quiz = quiz1;
+                            getViewState().showEditQuiz(this.quiz);
+                        },
+                        error -> getViewState().showError(error.getMessage())
+                );
     }
 
     public void deleteNwQuizById() {
         apiClient.deleteNwQuizById(quizId)
                 .map(aBoolean -> quizDao.deleteQuizById(quizId))
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe((integer) -> goToAllQuizFragment());
+                .subscribe(
+                        (integer) -> goToAllQuizFragment(),
+                        error -> getViewState().showError(error.getMessage())
+                );
     }
 
     public void deleteNwQuizTranslationById(Long nwQuizTranslationId) {
         apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
                 .map(aBoolean -> quizDao.deleteQuizTranslationById(nwQuizTranslationId))
+                .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> goToEditFragment());
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doFinally(() -> getViewState().showProgress(false))
+                .subscribe(
+                        quiz1 -> {
+                            this.quiz = quiz1;
+                            getViewState().showEditQuiz(quiz1);
+                        },
+                        error -> getViewState().showError(error.getMessage())
+                );
     }
 
     public void deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
         apiClient.deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)
                 .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(nwQuizTranslationPhraseId))
+                .flatMap(integer -> getQuizFRomDbSingle())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> goToEditFragment());
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .doOnDispose(() -> getViewState().showProgress(false))
+                .subscribe(
+                        quiz1 -> {
+                            this.quiz = quiz1;
+                            getViewState().showEditQuiz(quiz1);
+                        },
+                        error -> getViewState().showError(error.getMessage())
+                );
     }
 
     private void goToAllQuizFragment() {
-        router.navigateTo(Constants.ALL_QUIZ_SCREEN);
+        router.backTo(Constants.ALL_QUIZ_SCREEN);
     }
-
-    private void goToEditFragment() {
-        router.navigateTo(Constants.EDIT_SCREEN, quizId);
-    }
-
 }
