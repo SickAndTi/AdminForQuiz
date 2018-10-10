@@ -149,4 +149,18 @@ public class EditPresenter extends MvpPresenter<EditView> {
     private void goToAllQuizFragment() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
     }
+
+//    public Disposable loadQuizFromDb() {
+//        return quizDao.getQuizByIdOrErrorWithUpdates(quizId)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnSubscribe(subscription -> getViewState().showProgress(true))
+//                .subscribe(quiz -> {
+//                    getViewState().showEditQuiz(quiz);
+//                    getViewState().showProgress(false);
+//                }, error -> {
+//                    getViewState().showProgress(false);
+//                    getViewState().showError(error.toString());
+//                });
+//    }
 }

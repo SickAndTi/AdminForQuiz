@@ -9,4 +9,6 @@ public interface EditView extends MvpView {
     void showEditQuiz(Quiz quiz);
 
     void showProgress(boolean showProgress);
+
+//    void showSwipeRefresherBar(boolean showSwipeRefresherBar);
 }
