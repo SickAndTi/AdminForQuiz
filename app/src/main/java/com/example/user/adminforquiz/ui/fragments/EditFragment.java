@@ -80,7 +80,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                 AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 mDialogBuilder.setView(view);
                 final EditText etEnterLangCode = view.findViewById(R.id.etEnterLangCode);
-                final EditText etEnterText = view.findViewById(R.id.etEnterText);
+                final EditText etEnterText = view.findViewById(R.id.etEnterTitle);
                 final EditText etEnterDescription = view.findViewById(R.id.etEnterDescription);
                 mDialogBuilder
                         .setCancelable(false)
@@ -176,7 +176,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         @SuppressLint("InflateParams") View viewUpDescription = inflaterUpDescription.inflate(R.layout.dialog_edit_translation_description, null);
         AlertDialog.Builder mDialogBuilderUpDescription = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         mDialogBuilderUpDescription.setView(viewUpDescription);
-        final EditText etUpdateDescription = viewUpDescription.findViewById(R.id.etAddingText);
+        final EditText etUpdateDescription = viewUpDescription.findViewById(R.id.etTranslationPhrase);
         etUpdateDescription.setText(quizTranslation.description);
         mDialogBuilderUpDescription
                 .setCancelable(false)
@@ -238,7 +238,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
         AlertDialog.Builder mDialogBuilderPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         mDialogBuilderPhrase.setView(viewPhrase);
-        final EditText etAddingTextPhrase = (EditText) viewPhrase.findViewById(R.id.etAddingText);
+        final EditText etAddingTextPhrase = (EditText) viewPhrase.findViewById(R.id.etTranslationPhrase);
 
         mDialogBuilderPhrase
                 .setCancelable(false)

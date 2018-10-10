@@ -61,30 +61,12 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                 quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId),
                 (quiz, quizTranslations, quizTranslationPhraseList) -> new Triple(quiz, quizTranslations, quizTranslationPhraseList)
         )
-//                .doOnNext((Object[] o) -> Timber.d("CHANGES!!! %s", Arrays.toString(o)))
-//                .doOnNext((Object[] o) -> Timber.d("CHANGES!!! AS LIST %s", Arrays.asList(o)))
-//                .doOnNext((Object[] o) -> Timber.d("CHANGES!!! TRI O %s,%s,%s", o, o, o))
-//                .doOnNext((Object[] o) -> System.out.println(String.format("CHANGES!!! STRING FORMAT  %s,%s,%s,%s", o)))
-//                .doOnNext((Object[] o) -> Timber.d("CHANGES!!! JUST TIMBER %s,%s,%s", o))
-                .doOnNext(triple -> Timber.d("TRIPLE REKT,%s", triple))
+                .doOnNext(triple -> Timber.d("GETTING CHANGES BY TRIPPLE,%s", triple))
                 .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(quiz -> getViewState().showQuiz(quiz));
-        quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(quizTranslations -> Timber.d("FAK %s,", quizTranslations));
-        quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(quizTranslationPhraseList -> Timber.d("FAK PHRASES %s,", quizTranslationPhraseList));
     }
-
-//    @Override
-//    public void attachView(OneQuizView view) {
-//        super.attachView(view);
-//        Flowable.fromCallable(() -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(quiz -> getViewState().showQuiz(quiz));
-//    }
 
     public void goToEditQuiz() {
         router.navigateTo(Constants.EDIT_SCREEN, quizId);

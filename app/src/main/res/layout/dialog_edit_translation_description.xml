@@ -6,19 +6,17 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tvEnterText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enterDescription"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/etAddingText"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:hint="@string/enterDescription">
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/etTranslationPhrase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <requestFocus />
+        </EditText>
+    </android.support.design.widget.TextInputLayout>
 </LinearLayout>

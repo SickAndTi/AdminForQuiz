@@ -90,6 +90,7 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     editText.setText(quizTranslationPhrase.translation);
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
                     Button btnDeleteTranslationPhrase = new Button(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
+                    btnDeleteTranslationPhrase.setText(R.string.deleteTranslationPhrase);
                     btnDeleteTranslationPhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
                 }

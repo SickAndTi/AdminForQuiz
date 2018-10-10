@@ -40,15 +40,19 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        getViewState().showProgressBar(true);
         loadDataFromApi();
         quizDao.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
                 .subscribe(quizzes -> {
-                    getViewState().showQuizList(quizzes);
-                    getViewState().showProgressBar(false);
-                });
+                            getViewState().showQuizList(quizzes);
+                            getViewState().showProgressBar(false);
+                        },
+                        error -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showError(error.toString());
+                        });
     }
 
     public void loadDataFromApi() {
@@ -58,6 +62,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .subscribe(ignore -> getViewState().showSwipeRefresherBar(false),
                         error -> {
                             Timber.d(error);
@@ -77,14 +82,21 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         nwQuiz.scpNumber = scpNumber;
         nwQuiz.imageUrl = imageUrl;
         return apiClient.createNwQuiz(nwQuiz)
+                .toFlowable()
                 .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
                 .map(quiz -> quizDao.insert(quiz))
+                .flatMap(aLong -> quizDao.getAll())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> goToAllQuizFragment());
+                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
+                .subscribe(quizzes -> {
+                            getViewState().showQuizList(quizzes);
+                            getViewState().showProgressBar(false);
+                        },
+                        error -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showError(error.toString());
+                        });
     }
 
-    private void goToAllQuizFragment() {
-        router.navigateTo(Constants.ALL_QUIZ_SCREEN);
-    }
 }

@@ -23,7 +23,7 @@
         android:hint="@string/enterTitle">
 
         <EditText
-            android:id="@+id/etEnterText"
+            android:id="@+id/etEnterTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>

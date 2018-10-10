@@ -11,15 +11,15 @@ import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
-public class MainPresenter extends MvpPresenter<MainView>  {
+public class MainPresenter extends MvpPresenter<MainView> {
     @Inject
     Router router;
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        Timber.d("ONFIRSTVIEWATTACH MAIN PRESENTER");
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         router.navigateTo(Constants.ALL_QUIZ_SCREEN);
     }
 }
+
