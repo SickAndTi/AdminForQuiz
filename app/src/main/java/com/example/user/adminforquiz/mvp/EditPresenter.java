@@ -146,6 +146,20 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 );
     }
 
+    public Disposable approveNwQuizById(Long nwQuizId, Boolean approve) {
+        return apiClient.approveNwQuizById(nwQuizId, approve)
+                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgress(true))
+                .subscribe(aLong ->
+                                getViewState().showProgress(false),
+                        error -> {
+                            getViewState().showError(error.toString());
+                            getViewState().showProgress(false);
+                        });
+    }
+
     private void goToAllQuizFragment() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
     }

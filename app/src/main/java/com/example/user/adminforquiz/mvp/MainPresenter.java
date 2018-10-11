@@ -19,7 +19,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        router.navigateTo(Constants.AUTH_SCREEN);
+//        router.navigateTo(Constants.AUTH_SCREEN);
+        router.navigateTo(Constants.ALL_QUIZ_SCREEN);
     }
 }
 

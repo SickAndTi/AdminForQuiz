@@ -264,4 +264,27 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         AlertDialog alertDialogPhrase = mDialogBuilderPhrase.create();
         alertDialogPhrase.show();
     }
+
+    @Override
+    public void onApproveQuizClicked(Quiz quiz) {
+        LayoutInflater inflaterApprove = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewApprove = inflaterApprove.inflate(R.layout.dialog_approve_quiz, null);
+        AlertDialog.Builder mDialogBuilderApprove = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderApprove.setView(viewApprove);
+        mDialogBuilderApprove
+                .setCancelable(false)
+                .setPositiveButton("APPROVE",
+                        (dialog, id) -> {
+                            editPresenter.approveNwQuizById(quiz.id, true);
+                            dialog.cancel();
+                        })
+                .setNegativeButton("DISAPPROVE",
+                        (dialog, id) -> {
+                            editPresenter.approveNwQuizById(quiz.id, false);
+                            dialog.cancel();
+                        });
+
+        AlertDialog alertDialogApprove = mDialogBuilderApprove.create();
+        alertDialogApprove.show();
+    }
 }

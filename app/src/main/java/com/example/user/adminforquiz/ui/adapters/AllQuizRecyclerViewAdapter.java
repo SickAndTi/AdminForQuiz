@@ -28,10 +28,6 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-    public List<Quiz> getQuizList() {
-        return quizList;
-    }
-
     public void setQuizList(List<Quiz> quizList) {
         this.quizList = quizList;
         notifyDataSetChanged();
@@ -50,12 +46,9 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         Quiz quiz = quizList.get(position);
         viewHolder.tvScpNumber.setText(quiz.scpNumber);
         viewHolder.approved.setChecked(quiz.approved);
+        viewHolder.approved.setClickable(false);
         viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
         viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
-        viewHolder.ruTranslation.setImageResource(R.drawable.rflag);
-        viewHolder.enTranslation.setImageResource(R.drawable.gbrflag);
-        viewHolder.btnAdd.setImageResource(R.drawable.btnadd);
-        viewHolder.btnDelete.setImageResource(R.drawable.btndelete);
         GlideApp
                 .with(holder.itemView.getContext())
                 .load(quiz.imageUrl)
@@ -65,7 +58,6 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         viewHolder.itemView.setOnClickListener(view ->
                 onQuizClickListener.onQuizClick(quiz)
         );
-
     }
 
     @Override
@@ -77,25 +69,20 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
         TextView tvScpNumber;
         Switch approved;
-        ImageView btnDelete, btnAdd, ruTranslation, enTranslation;
         ImageView imageView;
         TextView dateCreated, dateUpdated;
-
+        TextView tvDateCreated, tvDateUpdated;
 
         QuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
             approved = itemView.findViewById(R.id.approved);
-            btnAdd = itemView.findViewById(R.id.btnAdd);
-            btnDelete = itemView.findViewById(R.id.btnDelete);
-            ruTranslation = itemView.findViewById(R.id.ruTranslation);
-            enTranslation = itemView.findViewById(R.id.enTranslation);
             imageView = itemView.findViewById(R.id.imageView);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
+            tvDateCreated = itemView.findViewById(R.id.tvDateCreated);
+            tvDateUpdated = itemView.findViewById(R.id.tvDateUpdated);
         }
-
-
     }
 
     public interface OnQuizClickListener {

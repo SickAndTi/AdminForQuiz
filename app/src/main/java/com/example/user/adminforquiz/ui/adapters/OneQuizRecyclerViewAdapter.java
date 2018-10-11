@@ -63,12 +63,9 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
                 viewHolder.approved.setChecked(quiz.approved);
+                viewHolder.approved.setClickable(false);
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
-                viewHolder.ruTranslation.setImageResource(R.drawable.rflag);
-                viewHolder.enTranslation.setImageResource(R.drawable.gbrflag);
-                viewHolder.btnAdd.setImageResource(R.drawable.btnadd);
-                viewHolder.btnDelete.setImageResource(R.drawable.btndelete);
                 viewHolder.authorId.setText(String.valueOf(quiz.authorId));
                 viewHolder.approverId.setText(String.valueOf(quiz.approverId));
                 GlideApp
@@ -104,7 +101,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
         TextView tvScpNumber, approverId, authorId;
         Switch approved;
-        ImageView btnDelete, btnAdd, ruTranslation, enTranslation;
         ImageView imageView;
         TextView dateCreated, dateUpdated;
 
@@ -112,10 +108,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
             approved = itemView.findViewById(R.id.approved);
-            btnAdd = itemView.findViewById(R.id.btnAdd);
-            btnDelete = itemView.findViewById(R.id.btnDelete);
-            ruTranslation = itemView.findViewById(R.id.ruTranslation);
-            enTranslation = itemView.findViewById(R.id.enTranslation);
             imageView = itemView.findViewById(R.id.imageView);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);

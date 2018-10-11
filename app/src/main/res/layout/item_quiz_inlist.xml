@@ -1,54 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="8dp">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvScpNumber"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp"
-            tools:ignore="LabelFor,NestedWeights"
-            tools:text="1209" />
+            android:orientation="horizontal">
 
-        <Switch
-            android:id="@+id/approved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Switch" />
+            <TextView
+                android:id="@+id/tvScpNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                tools:ignore="LabelFor,NestedWeights"
+                tools:text="1209" />
 
-        <ImageView
-            android:id="@+id/btnDelete"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/btndelete"
-            tools:ignore="ContentDescription" />
+            <Switch
+                android:id="@+id/approved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Switch" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/imageView"
@@ -59,62 +44,48 @@
             android:scaleType="centerInside"
             tools:ignore="ContentDescription" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/enTranslation"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/gbrflag"
-            tools:ignore="ContentDescription,NestedWeights" />
-
-        <ImageView
-            android:id="@+id/ruTranslation"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/rflag"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/btnAdd"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/btnadd"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/dateCreated"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/dateUpdated"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tvDateCreated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="@string/dateCreated" />
+
+            <TextView
+                android:id="@+id/tvDateUpdated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="@string/dateUpdated" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="8dp" />
-    </LinearLayout>
+            android:orientation="horizontal">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/dateCreated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp" />
+
+            <TextView
+                android:id="@+id/dateUpdated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

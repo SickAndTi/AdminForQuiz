@@ -32,6 +32,8 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase);
 
         void onTranslationAddPhraseClicked(QuizTranslation quizTranslation);
+
+        void onApproveQuizClicked(Quiz quiz);
     }
 
     public EditQuizRecyclerViewAdapter(EditInterface editInterface) {
@@ -69,6 +71,7 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 EditOneQuizViewHolder editOneQuizViewHolder = (EditOneQuizViewHolder) viewHolder;
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
                 editOneQuizViewHolder.approved.setChecked(quiz.approved);
+                editOneQuizViewHolder.approved.setOnCheckedChangeListener((buttonView, isChecked) -> editInterface.onApproveQuizClicked(quiz));
                 editOneQuizViewHolder.etScpNumber.setText(quiz.scpNumber);
                 GlideApp
                         .with(viewHolder.itemView.getContext())
