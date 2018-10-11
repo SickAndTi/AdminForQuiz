@@ -17,6 +17,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.mvp.MainPresenter;
 import com.example.user.adminforquiz.mvp.MainView;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
+import com.example.user.adminforquiz.ui.fragments.AuthFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
 
@@ -51,6 +52,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             switch (screenKey) {
                 case Constants.ALL_QUIZ_SCREEN:
                     return AllQuizFragment.newInstance();
+                case Constants.AUTH_SCREEN:
+                    return AuthFragment.newInstance();
                 case Constants.ONE_QUIZ_SCREEN:
                     return OneQuizFragment.newInstance((Long) data);
                 case Constants.EDIT_SCREEN:

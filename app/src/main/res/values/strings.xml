@@ -28,4 +28,9 @@
     <string name="deleteTranslationPhrase">Delete Phrase</string>
     <string name="enterTranslationPhrase">Enter Translation Phrase</string>
     <string name="enterTitle">Enter Title</string>
+    <string name="enterLogin">Enter Login</string>
+    <string name="enterPassword">Enter Password</string>
+    <string name="OK">OK</string>
+    <string name="authorization">Authorization</string>
+    <string name="wrongLogPass">Wrong authorization</string>
 </resources>

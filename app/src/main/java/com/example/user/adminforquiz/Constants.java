@@ -10,4 +10,5 @@ public class Constants {
     public static final String ALL_QUIZ_SCREEN = "ALL_QUIZ_SCREEN";
     public static final String ONE_QUIZ_SCREEN = "ONE_QUIZ_SCREEN";
     public static final String EDIT_SCREEN = "EDIT_SCREEN";
+    public static final String AUTH_SCREEN = "AUTH_SCREEN";
 }
