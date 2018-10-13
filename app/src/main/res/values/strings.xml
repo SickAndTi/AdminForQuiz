@@ -34,4 +34,7 @@
     <string name="authorization">Authorization</string>
     <string name="wrongLogPass">Wrong authorization</string>
     <string name="approve">Approve Quiz?</string>
+    <string name="oauthSave">Do you want to save your auth login/password for this application?</string>
+    <string name="useOAuth">Use saved login</string>
+    <string name="noAuthYet">You dont have it ,yet</string>
 </resources>

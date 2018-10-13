@@ -6,9 +6,12 @@ public class Constants {
     //tokens
     public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
     public static final String REFRESH_TOKEN = "REFRESH_TOKEN";
-    //Screens
+    //screens
     public static final String ALL_QUIZ_SCREEN = "ALL_QUIZ_SCREEN";
     public static final String ONE_QUIZ_SCREEN = "ONE_QUIZ_SCREEN";
     public static final String EDIT_SCREEN = "EDIT_SCREEN";
     public static final String AUTH_SCREEN = "AUTH_SCREEN";
+    //auth
+    public static final String USER_FOR_AUTH = "USER_FOR_AUTH";
+    public static final String PASSWORD_FOR_AUTH = "PASSWORD_FOR_AUTH";
 }

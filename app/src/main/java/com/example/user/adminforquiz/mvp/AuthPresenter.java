@@ -3,10 +3,15 @@ package com.example.user.adminforquiz.mvp;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
+import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
+import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 import toothpick.Toothpick;
 
@@ -16,6 +21,10 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     Router router;
     @Inject
     QuizDao quizDao;
+    @Inject
+    MyPreferenceManager preferences;
+    @Inject
+    ApiClient apiClient;
 
     @Override
     protected void onFirstViewAttach() {
@@ -23,13 +32,15 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
     }
 
-    public void goToAllQuizFragment() {
+    private void goToAllQuizFragment() {
         router.navigateTo(Constants.ALL_QUIZ_SCREEN);
     }
 
-    public void authTry() {
-    }
-
-    public void authCancel() {
+    public Disposable authTry(String user, String password) {
+        return apiClient.getAccessToken(user, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tokenResponse -> goToAllQuizFragment(),
+                        error -> getViewState().showError(error.toString()));
     }
 }

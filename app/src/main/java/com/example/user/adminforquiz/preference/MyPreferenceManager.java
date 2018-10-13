@@ -32,6 +32,22 @@ public class MyPreferenceManager {
     public String getRefreshToken() {
         return preferences.getString(Constants.REFRESH_TOKEN, null);
     }
+
+    public void setUserForAuth(String userForAuth) {
+        preferences.edit().putString(Constants.USER_FOR_AUTH, userForAuth).apply();
+    }
+
+    public String getUserForAuth() {
+        return preferences.getString(Constants.USER_FOR_AUTH, null);
+    }
+
+    public void setPasswordForAuth(String passwordForAuth) {
+        preferences.edit().putString(Constants.PASSWORD_FOR_AUTH, passwordForAuth).apply();
+    }
+
+    public String getPasswordForAuth() {
+        return preferences.getString(Constants.PASSWORD_FOR_AUTH, null);
+    }
 }
 
 

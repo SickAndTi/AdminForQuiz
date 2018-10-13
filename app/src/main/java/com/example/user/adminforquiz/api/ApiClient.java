@@ -24,18 +24,23 @@ public class ApiClient {
     @Inject
     QuizDao quizDao;
 
-
     @Inject
     ApiClient(Retrofit retrofit) {
         quizApi = retrofit.create(QuizApi.class);
     }
 
-    public Single<TokenResponse> getAccessToken() {
-        return quizApi.getAccessToken(okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
-                BuildConfig.GRANT_TYPE, BuildConfig.USER, BuildConfig.PASSWORD)
+    public Single<TokenResponse> getAccessToken(String user, String password) {
+        return quizApi.getAccessToken(
+                okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
+                BuildConfig.GRANT_TYPE,
+                user,
+                password
+        )
                 .doOnSuccess(tokenResponse -> {
                     preferences.setAccessToken(tokenResponse.accessToken);
                     preferences.setRefreshToken(tokenResponse.refreshToken);
+                    preferences.setUserForAuth(user);
+                    preferences.setPasswordForAuth(password);
                 });
     }
 

@@ -55,8 +55,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         });
     }
 
-    public void loadDataFromApi() {
-        apiClient.getAccessToken()
+    public Disposable loadDataFromApi() {
+        return apiClient.getNwQuizList()
                 .flatMap(tokenResponse -> apiClient.getNwQuizList())
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
