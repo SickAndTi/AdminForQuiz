@@ -56,7 +56,6 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
         recyclerViewOneQuiz.setAdapter(oneQuizRecyclerViewAdapter);
     }
 
-
     @ProvidePresenterTag(presenterClass = OneQuizPresenter.class)
     String provideQuizPresenterTag() {
         Timber.d("provodePresenterTag");
