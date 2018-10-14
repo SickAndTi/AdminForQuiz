@@ -3,6 +3,8 @@ package com.example.user.adminforquiz.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,16 @@ import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.mvp.AuthPresenter;
 import com.example.user.adminforquiz.mvp.AuthView;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import toothpick.Toothpick;
 
 public class AuthFragment extends MvpAppCompatFragment implements AuthView {
@@ -31,6 +38,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
     Button btnOK, btnCancel;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+//    TextWatcher watcher;
 
 
     public static AuthFragment newInstance() {
@@ -55,11 +64,53 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         etEnterLogin = view.findViewById(R.id.etEnterLogin);
         etEnterPassword = view.findViewById(R.id.etEnterPassword);
         btnOK = view.findViewById(R.id.btnOK);
+        btnOK.setEnabled(false);
         btnOK.setOnClickListener(v -> authPresenter.authTry(etEnterLogin.getText().toString(), etEnterPassword.getText().toString()));
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> authCancel());
-//        btnUseOAuth = view.findViewById(R.id.btnUseOAuth);
-//        btnUseOAuth.setOnClickListener(v -> useOAuth());
+        checkAuth();
+    }
+
+//        checkAuth();
+
+
+    //    public void checkAuth() {
+//
+//        btnOK.setEnabled(false);
+//        watcher = new TextWatcher() {
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.hashCode() == etEnterLogin.getText().toString().hashCode() &&
+//                        s.hashCode() == etEnterPassword.getText().toString().hashCode() &&
+//                        android.util.Patterns.EMAIL_ADDRESS.matcher(etEnterLogin.getText().toString()).matches() &&
+//                        !TextUtils.isEmpty(s)) {
+//                    btnOK.setEnabled(true);
+//                }
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//        };
+//        etEnterLogin.addTextChangedListener(watcher);
+//        etEnterPassword.addTextChangedListener(watcher);
+//    }
+
+    private void checkAuth() {
+        compositeDisposable.add(Observable.combineLatest(
+                RxTextView.textChanges(etEnterLogin),
+                RxTextView.textChanges(etEnterPassword),
+                (login, password) -> !TextUtils.isEmpty(login)
+                        && Patterns.EMAIL_ADDRESS.matcher(login.toString()).matches()
+                        && !TextUtils.isEmpty(password)
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(r -> btnOK.setEnabled(r)));
     }
 
     @Override
@@ -67,10 +118,18 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        compositeDisposable.clear();
+    }
+
     public void authCancel() {
         Objects.requireNonNull(getActivity()).finish();
     }
 }
+
+
 //    private void useOAuth() {
 //        try {
 //            if (preferences.getUserForAuth() != null && preferences.getPasswordForAuth() != null) {

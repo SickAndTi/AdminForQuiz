@@ -1,22 +1,23 @@
 package com.example.user.adminforquiz.mvp;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
+import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.model.db.QuizTranslation;
+import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Triple;
 import ru.terrakok.cicerone.Router;
@@ -31,6 +32,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     @Inject
     Router router;
     private Long quizId;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public Long getQuizId() {
         return quizId;
@@ -55,20 +57,28 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
 //        flowableList.add(quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId));
 //        flowableList.add(quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId));
 //        Flowable.combineLatest(flowableList, (Object[] objects) -> objects)
-        Flowable.combineLatest(
+
+        compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getQuizByIdOrErrorWithUpdates(quizId),
                 quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId),
                 quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId),
-                (quiz, quizTranslations, quizTranslationPhraseList) -> new Triple(quiz, quizTranslations, quizTranslationPhraseList)
+                (Function3<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) Triple::new
         )
-                .doOnNext(triple -> Timber.d("GETTING CHANGES BY TRIPPLE,%s", triple))
                 .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(quiz -> getViewState().showQuiz(quiz));
+                .subscribe(quiz -> getViewState().showQuiz(quiz)));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 
     public void goToEditQuiz() {
         router.navigateTo(Constants.EDIT_SCREEN, quizId);
     }
 }
+
+
