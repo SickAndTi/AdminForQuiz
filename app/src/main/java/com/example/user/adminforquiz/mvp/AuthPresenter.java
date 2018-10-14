@@ -9,6 +9,7 @@ import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -33,7 +34,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     }
 
     private void goToAllQuizFragment() {
-        router.navigateTo(Constants.ALL_QUIZ_SCREEN);
+        router.newRootScreen(Constants.ALL_QUIZ_SCREEN);
     }
 
     public Disposable authTry(String user, String password) {
