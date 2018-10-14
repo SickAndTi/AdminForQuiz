@@ -1,12 +1,10 @@
 package com.example.user.adminforquiz.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +25,9 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import toothpick.Toothpick;
 
@@ -51,12 +49,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-//        Flowable<Boolean> booleanFlowable = Flowable.combineLatest(RxTextView.textChanges(etEnterLogin),
-//                RxTextView.textChanges(etEnterPassword),
-//                (login, password) -> !TextUtils.isEmpty((CharSequence) login) && !TextUtils.isEmpty((CharSequence) password))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(r -> btnOK.setEnabled(true));
+
 
     }
 
@@ -64,6 +57,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_auth, container, false);
     }
 
@@ -74,14 +68,16 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         etEnterLogin = view.findViewById(R.id.etEnterLogin);
         etEnterPassword = view.findViewById(R.id.etEnterPassword);
         btnOK = view.findViewById(R.id.btnOK);
+        btnOK.setEnabled(false);
         btnOK.setOnClickListener(v -> authPresenter.authTry(etEnterLogin.getText().toString(), etEnterPassword.getText().toString()));
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> authCancel());
-
-//        checkAuth();
+        checkAuth();
     }
+//        checkAuth();
 
-//    public void checkAuth() {
+
+    //    public void checkAuth() {
 //
 //        btnOK.setEnabled(false);
 //        watcher = new TextWatcher() {
@@ -107,6 +103,19 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 //        etEnterPassword.addTextChangedListener(watcher);
 //    }
 
+    public Disposable checkAuth() {
+        return Observable.combineLatest(
+                RxTextView.textChanges(etEnterLogin),
+                RxTextView.textChanges(etEnterPassword),
+                (login, password) -> !TextUtils.isEmpty(login)
+                        && Patterns.EMAIL_ADDRESS.matcher(login.toString()).matches()
+                        && !TextUtils.isEmpty(password)
+        )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(r -> btnOK.setEnabled(r));
+
+    }
 
     @Override
     public void showError(String errorMessage) {

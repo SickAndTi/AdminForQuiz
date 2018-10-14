@@ -51,8 +51,6 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                         error -> getViewState().showError(error.toString()));
     }
 
-
-
 //    public void checkAuth(EditText etLogin, EditText etPassword, Button btnOK, String login, String password) {
 //        Flowable.combineLatest(RxTextView.textChanges(etLogin),
 //                RxTextView.textChanges(etPassword),
