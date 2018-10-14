@@ -1,7 +1,6 @@
 package com.example.user.adminforquiz.mvp;
 
 import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
@@ -9,11 +8,8 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
-
 import java.util.List;
-
 import javax.inject.Inject;
-
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -48,16 +44,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         Timber.d("onFirstViewAttach:%s", quizId);
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-//        Flowable.fromCallable(() -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(quiz -> getViewState().showQuiz(quiz));
-//        List<Flowable<?>> flowableList = new ArrayList<>();
-//        flowableList.add(quizDao.getQuizByIdOrErrorWithUpdates(quizId));
-//        flowableList.add(quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId));
-//        flowableList.add(quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId));
-//        Flowable.combineLatest(flowableList, (Object[] objects) -> objects)
-
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getQuizByIdOrErrorWithUpdates(quizId),
                 quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId),
@@ -80,5 +66,3 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         router.navigateTo(Constants.EDIT_SCREEN, quizId);
     }
 }
-
-

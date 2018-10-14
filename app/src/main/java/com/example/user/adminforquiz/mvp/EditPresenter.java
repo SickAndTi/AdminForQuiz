@@ -47,7 +47,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
         this.quizId = quizId;
     }
 
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @SuppressLint("CheckResult")
     @Override
@@ -73,8 +73,8 @@ public class EditPresenter extends MvpPresenter<EditView> {
         compositeDisposable.clear();
     }
 
-    public Disposable addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
-        return apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
+    public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
+        compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
                 .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -83,11 +83,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                         error -> {
                             getViewState().showProgress(false);
                             getViewState().showError(error.toString());
-                        });
+                        }));
     }
 
-    public Disposable addTranslation(String langCode, String translationText, String translationDescription) {
-        return apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
+    public void addTranslation(String langCode, String translationText, String translationDescription) {
+        compositeDisposable.add(apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
                 .map(nwQuiz -> quizDao.insertQuizWithQuizTranslations(quizConverter.convert(nwQuiz)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -97,11 +97,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                             getViewState().showError(error.toString());
                             getViewState().showProgress(false);
                         }
-                );
+                ));
     }
 
-    public Disposable updateTranslationDescription(Long quizTranslationId, String description) {
-        return apiClient.updateNwQuizTranslationDescription(quizTranslationId, description)
+    public void updateTranslationDescription(Long quizTranslationId, String description) {
+        compositeDisposable.add(apiClient.updateNwQuizTranslationDescription(quizTranslationId, description)
                 .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -111,11 +111,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                             getViewState().showError(error.toString());
                             getViewState().showProgress(false);
                         }
-                );
+                ));
     }
 
-    public Disposable deleteNwQuizById() {
-        return apiClient.deleteNwQuizById(quizId)
+    public void deleteNwQuizById() {
+        compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
                 .map(aBoolean -> quizDao.deleteQuizById(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -128,11 +128,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                             getViewState().showError(error.toString());
                             getViewState().showProgress(false);
                         }
-                );
+                ));
     }
 
-    public Disposable deleteNwQuizTranslationById(Long nwQuizTranslationId) {
-        return apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
+    public void deleteNwQuizTranslationById(Long nwQuizTranslationId) {
+        compositeDisposable.add(apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
                 .map(aBoolean -> quizDao.deleteQuizTranslationById(nwQuizTranslationId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -142,12 +142,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                             getViewState().showError(error.toString());
                             getViewState().showProgress(false);
                         }
-                );
+                ));
     }
 
-
-    public Disposable deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
-        return apiClient.deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)
+    public void deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
+        compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)
                 .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(nwQuizTranslationPhraseId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -157,11 +156,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                             getViewState().showError(error.toString());
                             getViewState().showProgress(false);
                         }
-                );
+                ));
     }
 
-    public Disposable approveNwQuizById(Long nwQuizId, Boolean approve) {
-        return apiClient.approveNwQuizById(nwQuizId, approve)
+    public void approveNwQuizById(Long nwQuizId, Boolean approve) {
+        compositeDisposable.add(apiClient.approveNwQuizById(nwQuizId, approve)
                 .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -171,24 +170,10 @@ public class EditPresenter extends MvpPresenter<EditView> {
                         error -> {
                             getViewState().showError(error.toString());
                             getViewState().showProgress(false);
-                        });
+                        }));
     }
 
     private void goToAllQuizFragment() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
     }
-
-//    public Disposable loadQuizFromDb() {
-//        return quizDao.getQuizByIdOrErrorWithUpdates(quizId)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .doOnSubscribe(subscription -> getViewState().showProgress(true))
-//                .subscribe(quiz -> {
-//                    getViewState().showEditQuiz(quiz);
-//                    getViewState().showProgress(false);
-//                }, error -> {
-//                    getViewState().showProgress(false);
-//                    getViewState().showError(error.toString());
-//                });
-//    }
 }

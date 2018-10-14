@@ -39,8 +39,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     EditText etEnterLogin, etEnterPassword;
     Button btnOK, btnCancel;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-//    TextWatcher watcher;
-
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
@@ -71,35 +69,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         checkAuth();
     }
 
-//        checkAuth();
-
-
-    //    public void checkAuth() {
-//
-//        btnOK.setEnabled(false);
-//        watcher = new TextWatcher() {
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (s.hashCode() == etEnterLogin.getText().toString().hashCode() &&
-//                        s.hashCode() == etEnterPassword.getText().toString().hashCode() &&
-//                        android.util.Patterns.EMAIL_ADDRESS.matcher(etEnterLogin.getText().toString()).matches() &&
-//                        !TextUtils.isEmpty(s)) {
-//                    btnOK.setEnabled(true);
-//                }
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        };
-//        etEnterLogin.addTextChangedListener(watcher);
-//        etEnterPassword.addTextChangedListener(watcher);
-//    }
-
     private void checkAuth() {
         compositeDisposable.add(Observable.combineLatest(
                 RxTextView.textChanges(etEnterLogin),
@@ -128,35 +97,3 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         Objects.requireNonNull(getActivity()).finish();
     }
 }
-
-
-//    private void useOAuth() {
-//        try {
-//            if (preferences.getUserForAuth() != null && preferences.getPasswordForAuth() != null) {
-//                etEnterLogin.setText(preferences.getUserForAuth());
-//                etEnterPassword.setText(preferences.getPasswordForAuth());
-//            }
-//        } catch (NullPointerException ignored) {
-//            Toast.makeText(getContext(), R.string.noAuthYet, Toast.LENGTH_LONG).show();
-//        }
-//    }
-
-//    public void showSaveLogPassOption() {
-//        LayoutInflater inflaterAuth = LayoutInflater.from(getContext());
-//        @SuppressLint("InflateParams") View viewAuth = inflaterAuth.inflate(R.layout.dialog_oauth_save, null);
-//        AlertDialog.Builder mDialogBuilderAuth = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-//        mDialogBuilderAuth.setView(viewAuth);
-//        mDialogBuilderAuth
-//                .setCancelable(false)
-//                .setPositiveButton("Save",
-//                        (dialog, id) -> {
-//                            authPresenter.saveLogPass(etEnterLogin.getText().toString(), etEnterPassword.getText().toString());
-//                            authPresenter.goToAllQuizFragment();
-//                            dialog.cancel();
-//                        })
-//                .setNegativeButton("Don't save",
-//                        (dialog, id) -> {
-//                            authPresenter.goToAllQuizFragment();
-//                            dialog.cancel();
-//                        });
-//    }

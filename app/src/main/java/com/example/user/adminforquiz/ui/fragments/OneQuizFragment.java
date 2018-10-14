@@ -31,7 +31,6 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     Button editQuiz;
     public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
 
-
     public static OneQuizFragment newInstance(Long quizId) {
         OneQuizFragment fragment = new OneQuizFragment();
         Bundle bundle = new Bundle();
@@ -56,7 +55,6 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
         oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();
         recyclerViewOneQuiz.setAdapter(oneQuizRecyclerViewAdapter);
     }
-
 
     @ProvidePresenterTag(presenterClass = OneQuizPresenter.class)
     String provideQuizPresenterTag() {
