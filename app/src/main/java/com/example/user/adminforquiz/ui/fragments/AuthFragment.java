@@ -27,7 +27,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import toothpick.Toothpick;
 
@@ -38,6 +38,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
     Button btnOK, btnCancel;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 //    TextWatcher watcher;
 
 
@@ -49,18 +50,13 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-
-
     }
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_auth, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -74,6 +70,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         btnCancel.setOnClickListener(v -> authCancel());
         checkAuth();
     }
+
 //        checkAuth();
 
 
@@ -103,8 +100,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 //        etEnterPassword.addTextChangedListener(watcher);
 //    }
 
-    public Disposable checkAuth() {
-        return Observable.combineLatest(
+    private void checkAuth() {
+        compositeDisposable.add(Observable.combineLatest(
                 RxTextView.textChanges(etEnterLogin),
                 RxTextView.textChanges(etEnterPassword),
                 (login, password) -> !TextUtils.isEmpty(login)
@@ -113,13 +110,18 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(r -> btnOK.setEnabled(r));
-
+                .subscribe(r -> btnOK.setEnabled(r)));
     }
 
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        compositeDisposable.clear();
     }
 
     public void authCancel() {

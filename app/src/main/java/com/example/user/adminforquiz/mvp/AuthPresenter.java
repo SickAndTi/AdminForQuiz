@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.jvm.functions.Function2;
@@ -32,6 +33,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     MyPreferenceManager preferences;
     @Inject
     ApiClient apiClient;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onFirstViewAttach() {
@@ -43,12 +45,18 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
         router.newRootScreen(Constants.ALL_QUIZ_SCREEN);
     }
 
-    public Disposable authTry(String user, String password) {
-        return apiClient.getAccessToken(user, password)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
+
+    public void authTry(String user, String password) {
+         compositeDisposable.add(apiClient.getAccessToken(user, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tokenResponse -> goToAllQuizFragment(),
-                        error -> getViewState().showError(error.toString()));
+                        error -> getViewState().showError(error.toString())));
     }
 
 //    public void checkAuth(EditText etLogin, EditText etPassword, Button btnOK, String login, String password) {
