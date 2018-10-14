@@ -40,7 +40,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
     Button btnOK, btnCancel;
-    TextWatcher watcher;
+//    TextWatcher watcher;
 
 
     public static AuthFragment newInstance() {
@@ -51,14 +51,15 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-
-    }
-//        Flowable.combineLatest(RxTextView.textChanges(etEnterLogin),
+//        Flowable<Boolean> booleanFlowable = Flowable.combineLatest(RxTextView.textChanges(etEnterLogin),
 //                RxTextView.textChanges(etEnterPassword),
-//                (String login, String password) -> !TextUtils.isEmpty(login) && !TextUtils.isEmpty(password))
+//                (login, password) -> !TextUtils.isEmpty((CharSequence) login) && !TextUtils.isEmpty((CharSequence) password))
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(r -> btnOK.setEnabled(true));
+
+    }
+
 
     @Nullable
     @Override
@@ -77,34 +78,34 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> authCancel());
 
-        checkAuth();
+//        checkAuth();
     }
 
-    public void checkAuth() {
-
-        btnOK.setEnabled(false);
-        watcher = new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.hashCode() == etEnterLogin.getText().toString().hashCode() &&
-                        s.hashCode() == etEnterPassword.getText().toString().hashCode() &&
+//    public void checkAuth() {
+//
+//        btnOK.setEnabled(false);
+//        watcher = new TextWatcher() {
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.hashCode() == etEnterLogin.getText().toString().hashCode() &&
+//                        s.hashCode() == etEnterPassword.getText().toString().hashCode() &&
 //                        android.util.Patterns.EMAIL_ADDRESS.matcher(etEnterLogin.getText().toString()).matches() &&
-                        !TextUtils.isEmpty(s)) {
-                    btnOK.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        };
-        etEnterLogin.addTextChangedListener(watcher);
-        etEnterPassword.addTextChangedListener(watcher);
-    }
+//                        !TextUtils.isEmpty(s)) {
+//                    btnOK.setEnabled(true);
+//                }
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//        };
+//        etEnterLogin.addTextChangedListener(watcher);
+//        etEnterPassword.addTextChangedListener(watcher);
+//    }
 
 
     @Override
