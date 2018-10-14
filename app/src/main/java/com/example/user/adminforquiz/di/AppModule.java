@@ -54,6 +54,5 @@ public class AppModule extends Module {
         bind(MyPreferenceManager.class).singletonInScope();
 
         bind(QuizConverter.class).singletonInScope();
-
     }
 }

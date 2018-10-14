@@ -10,13 +10,11 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
@@ -34,14 +32,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     Router router;
     @Inject
     MyPreferenceManager preferences;
-
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         loadDataFromApi();
-        quizDao.getAll()
+        compositeDisposable.add(quizDao.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
@@ -52,11 +50,11 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         error -> {
                             getViewState().showProgressBar(false);
                             getViewState().showError(error.toString());
-                        });
+                        }));
     }
 
-    public Disposable loadDataFromApi() {
-        return apiClient.getNwQuizList()
+    public void loadDataFromApi() {
+        compositeDisposable.add(apiClient.getNwQuizList()
                 .flatMap(tokenResponse -> apiClient.getNwQuizList())
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
@@ -70,18 +68,18 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                             getViewState().showError(error.toString());
                             getViewState().showProgressBar(false);
                         }
-                );
+                ));
     }
 
     public void goToQuizFragment(Quiz quiz) {
         router.navigateTo(Constants.ONE_QUIZ_SCREEN, quiz.id);
     }
 
-    public Disposable createNwQuiz(String scpNumber, String imageUrl) {
+    public void createNwQuiz(String scpNumber, String imageUrl) {
         NwQuiz nwQuiz = new NwQuiz();
         nwQuiz.scpNumber = scpNumber;
         nwQuiz.imageUrl = imageUrl;
-        return apiClient.createNwQuiz(nwQuiz)
+        compositeDisposable.add(apiClient.createNwQuiz(nwQuiz)
                 .toFlowable()
                 .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
                 .map(quiz -> quizDao.insert(quiz))
@@ -96,7 +94,33 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         error -> {
                             getViewState().showProgressBar(false);
                             getViewState().showError(error.toString());
-                        });
+                        }));
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
+
+    public void logout() {
+        compositeDisposable.add(Completable.fromAction(() -> {
+            quizDao.deleteAllTables();
+            preferences.setUserForAuth(null);
+            preferences.setPasswordForAuth(null);
+            preferences.setAccessToken(null);
+            preferences.setRefreshToken(null);
+        })
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                            router.newRootScreen(Constants.AUTH_SCREEN);
+                            getViewState().showProgressBar(false);
+                        },
+                        error -> {
+                            getViewState().showError(error.toString());
+                            getViewState().showProgressBar(false);
+                        }));
+    }
 }

@@ -85,6 +85,25 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 AlertDialog alertDialog = mDialogBuilder.create();
                 alertDialog.show();
                 break;
+
+            case R.id.logout:
+                LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
+                @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
+                AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                mDialogBuilderLogout.setView(viewLogout);
+                mDialogBuilderLogout
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                (dialog, id) -> {
+                                    allQuizPresenter.logout();
+                                    dialog.cancel();
+                                })
+                        .setNegativeButton("Cancel",
+                                (dialog, id) -> dialog.cancel());
+
+                AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
+                alertDialogLogout.show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -105,7 +124,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public void showQuizList(List<Quiz> quizList) {
