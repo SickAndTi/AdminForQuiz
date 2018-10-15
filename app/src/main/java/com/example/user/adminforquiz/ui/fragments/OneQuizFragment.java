@@ -21,6 +21,8 @@ import com.example.user.adminforquiz.mvp.OneQuizPresenter;
 import com.example.user.adminforquiz.mvp.OneQuizView;
 import com.example.user.adminforquiz.ui.adapters.OneQuizRecyclerViewAdapter;
 
+import java.util.Objects;
+
 import timber.log.Timber;
 
 public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView {
@@ -29,12 +31,13 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     RecyclerView recyclerViewOneQuiz;
     OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter;
     Button editQuiz;
-    public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
+    View progressBarEdit;
+    public final static String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
 
     public static OneQuizFragment newInstance(Long quizId) {
         OneQuizFragment fragment = new OneQuizFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong(EXTRA_QUIZID, quizId);
+        bundle.putLong(EXTRA_QUIZ_ID, quizId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -48,6 +51,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
         editQuiz = view.findViewById(R.id.editQuiz);
         editQuiz.setOnClickListener(v -> oneQuizPresenter.goToEditQuiz());
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
@@ -58,21 +62,18 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
 
     @ProvidePresenterTag(presenterClass = OneQuizPresenter.class)
     String provideQuizPresenterTag() {
-        Timber.d("provodePresenterTag");
-        return String.valueOf(getArguments().getLong(EXTRA_QUIZID));
+        return String.valueOf(Objects.requireNonNull(getArguments()).getLong(EXTRA_QUIZ_ID));
     }
 
     @ProvidePresenter
     OneQuizPresenter provideQuizPresenter() {
-        Timber.d("providePresenter");
         OneQuizPresenter oneQuizPresenter = new OneQuizPresenter();
-        oneQuizPresenter.setQuizId(getArguments().getLong(EXTRA_QUIZID));
+        oneQuizPresenter.setQuizId(Objects.requireNonNull(getArguments()).getLong(EXTRA_QUIZ_ID));
         return oneQuizPresenter;
     }
 
     @Override
     public void showQuiz(Quiz quiz) {
-        Timber.d("showQuiz from OneQuizFragment");
         oneQuizRecyclerViewAdapter.setQuiz(quiz);
     }
 
@@ -80,5 +81,10 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     public void showError(String errorMessage) {
         Timber.e(errorMessage);
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgressBar(boolean showProgressBar) {
+        progressBarEdit.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
     }
 }

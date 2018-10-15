@@ -135,8 +135,9 @@ public class ApiClient {
 
     public Single<NwQuizTranslation> addNwQuizTranslationPhrase(Long nwQuizTranslationId, String nwQuizTranslationPhrase) {
         return quizApi.addNwQuizTranslationPhrase("Bearer" + preferences.getAccessToken(), nwQuizTranslationId, nwQuizTranslationPhrase)
-                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslationPhrase(nwQuizTranslationId, nwQuizTranslationPhrase)) : Single.error(error));
+                .onErrorResumeNext(this::getAccessTokenOnError);
+//                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
+//                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslationPhrase(nwQuizTranslationId, nwQuizTranslationPhrase)) : Single.error(error));
     }
 
     public Single<Boolean> deleteNwQuizById(Long nwQuizId) {
@@ -157,7 +158,11 @@ public class ApiClient {
                 .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
                         getAccessTokenByRefreshToken().flatMap(tokenResponse -> deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)) : Single.error(error));
     }
+
+    private Single getAccessTokenOnError(Throwable error) {
+        if (error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            return getAccessTokenByRefreshToken();
+        }
+        return Single.error(error);
+    }
 }
-
-
-

@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -36,7 +35,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     AllQuizPresenter allQuizPresenter;
     RecyclerView recyclerView;
     AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
-    ProgressBar progressBar;
+    View progressBarAllQuiz;
     SwipeRefreshLayout swipeRefreshLayout;
 
     public static AllQuizFragment newInstance() {
@@ -48,7 +47,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_allquiz, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
+        progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
@@ -58,7 +57,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadDataFromApi());
+        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadDataFromApiAndGetFromDb());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -116,7 +115,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showProgressBar(boolean showProgressBar) {
-        progressBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+        progressBarAllQuiz.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -140,5 +139,4 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     public void showSwipeRefresherBar(boolean showSwipeRefresherBar) {
         swipeRefreshLayout.setRefreshing(showSwipeRefresherBar);
     }
-
 }

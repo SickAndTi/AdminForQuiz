@@ -1,7 +1,5 @@
 package com.example.user.adminforquiz.mvp;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
@@ -19,12 +17,10 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Triple;
 import ru.terrakok.cicerone.Router;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -38,6 +34,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
     private Long quizId;
     @Inject
     QuizConverter quizConverter;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public Long getQuizId() {
         return quizId;
@@ -47,19 +44,15 @@ public class EditPresenter extends MvpPresenter<EditView> {
         this.quizId = quizId;
     }
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        Timber.d("onFirstViewAttach EditPresenter");
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getQuizByIdOrErrorWithUpdates(quizId),
                 quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId),
                 quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId),
-                (Function3<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) (first, second, third) -> new Triple<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>>(first, second, third)
+                (Function3<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) Triple::new
         )
                 .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
@@ -79,11 +72,12 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(aLong -> getViewState().showProgress(false),
-                        error -> {
-                            getViewState().showProgress(false);
-                            getViewState().showError(error.toString());
-                        }));
+                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .subscribe(aLong -> {
+                        },
+                        error ->
+                                getViewState().showError(error.toString())
+                ));
     }
 
     public void addTranslation(String langCode, String translationText, String translationDescription) {
@@ -92,11 +86,11 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(aLong -> getViewState().showProgress(false),
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgress(false);
-                        }
+                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .subscribe(
+                        aLong -> {
+                        },
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 
@@ -106,11 +100,10 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(aLong -> getViewState().showProgress(false),
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgress(false);
-                        }
+                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .subscribe(aLong -> {
+                        },
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 
@@ -120,14 +113,9 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(integer -> {
-                            getViewState().showProgress(false);
-                            goToAllQuizFragment();
-                        },
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgress(false);
-                        }
+                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
+                .subscribe(integer -> backToAllQuizFragment(),
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 
@@ -137,11 +125,10 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(integer -> getViewState().showProgress(false),
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgress(false);
-                        }
+                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
+                .subscribe(integer -> {
+                        },
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 
@@ -151,11 +138,10 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(integer -> getViewState().showProgress(false),
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgress(false);
-                        }
+                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
+                .subscribe(integer -> {
+                        },
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 
@@ -165,15 +151,14 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .subscribe(aLong ->
-                                getViewState().showProgress(false),
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgress(false);
-                        }));
+                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .subscribe(aLong -> {
+                        },
+                        error -> getViewState().showError(error.toString())
+                ));
     }
 
-    private void goToAllQuizFragment() {
+    private void backToAllQuizFragment() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
     }
 }

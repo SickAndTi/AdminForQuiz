@@ -38,6 +38,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
     Button btnOK, btnCancel;
+    View progressBarAuth;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AuthFragment newInstance() {
@@ -59,6 +60,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBarAuth = view.findViewById(R.id.flProgressBarAuth);
         etEnterLogin = view.findViewById(R.id.etEnterLogin);
         etEnterPassword = view.findViewById(R.id.etEnterPassword);
         btnOK = view.findViewById(R.id.btnOK);
@@ -85,6 +87,11 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgressBar(boolean showProgressBar) {
+        progressBarAuth.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
     }
 
     @Override

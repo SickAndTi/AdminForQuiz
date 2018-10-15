@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +38,7 @@ import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 
 public class EditFragment extends MvpAppCompatFragment implements EditView, EditQuizRecyclerViewAdapter.EditInterface {
-    public final static String EXTRA_QUIZID = "EXTRA_QUIZID";
+    public final static String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
     @InjectPresenter
     EditPresenter editPresenter;
     @Inject
@@ -49,14 +48,13 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     @Inject
     Router router;
     RecyclerView recyclerViewEditQuiz;
-    View progressView;
+    View progressBarEdit;
     EditQuizRecyclerViewAdapter editQuizRecyclerViewAdapter;
-//    SwipeRefreshLayout swipeRefreshLayout;
 
     public static EditFragment newInstance(Long quizId) {
         EditFragment fragment = new EditFragment();
         Bundle bundle = new Bundle();
-        bundle.putLong(EXTRA_QUIZID, quizId);
+        bundle.putLong(EXTRA_QUIZ_ID, quizId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -65,20 +63,17 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit, container, false);
-//        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayoutEdit);
         recyclerViewEditQuiz = view.findViewById(R.id.recyclerViewEditQuiz);
-        progressView = view.findViewById(R.id.flProgressBar);
+        progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         recyclerViewEditQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
         editQuizRecyclerViewAdapter = new EditQuizRecyclerViewAdapter(this);
         recyclerViewEditQuiz.setAdapter(editQuizRecyclerViewAdapter);
-//        swipeRefreshLayout.setOnRefreshListener(() -> editPresenter.loadQuizFromDb());
     }
 
     @Override
@@ -141,19 +136,18 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         inflater.inflate(R.menu.edit_menu, menu);
     }
 
-
     @ProvidePresenter
     EditPresenter provideEditPresenter() {
         Timber.d("Provide Presenter");
         EditPresenter editPresenter = new EditPresenter();
-        editPresenter.setQuizId(getArguments().getLong(EXTRA_QUIZID));
+        editPresenter.setQuizId(Objects.requireNonNull(getArguments()).getLong(EXTRA_QUIZ_ID));
         return editPresenter;
     }
 
     @ProvidePresenterTag(presenterClass = EditPresenter.class)
     String provideEditPresenterTag() {
         Timber.d("Provide Presenter Tag");
-        return String.valueOf(getArguments().getLong(EXTRA_QUIZID));
+        return String.valueOf(Objects.requireNonNull(getArguments()).getLong(EXTRA_QUIZ_ID));
     }
 
     @Override
@@ -164,25 +158,16 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
     @Override
     public void showEditQuiz(Quiz quiz) {
-        Timber.d("show editQuiz %s", quiz);
         editQuizRecyclerViewAdapter.setEditQuiz(quiz);
     }
 
-
     @Override
     public void showProgress(boolean showProgress) {
-        progressView.setVisibility(showProgress ? View.VISIBLE : View.GONE);
+        progressBarEdit.setVisibility(showProgress ? View.VISIBLE : View.GONE);
     }
-
-//    @Override
-//    public void showSwipeRefresherBar(boolean showSwipeRefresherBar) {
-//        swipeRefreshLayout.setRefreshing(showSwipeRefresherBar);
-//    }
-
 
     @Override
     public void onTranslationEditClicked(QuizTranslation quizTranslation) {
-
         LayoutInflater inflaterUpDescription = LayoutInflater.from(getContext());
         @SuppressLint("InflateParams") View viewUpDescription = inflaterUpDescription.inflate(R.layout.dialog_edit_translation_description, null);
         AlertDialog.Builder mDialogBuilderUpDescription = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -249,8 +234,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
         AlertDialog.Builder mDialogBuilderPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         mDialogBuilderPhrase.setView(viewPhrase);
-        final EditText etAddingTextPhrase = (EditText) viewPhrase.findViewById(R.id.etTranslationPhrase);
-
+        final EditText etAddingTextPhrase = viewPhrase.findViewById(R.id.etTranslationPhrase);
         mDialogBuilderPhrase
                 .setCancelable(false)
                 .setPositiveButton("OK",

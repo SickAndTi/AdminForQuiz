@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -23,7 +24,8 @@
             android:id="@+id/etEnterLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp" />
+            android:padding="16dp"
+            tools:ignore="Autofill,LabelFor,TextFields" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -35,7 +37,8 @@
             android:id="@+id/etEnterPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp" />
+            android:padding="16dp"
+            tools:ignore="Autofill,LabelFor,TextFields" />
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
@@ -48,21 +51,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/OK" />
+            android:text="@string/OK"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            tools:ignore="ButtonStyle" />
 
-        <!--<Button-->
-            <!--android:id="@+id/btnUseOAuth"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="16dp"-->
-            <!--android:text="@string/useOAuth" />-->
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flProgressBarAuth"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
 </LinearLayout>
