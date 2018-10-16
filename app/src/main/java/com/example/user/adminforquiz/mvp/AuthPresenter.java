@@ -2,8 +2,6 @@ package com.example.user.adminforquiz.mvp;
 
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -11,7 +9,7 @@ import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
-import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import javax.inject.Inject;
 
@@ -32,12 +30,20 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     MyPreferenceManager preferences;
     @Inject
     ApiClient apiClient;
+    private BehaviorRelay<String> loginRelay = BehaviorRelay.create();
+    private BehaviorRelay<String> passwordRelay = BehaviorRelay.create();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+        compositeDisposable.add(Observable.combineLatest(
+                loginRelay,
+                passwordRelay,
+                (login, password) -> !TextUtils.isEmpty(login) && Patterns.EMAIL_ADDRESS.matcher(login).matches() && !TextUtils.isEmpty(password)
+        )
+                .subscribe(aBoolean -> getViewState().enableButton(aBoolean)));
     }
 
     private void goToAllQuizFragment() {
@@ -50,24 +56,19 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
         compositeDisposable.clear();
     }
 
-    public void authTry(String user, String password) {
-        compositeDisposable.add(apiClient.getAccessToken(user, password)
+    public void authTry() {
+        compositeDisposable.add(apiClient.getAccessToken(loginRelay.getValue(), passwordRelay.getValue())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tokenResponse -> goToAllQuizFragment(),
                         error -> getViewState().showError(error.toString())));
     }
 
-    public void checkAuth(EditText etLogin, EditText etPassword, Button btnOK) {
-        compositeDisposable.add(Observable.combineLatest(
-                RxTextView.textChanges(etLogin),
-                RxTextView.textChanges(etPassword),
-                (login, password) -> !TextUtils.isEmpty(login)
-                        && Patterns.EMAIL_ADDRESS.matcher(login.toString()).matches()
-                        && !TextUtils.isEmpty(password)
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(btnOK::setEnabled));
+    public void onLoginChanged(String login) {
+        loginRelay.accept(login);
+    }
+
+    public void onPasswordChanged(String password) {
+        passwordRelay.accept(password);
     }
 }
