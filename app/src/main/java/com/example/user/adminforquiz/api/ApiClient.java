@@ -2,6 +2,8 @@ package com.example.user.adminforquiz.api;
 
 import com.example.user.adminforquiz.BuildConfig;
 import com.example.user.adminforquiz.api.response.TokenResponse;
+import com.example.user.adminforquiz.di.qualifier.AuthRetrofit;
+import com.example.user.adminforquiz.di.qualifier.QuizRetrofit;
 import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.api.NwQuizTranslation;
 import com.example.user.adminforquiz.model.api.NwQuizTranslationPhrase;
@@ -19,18 +21,20 @@ import retrofit2.Retrofit;
 
 public class ApiClient {
     private QuizApi quizApi;
+    private AuthApi authApi;
     @Inject
     MyPreferenceManager preferences;
     @Inject
     QuizDao quizDao;
 
     @Inject
-    ApiClient(Retrofit retrofit) {
-        quizApi = retrofit.create(QuizApi.class);
+    ApiClient(@QuizRetrofit Retrofit quizRetrofit, @AuthRetrofit Retrofit authRetrofit) {
+        quizApi = quizRetrofit.create(QuizApi.class);
+        authApi = authRetrofit.create(AuthApi.class);
     }
 
     public Single<TokenResponse> getAccessToken(String user, String password) {
-        return quizApi.getAccessToken(
+        return authApi.getAccessToken(
                 okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
                 BuildConfig.GRANT_TYPE,
                 user,
@@ -45,7 +49,7 @@ public class ApiClient {
     }
 
     private Single<TokenResponse> getAccessTokenByRefreshToken() {
-        return quizApi.getAccessTokenByRefreshToken(okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
+        return authApi.getAccessTokenByRefreshToken(okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
                 BuildConfig.GRANT_TYPE_REFRESH_TOKEN, preferences.getRefreshToken())
                 .doOnSuccess(tokenResponse -> {
                     preferences.setAccessToken(tokenResponse.accessToken);
@@ -54,10 +58,8 @@ public class ApiClient {
     }
 
     public Single<List<NwQuiz>> getNwQuizList() {
-        return quizApi.getNwQuizList("Bearer" + preferences.getAccessToken())
-                .doOnSuccess(nwQuizs -> quizDao.deleteAllTables())
-                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> getNwQuizList()) : Single.error(error));
+        return quizApi.getNwQuizList()
+                .doOnSuccess(nwQuizs -> quizDao.deleteAllTables());
     }
 
     public Single<NwQuiz> getNwQuizById(Long nwQuizId) {
@@ -134,10 +136,7 @@ public class ApiClient {
     }
 
     public Single<NwQuizTranslation> addNwQuizTranslationPhrase(Long nwQuizTranslationId, String nwQuizTranslationPhrase) {
-        return quizApi.addNwQuizTranslationPhrase("Bearer" + preferences.getAccessToken(), nwQuizTranslationId, nwQuizTranslationPhrase)
-                .onErrorResumeNext(this::getAccessTokenOnError);
-//                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-//                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> addNwQuizTranslationPhrase(nwQuizTranslationId, nwQuizTranslationPhrase)) : Single.error(error));
+        return quizApi.addNwQuizTranslationPhrase("Bearer" + preferences.getAccessToken(), nwQuizTranslationId, nwQuizTranslationPhrase);
     }
 
     public Single<Boolean> deleteNwQuizById(Long nwQuizId) {
@@ -154,14 +153,13 @@ public class ApiClient {
     }
 
     public Single<Boolean> deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
-        return quizApi.deleteNwQuizTranslationPhraseById("Bearer" + preferences.getAccessToken(), nwQuizTranslationPhraseId)
-                .onErrorResumeNext(error -> error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED ?
-                        getAccessTokenByRefreshToken().flatMap(tokenResponse -> deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)) : Single.error(error));
+        preferences.setAccessToken(null);
+        return quizApi.deleteNwQuizTranslationPhraseById("Bearer" + preferences.getAccessToken(), nwQuizTranslationPhraseId);
     }
 
-    private Single getAccessTokenOnError(Throwable error) {
+    private <T> Single<T> getAccessTokenOnError(Throwable error, Single<T> single) {
         if (error instanceof HttpException && ((HttpException) error).code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-            return getAccessTokenByRefreshToken();
+            return getAccessTokenByRefreshToken().flatMap(tokenResponse -> single);
         }
         return Single.error(error);
     }

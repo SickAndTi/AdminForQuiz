@@ -42,6 +42,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void loadDataFromApiAndGetFromDb() {
         compositeDisposable.add(apiClient.getNwQuizList()
+                .doOnEvent((nwQuizs, error) -> quizDao.deleteAllTables())
                 .map(nwQuizs -> quizConverter.convert(nwQuizs))
                 .map(quizzes -> quizDao.insertQuizesWithQuizTranslations(quizzes))
                 .toFlowable()

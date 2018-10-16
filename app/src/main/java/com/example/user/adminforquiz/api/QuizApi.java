@@ -19,27 +19,8 @@ import retrofit2.http.Query;
 
 public interface QuizApi {
 
-    @FormUrlEncoded
-    @POST("oauth/token")
-    Single<TokenResponse> getAccessToken(
-            @Header("Authorization") String testAuthorization,
-            @Field("grant_type") String testGrantType,
-            @Field("username") String testUser,
-            @Field("password") String testPassword
-    );
-
-    @FormUrlEncoded
-    @POST("oauth/token")
-    Single<TokenResponse> getAccessTokenByRefreshToken(
-            @Header("Authorization") String testAuthorization,
-            @Field("grant_type") String testRefreshToken,
-            @Field("refresh_token") String testRefreshTokenValue
-    );
-
     @GET("quiz/all")
-    Single<List<NwQuiz>> getNwQuizList(
-            @Header("Authorization") String authorization
-    );
+    Single<List<NwQuiz>> getNwQuizList();
 
     @GET("quiz/{id}")
     Single<NwQuiz> getNwQuizById(
@@ -58,7 +39,6 @@ public interface QuizApi {
             @Header("Authorization") String authorization,
             @Query("langCode") String langCode
     );
-
 
     @GET("quiz/allSorted")
     Single<List<NwQuiz>> getNwQuizListSorted(
@@ -132,7 +112,7 @@ public interface QuizApi {
     );
 
     @GET("quiz/translations/delete/{id}")
-    Single<Boolean>deleteNwQuizTranslationById(
+    Single<Boolean> deleteNwQuizTranslationById(
             @Header("Authorization") String authorization,
             @Path("id") Long id
     );

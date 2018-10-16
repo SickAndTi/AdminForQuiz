@@ -9,6 +9,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
+import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class EditPresenter extends MvpPresenter<EditView> {
     private Long quizId;
     @Inject
     QuizConverter quizConverter;
+    @Inject
+    MyPreferenceManager preferences;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public Long getQuizId() {
@@ -67,6 +70,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
     }
 
     public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
+        preferences.setAccessToken(null);
         compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
                 .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
