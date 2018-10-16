@@ -69,6 +69,7 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.2.0'
     implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.2.0'
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.2.0'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
     //glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'

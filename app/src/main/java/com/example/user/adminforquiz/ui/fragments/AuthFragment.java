@@ -68,21 +68,21 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         btnOK.setOnClickListener(v -> authPresenter.authTry(etEnterLogin.getText().toString(), etEnterPassword.getText().toString()));
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> authCancel());
-        checkAuth();
+        authPresenter.checkAuth(etEnterLogin, etEnterPassword, btnOK);
     }
 
-    private void checkAuth() {
-        compositeDisposable.add(Observable.combineLatest(
-                RxTextView.textChanges(etEnterLogin),
-                RxTextView.textChanges(etEnterPassword),
-                (login, password) -> !TextUtils.isEmpty(login)
-                        && Patterns.EMAIL_ADDRESS.matcher(login.toString()).matches()
-                        && !TextUtils.isEmpty(password)
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(r -> btnOK.setEnabled(r)));
-    }
+//    private void checkAuth() {
+//        compositeDisposable.add(Observable.combineLatest(
+//                RxTextView.textChanges(etEnterLogin),
+//                RxTextView.textChanges(etEnterPassword),
+//                (login, password) -> !TextUtils.isEmpty(login)
+//                        && Patterns.EMAIL_ADDRESS.matcher(login.toString()).matches()
+//                        && !TextUtils.isEmpty(password)
+//        )
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(r -> btnOK.setEnabled(r)));
+//    }
 
     @Override
     public void showError(String errorMessage) {
