@@ -8,6 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +31,7 @@ import com.example.user.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
@@ -37,6 +41,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
     View progressBarAllQuiz;
     SwipeRefreshLayout swipeRefreshLayout;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
         return new AllQuizFragment();
@@ -83,11 +88,30 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
                 AlertDialog alertDialog = mDialogBuilder.create();
                 alertDialog.show();
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                TextWatcher watcher = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (!TextUtils.isEmpty(s) && s.toString().startsWith("http")) {
+                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                        }
+                    }
+                };
+                etEnterImageUrl.addTextChangedListener(watcher);
                 break;
 
             case R.id.logout:
                 LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
+                @SuppressLint("InflateParams")
+                View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
                 AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 mDialogBuilderLogout.setView(viewLogout);
                 mDialogBuilderLogout
@@ -104,7 +128,8 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 alertDialogLogout.show();
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return super.
+                onOptionsItemSelected(item);
     }
 
     @Override
@@ -122,6 +147,12 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 
     @Override
