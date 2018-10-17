@@ -65,7 +65,7 @@ public class AppModule extends Module {
                     Response response = chain.proceed(request);
                     if (response.code() == 401) {
                         TokenResponse tokenResponse = authApi.getAccessTokenByRefreshToken(
-                                Credentials.basic(Constants.CLIENT_ID, Constants.CLIENT_SECRET),
+                                Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
                                 Constants.GRANT_TYPE_REFRESH_TOKEN,
                                 myPreferenceManager.getRefreshToken()
                         )
@@ -91,8 +91,7 @@ public class AppModule extends Module {
 
         bind(ApiClient.class).singletonInScope();
 
-        DataBase dataBase;
-        dataBase = Room.databaseBuilder(context, DataBase.class, "dataBase")
+        DataBase dataBase = Room.databaseBuilder(context, DataBase.class, "dataBase")
                 .fallbackToDestructiveMigration()
                 .build();
         bind(DataBase.class).toInstance(dataBase);

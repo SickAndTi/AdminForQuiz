@@ -18,6 +18,10 @@ android {
             buildConfigField('String', 'VPS_API_URL', '"' + properties.get("vpsApiUrl") + '"')
             buildConfigField('String', 'TEST_API_URL', '"' + properties.get("testApiUrl") + '"')
 
+            //quiz api auth
+            buildConfigField('String', 'CLIENT_ID', '"' + properties.get("clientId") + '"')
+            buildConfigField('String', 'CLIENT_SECRET', '"' + properties.get("clientSecret") + '"')
+
         } else {
             throw new GradleException(
                     "You need to have projectRoot/config/config.properties file with "

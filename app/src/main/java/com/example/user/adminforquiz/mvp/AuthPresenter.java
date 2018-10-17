@@ -41,9 +41,11 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
         compositeDisposable.add(Observable.combineLatest(
                 loginRelay,
                 passwordRelay,
-                (login, password) -> !TextUtils.isEmpty(login) && Patterns.EMAIL_ADDRESS.matcher(login).matches() && !TextUtils.isEmpty(password)
+                (login, password) ->
+                        !TextUtils.isEmpty(login) && Patterns.EMAIL_ADDRESS.matcher(login).matches() && !TextUtils.isEmpty(password)
         )
-                .subscribe(aBoolean -> getViewState().enableButton(aBoolean)));
+                .subscribe(aBoolean ->
+                        getViewState().enableButton(aBoolean)));
     }
 
     private void goToAllQuizFragment() {
@@ -66,8 +68,10 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tokenResponse -> goToAllQuizFragment(),
-                        error -> getViewState().showError(error.toString())));
+                .subscribe(tokenResponse ->
+                                goToAllQuizFragment(),
+                        error ->
+                                getViewState().showError(error.toString())));
     }
 
     public void onLoginChanged(String login) {

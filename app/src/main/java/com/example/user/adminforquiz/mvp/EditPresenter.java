@@ -57,10 +57,12 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId),
                 (Function3<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) Triple::new
         )
-                .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
+                .map(o ->
+                        quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(quiz -> getViewState().showEditQuiz(quiz)));
+                .subscribe(quiz ->
+                        getViewState().showEditQuiz(quiz)));
     }
 
     @Override
@@ -72,93 +74,115 @@ public class EditPresenter extends MvpPresenter<EditView> {
     public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
         preferences.setAccessToken(null);
         compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
-                .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
+                .map(nwQuizTranslation ->
+                        quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((aLong, throwable) ->
+                        getViewState().showProgress(false))
                 .subscribe(aLong -> {
-                        },
-                        error ->
+                        }, error ->
                                 getViewState().showError(error.toString())
                 ));
     }
 
     public void addTranslation(String langCode, String translationText, String translationDescription) {
         compositeDisposable.add(apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
-                .map(nwQuiz -> quizDao.insertQuizWithQuizTranslations(quizConverter.convert(nwQuiz)))
+                .map(nwQuiz ->
+                        quizDao.insertQuizWithQuizTranslations(quizConverter.convert(nwQuiz)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((aLong, throwable) ->
+                        getViewState().showProgress(false))
                 .subscribe(
                         aLong -> {
-                        },
-                        error -> getViewState().showError(error.toString())
+                        }, error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 
     public void updateTranslationDescription(Long quizTranslationId, String description) {
         compositeDisposable.add(apiClient.updateNwQuizTranslationDescription(quizTranslationId, description)
-                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
+                .map(nwQuizTranslation ->
+                        quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((aLong, throwable) ->
+                        getViewState().showProgress(false))
                 .subscribe(aLong -> {
-                        },
-                        error -> getViewState().showError(error.toString())
+                        }, error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 
     public void deleteNwQuizById() {
         compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
-                .map(aBoolean -> quizDao.deleteQuizById(quizId))
+                .map(aBoolean ->
+                        quizDao.deleteQuizById(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
-                .subscribe(integer -> backToAllQuizFragment(),
-                        error -> getViewState().showError(error.toString())
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((integer, throwable) ->
+                        getViewState().showProgress(false))
+                .subscribe(integer ->
+                                backToAllQuizFragment(),
+                        error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 
     public void deleteNwQuizTranslationById(Long nwQuizTranslationId) {
         compositeDisposable.add(apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
-                .map(aBoolean -> quizDao.deleteQuizTranslationById(nwQuizTranslationId))
+                .map(aBoolean ->
+                        quizDao.deleteQuizTranslationById(nwQuizTranslationId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((integer, throwable) ->
+                        getViewState().showProgress(false))
                 .subscribe(integer -> {
-                        },
-                        error -> getViewState().showError(error.toString())
+                        }, error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 
     public void deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
         compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)
-                .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(nwQuizTranslationPhraseId))
+                .map(aBoolean ->
+                        quizDao.deleteQuizTranslationPhraseById(nwQuizTranslationPhraseId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((integer, throwable) ->
+                        getViewState().showProgress(false))
                 .subscribe(integer -> {
-                        },
-                        error -> getViewState().showError(error.toString())
+                        }, error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 
     public void approveNwQuizById(Long nwQuizId, Boolean approve) {
         compositeDisposable.add(apiClient.approveNwQuizById(nwQuizId, approve)
-                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .map(nwQuiz ->
+                        quizDao.insert(quizConverter.convert(nwQuiz)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgress(true))
+                .doOnEvent((aLong, throwable) ->
+                        getViewState().showProgress(false))
                 .subscribe(aLong -> {
-                        },
-                        error -> getViewState().showError(error.toString())
+                        }, error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 

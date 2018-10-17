@@ -1,5 +1,6 @@
 package com.example.user.adminforquiz.api;
 
+import com.example.user.adminforquiz.BuildConfig;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.response.TokenResponse;
 import com.example.user.adminforquiz.di.qualifier.AuthRetrofit;
@@ -33,7 +34,7 @@ public class ApiClient {
 
     public Single<TokenResponse> getAccessToken(String user, String password) {
         return authApi.getAccessToken(
-                okhttp3.Credentials.basic(Constants.CLIENT_ID, Constants.CLIENT_SECRET),
+                okhttp3.Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
                 Constants.GRANT_TYPE,
                 user,
                 password

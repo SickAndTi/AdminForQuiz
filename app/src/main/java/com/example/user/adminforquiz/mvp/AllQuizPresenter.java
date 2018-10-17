@@ -42,20 +42,27 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void loadDataFromApiAndGetFromDb() {
         compositeDisposable.add(apiClient.getNwQuizList()
-                .doOnEvent((nwQuizs, error) -> quizDao.deleteAllTables())
-                .map(nwQuizs -> quizConverter.convert(nwQuizs))
-                .map(quizzes -> quizDao.insertQuizesWithQuizTranslations(quizzes))
+                .doOnEvent((nwQuizs, error) ->
+                        quizDao.deleteAllTables())
+                .map(nwQuizs ->
+                        quizConverter.convert(nwQuizs))
+                .map(quizzes ->
+                        quizDao.insertQuizesWithQuizTranslations(quizzes))
                 .toFlowable()
-                .flatMap(longs -> quizDao.getAll())
+                .flatMap(longs ->
+                        quizDao.getAll())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgressBar(true))
                 .doOnEach((notification) -> {
                     getViewState().showProgressBar(false);
                     getViewState().showSwipeRefresherBar(false);
                 })
-                .subscribe(listFlowable -> getViewState().showQuizList(listFlowable)
-                        , error -> getViewState().showError(error.toString()))
+                .subscribe(listFlowable ->
+                                getViewState().showQuizList(listFlowable),
+                        error ->
+                                getViewState().showError(error.toString()))
         );
     }
 
@@ -69,15 +76,22 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         nwQuiz.imageUrl = imageUrl;
         compositeDisposable.add(apiClient.createNwQuiz(nwQuiz)
                 .toFlowable()
-                .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
-                .map(quiz -> quizDao.insert(quiz))
-                .flatMap(aLong -> quizDao.getAll())
+                .map(nwQuiz1 ->
+                        quizConverter.convert(nwQuiz1))
+                .map(quiz ->
+                        quizDao.insert(quiz))
+                .flatMap(aLong ->
+                        quizDao.getAll())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
-                .doOnEach((notification) -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
+                .doOnSubscribe(subscription ->
+                        getViewState().showProgressBar(true))
+                .doOnEach((notification) ->
+                        getViewState().showProgressBar(false))
+                .subscribe(quizzes ->
+                                getViewState().showQuizList(quizzes),
+                        error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 
@@ -97,11 +111,15 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnTerminate(() -> getViewState().showProgressBar(false))
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgressBar(true))
+                .doOnTerminate(() ->
+                        getViewState().showProgressBar(false))
                 .subscribe(
-                        () -> router.newRootScreen(Constants.AUTH_SCREEN),
-                        error -> getViewState().showError(error.toString())
+                        () ->
+                                router.newRootScreen(Constants.AUTH_SCREEN),
+                        error ->
+                                getViewState().showError(error.toString())
                 ));
     }
 }
