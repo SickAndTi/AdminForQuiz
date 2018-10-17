@@ -14,4 +14,9 @@ public class Constants {
     //auth
     public static final String USER_FOR_AUTH = "USER_FOR_AUTH";
     public static final String PASSWORD_FOR_AUTH = "PASSWORD_FOR_AUTH";
+    //server
+    public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_SECRET = "client_secret";
+    public static final String GRANT_TYPE = "password";
+    public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
 }

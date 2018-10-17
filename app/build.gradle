@@ -18,12 +18,6 @@ android {
             buildConfigField('String', 'VPS_API_URL', '"' + properties.get("vpsApiUrl") + '"')
             buildConfigField('String', 'TEST_API_URL', '"' + properties.get("testApiUrl") + '"')
 
-            //quiz api auth
-            buildConfigField('String', 'CLIENT_ID', '"' + properties.get("clientId") + '"')
-            buildConfigField('String', 'CLIENT_SECRET', '"' + properties.get("clientSecret") + '"')
-            buildConfigField('String', 'GRANT_TYPE', '"' + properties.get("grantType") + '"')
-            buildConfigField('String', 'GRANT_TYPE_REFRESH_TOKEN', '"' + properties.get("refreshTokenGrantType") + '"')
-
         } else {
             throw new GradleException(
                     "You need to have projectRoot/config/config.properties file with "

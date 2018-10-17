@@ -58,6 +58,12 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
 
     public void authTry() {
         compositeDisposable.add(apiClient.getAccessToken(loginRelay.getValue(), passwordRelay.getValue())
+                .doOnSuccess(tokenResponse -> {
+                    preferences.setAccessToken(tokenResponse.accessToken);
+                    preferences.setRefreshToken(tokenResponse.refreshToken);
+                    preferences.setUserForAuth(loginRelay.getValue());
+                    preferences.setPasswordForAuth(passwordRelay.getValue());
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tokenResponse -> goToAllQuizFragment(),

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.example.user.adminforquiz.BuildConfig;
+import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.api.AuthApi;
 import com.example.user.adminforquiz.api.response.TokenResponse;
@@ -64,8 +65,8 @@ public class AppModule extends Module {
                     Response response = chain.proceed(request);
                     if (response.code() == 401) {
                         TokenResponse tokenResponse = authApi.getAccessTokenByRefreshToken(
-                                Credentials.basic(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET),
-                                BuildConfig.GRANT_TYPE_REFRESH_TOKEN,
+                                Credentials.basic(Constants.CLIENT_ID, Constants.CLIENT_SECRET),
+                                Constants.GRANT_TYPE_REFRESH_TOKEN,
                                 myPreferenceManager.getRefreshToken()
                         )
                                 .blockingGet();
@@ -74,7 +75,6 @@ public class AppModule extends Module {
                         request = request.newBuilder()
                                 .header("Authorization", "Bearer" + tokenResponse.accessToken)
                                 .method(request.method(), request.body()).url(request.url()).build();
-                        Timber.d("REQUEST %s", request);
                         response = chain.proceed(request);
                     }
                     return response;
