@@ -3,8 +3,6 @@ package com.example.user.adminforquiz.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +23,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 import toothpick.Toothpick;
 
 public class AuthFragment extends MvpAppCompatFragment implements AuthView {
@@ -38,6 +33,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
     Button btnOK, btnCancel;
+    View progressBarAuth;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AuthFragment newInstance() {
@@ -59,32 +55,33 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBarAuth = view.findViewById(R.id.flProgressBarAuth);
         etEnterLogin = view.findViewById(R.id.etEnterLogin);
         etEnterPassword = view.findViewById(R.id.etEnterPassword);
         btnOK = view.findViewById(R.id.btnOK);
         btnOK.setEnabled(false);
-        btnOK.setOnClickListener(v -> authPresenter.authTry(etEnterLogin.getText().toString(), etEnterPassword.getText().toString()));
+        btnOK.setOnClickListener(v -> authPresenter.authTry());
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> authCancel());
-        checkAuth();
-    }
-
-    private void checkAuth() {
-        compositeDisposable.add(Observable.combineLatest(
-                RxTextView.textChanges(etEnterLogin),
-                RxTextView.textChanges(etEnterPassword),
-                (login, password) -> !TextUtils.isEmpty(login)
-                        && Patterns.EMAIL_ADDRESS.matcher(login.toString()).matches()
-                        && !TextUtils.isEmpty(password)
-        )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(r -> btnOK.setEnabled(r)));
+        compositeDisposable.add(RxTextView.textChanges(etEnterLogin)
+                .subscribe(charSequence -> authPresenter.onLoginChanged(charSequence.toString())));
+        compositeDisposable.add(RxTextView.textChanges(etEnterPassword)
+                .subscribe(charSequence -> authPresenter.onPasswordChanged(charSequence.toString())));
     }
 
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgressBar(boolean showProgressBar) {
+        progressBarAuth.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void enableButton(boolean enableButton) {
+        btnOK.setEnabled(enableButton);
     }
 
     @Override

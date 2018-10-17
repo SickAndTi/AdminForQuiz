@@ -8,4 +8,6 @@ public interface OneQuizView extends MvpView {
     void showQuiz(Quiz quiz);
 
     void showError(String errorMessage);
+
+    void showProgressBar(boolean showProgressBar);
 }

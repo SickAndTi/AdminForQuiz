@@ -13,7 +13,7 @@ public class MyPreferenceManager {
     private SharedPreferences preferences;
 
     @Inject
-    MyPreferenceManager(Context context) {
+    public MyPreferenceManager(Context context) {
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 

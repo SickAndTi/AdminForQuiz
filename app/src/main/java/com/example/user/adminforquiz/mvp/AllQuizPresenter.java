@@ -17,7 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -38,37 +37,33 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        loadDataFromApi();
-        compositeDisposable.add(quizDao.getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            getViewState().showProgressBar(false);
-                        },
-                        error -> {
-                            getViewState().showProgressBar(false);
-                            getViewState().showError(error.toString());
-                        }));
+        loadDataFromApiAndGetFromDb();
     }
 
-    public void loadDataFromApi() {
+    public void loadDataFromApiAndGetFromDb() {
         compositeDisposable.add(apiClient.getNwQuizList()
-                .flatMap(tokenResponse -> apiClient.getNwQuizList())
-                .map(nwQuizList -> quizConverter.convert(nwQuizList))
-                .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
+                .doOnEvent((nwQuizs, error) ->
+                        quizDao.deleteAllTables())
+                .map(nwQuizs ->
+                        quizConverter.convert(nwQuizs))
+                .map(quizzes ->
+                        quizDao.insertQuizesWithQuizTranslations(quizzes))
+                .toFlowable()
+                .flatMap(longs ->
+                        quizDao.getAll())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .subscribe(ignore -> getViewState().showSwipeRefresherBar(false),
-                        error -> {
-                            Timber.d(error);
-                            getViewState().showSwipeRefresherBar(false);
-                            getViewState().showError(error.toString());
-                            getViewState().showProgressBar(false);
-                        }
-                ));
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgressBar(true))
+                .doOnEach((notification) -> {
+                    getViewState().showProgressBar(false);
+                    getViewState().showSwipeRefresherBar(false);
+                })
+                .subscribe(listFlowable ->
+                                getViewState().showQuizList(listFlowable),
+                        error ->
+                                getViewState().showError(error.toString()))
+        );
     }
 
     public void goToQuizFragment(Quiz quiz) {
@@ -81,20 +76,23 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         nwQuiz.imageUrl = imageUrl;
         compositeDisposable.add(apiClient.createNwQuiz(nwQuiz)
                 .toFlowable()
-                .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
-                .map(quiz -> quizDao.insert(quiz))
-                .flatMap(aLong -> quizDao.getAll())
+                .map(nwQuiz1 ->
+                        quizConverter.convert(nwQuiz1))
+                .map(quiz ->
+                        quizDao.insert(quiz))
+                .flatMap(aLong ->
+                        quizDao.getAll())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            getViewState().showProgressBar(false);
-                        },
-                        error -> {
-                            getViewState().showProgressBar(false);
-                            getViewState().showError(error.toString());
-                        }));
+                .doOnSubscribe(subscription ->
+                        getViewState().showProgressBar(true))
+                .doOnEach((notification) ->
+                        getViewState().showProgressBar(false))
+                .subscribe(quizzes ->
+                                getViewState().showQuizList(quizzes),
+                        error ->
+                                getViewState().showError(error.toString())
+                ));
     }
 
     @Override
@@ -111,16 +109,17 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
             preferences.setAccessToken(null);
             preferences.setRefreshToken(null);
         })
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                            router.newRootScreen(Constants.AUTH_SCREEN);
-                            getViewState().showProgressBar(false);
-                        },
-                        error -> {
-                            getViewState().showError(error.toString());
-                            getViewState().showProgressBar(false);
-                        }));
+                .doOnSubscribe(disposable ->
+                        getViewState().showProgressBar(true))
+                .doOnTerminate(() ->
+                        getViewState().showProgressBar(false))
+                .subscribe(
+                        () ->
+                                router.newRootScreen(Constants.AUTH_SCREEN),
+                        error ->
+                                getViewState().showError(error.toString())
+                ));
     }
 }

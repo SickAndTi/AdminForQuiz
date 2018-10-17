@@ -6,4 +6,7 @@ public interface AuthView extends MvpView {
 
     void showError(String errorMessage);
 
+    void showProgressBar(boolean showProgressBar);
+
+    void enableButton(boolean enableButton);
 }
