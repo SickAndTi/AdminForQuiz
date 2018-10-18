@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.model.ui.AllQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
 
 import java.util.ArrayList;
@@ -20,49 +21,69 @@ import java.util.List;
 
 public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Quiz> quizList = new ArrayList<>();
+    private List<AllQuizRecyclerViewItem> allQuizRecyclerViewItemList = new ArrayList<>();
     private OnQuizClickListener onQuizClickListener;
 
     public AllQuizRecyclerViewAdapter(OnQuizClickListener onQuizClickListener) {
         this.onQuizClickListener = onQuizClickListener;
-
     }
 
     public void setQuizList(List<Quiz> quizList) {
-        this.quizList = quizList;
+        allQuizRecyclerViewItemList.clear();
+        for (Quiz quiz : quizList) {
+            allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+        }
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new QuizViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz_inlist, parent, false));
+        switch (AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.values()[viewType]) {
+            case QUIZ:
+                return new QuizViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_quiz_inlist, parent, false));
+            case PROGRESSBAR:
+                return new ProgressBarViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_progress_bar, parent, false));
+            default:
+                throw new IllegalArgumentException("Unexpected view in Adapter");
+        }
     }
 
     @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        QuizViewHolder viewHolder = (QuizViewHolder) holder;
-        Quiz quiz = quizList.get(position);
-        viewHolder.tvScpNumber.setText(quiz.scpNumber);
-        viewHolder.approved.setChecked(quiz.approved);
-        viewHolder.approved.setClickable(false);
-        viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
-        viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
-        GlideApp
-                .with(holder.itemView.getContext())
-                .load(quiz.imageUrl)
-                .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(viewHolder.imageView);
-        viewHolder.itemView.setOnClickListener(view ->
-                onQuizClickListener.onQuizClick(quiz)
-        );
+        switch (allQuizRecyclerViewItemList.get(position).type) {
+            case QUIZ:
+                QuizViewHolder viewHolder = (QuizViewHolder) holder;
+                Quiz quiz = (Quiz) allQuizRecyclerViewItemList.get(position).data;
+                viewHolder.tvScpNumber.setText(quiz.scpNumber);
+                viewHolder.approved.setChecked(quiz.approved);
+                viewHolder.approved.setClickable(false);
+                viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
+                viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
+                GlideApp
+                        .with(holder.itemView.getContext())
+                        .load(quiz.imageUrl)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(viewHolder.imageView);
+                viewHolder.itemView.setOnClickListener(view ->
+                        onQuizClickListener.onQuizClick(quiz)
+                );
+                break;
+            case PROGRESSBAR:
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return quizList.size();
+        return allQuizRecyclerViewItemList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return allQuizRecyclerViewItemList.get(position).type.ordinal();
     }
 
     static class QuizViewHolder extends RecyclerView.ViewHolder {
@@ -85,7 +106,26 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
+    class ProgressBarViewHolder extends RecyclerView.ViewHolder {
+        ProgressBarViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
     public interface OnQuizClickListener {
         void onQuizClick(Quiz quiz);
+    }
+
+    public void showBottomProgress(boolean show) {
+        if (show) {
+            if (allQuizRecyclerViewItemList.get(allQuizRecyclerViewItemList.size() - 1).type != AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.PROGRESSBAR) {
+                allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(null, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.PROGRESSBAR));
+            }
+        } else {
+            if (allQuizRecyclerViewItemList.get(allQuizRecyclerViewItemList.size() - 1).type == AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.PROGRESSBAR) {
+                allQuizRecyclerViewItemList.remove(allQuizRecyclerViewItemList.size() - 1);
+            }
+        }
+        notifyDataSetChanged();
     }
 }

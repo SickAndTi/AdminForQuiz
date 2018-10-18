@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.user.adminforquiz"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -30,22 +30,22 @@ android {
             )
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //support
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -82,16 +82,20 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     //room DB
-    implementation "android.arch.persistence.room:runtime:1.1.1"
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
-    implementation "android.arch.persistence.room:rxjava2:1.1.1"
+    implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //Navigation
     implementation 'ru.terrakok.cicerone:cicerone:3.0.0'
     //views
     implementation 'com.google.android:flexbox:1.0.0'
     implementation 'jp.wasabeef:blurry:2.1.1'
-
+    //dialogs
+//    implementation 'com.afollestad.material-dialogs:core:2.0.0-beta4'
+//    implementation 'com.afollestad.material-dialogs:input:2.0.0-beta4'
+//    implementation 'com.afollestad.material-dialogs:files:2.0.0-beta4'
+//    implementation 'com.afollestad.material-dialogs:color:2.0.0-beta4'
 }
 repositories {
     mavenCentral()

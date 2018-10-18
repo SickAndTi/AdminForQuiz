@@ -17,4 +17,6 @@ public class Constants {
     //server
     public static final String GRANT_TYPE = "password";
     public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
+    //scrollListener
+    public static final int PAGE_SIZE = 10;
 }
