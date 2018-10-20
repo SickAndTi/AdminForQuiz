@@ -1,24 +1,5 @@
 package com.example.user.adminforquiz.ui.fragments;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -32,6 +13,24 @@ import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
 import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -121,11 +120,9 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        Locale[] locales = Locale.getAvailableLocales();
-                        for (Locale locale : locales) {
-                            if (s.toString().equals(locale.getISO3Language()) && !TextUtils.isEmpty(s)) {
-                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                            }
+                        String[] locales = Locale.getISOLanguages();
+                        for (String locale : locales) {
+                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().equals(locale));
                         }
                     }
                 };
