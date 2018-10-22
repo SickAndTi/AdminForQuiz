@@ -15,4 +15,7 @@ public interface AllQuizView extends MvpView {
 
     void showSwipeRefresherBar(boolean showSwipeRefresherBar);
 
+    void showBottomProgress(boolean showBottomProgress);
+
+    void enableScrollListner(boolean enableScrollListener);
 }

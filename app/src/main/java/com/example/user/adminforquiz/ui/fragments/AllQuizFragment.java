@@ -21,11 +21,13 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.mvp.AllQuizPresenter;
 import com.example.user.adminforquiz.mvp.AllQuizView;
 import com.example.user.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
+import com.example.user.adminforquiz.util.EndlessRecyclerViewScrollListener;
 
 import java.util.List;
 import java.util.Objects;
@@ -166,5 +168,23 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showSwipeRefresherBar(boolean showSwipeRefresherBar) {
         swipeRefreshLayout.setRefreshing(showSwipeRefresherBar);
+    }
+
+    @Override
+    public void showBottomProgress(boolean showBottomProgress) {
+        ((AllQuizRecyclerViewAdapter) recyclerView.getAdapter()).showBottomProgress(showBottomProgress);
+    }
+
+    @Override
+    public void enableScrollListner(boolean enableScrollListener) {
+        recyclerView.clearOnScrollListeners();
+        if (enableScrollListener) {
+            recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener() {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    allQuizPresenter.loadQuizzesFromPage(totalItemsCount / Constants.PAGE_SIZE + 1);
+                }
+            });
+        }
     }
 }

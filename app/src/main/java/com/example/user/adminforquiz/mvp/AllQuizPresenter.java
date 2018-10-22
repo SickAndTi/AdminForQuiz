@@ -10,6 +10,8 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
@@ -37,7 +39,43 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        loadDataFromApiAndGetFromDb();
+//        loadQuizzesFromPage(1);
+        compositeDisposable.add(quizDao.getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
+                .doOnEach(notification -> getViewState().showProgressBar(false))
+                .subscribe(quizzes -> {
+                            getViewState().showQuizList(quizzes);
+                            getViewState().enableScrollListner(true);
+                        },
+                        error -> getViewState().showError(error.toString())
+                ));
+    }
+
+    public void loadQuizzesFromPage(int page) {
+        getViewState().enableScrollListner(false);
+        if (page > 1) {
+            getViewState().showBottomProgress(true);
+        }
+        compositeDisposable.add(apiClient.getNwQuizList()
+                .delay(2, TimeUnit.SECONDS)
+                .map(nwQuizList -> quizConverter.convert(nwQuizList))
+                .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((longs, throwable) -> {
+                    getViewState().showProgressBar(false);
+                    getViewState().showSwipeRefresherBar(false);
+                    if (page > 1) {
+                        getViewState().showBottomProgress(false);
+                    }
+                })
+                .subscribe((longs) -> {
+                        },
+                        error -> getViewState().showError(error.toString())
+                ));
     }
 
     public void loadDataFromApiAndGetFromDb() {

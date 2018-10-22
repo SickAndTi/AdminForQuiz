@@ -134,7 +134,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                 View viewDelete = inflaterDelete.inflate(R.layout.dialog_delete, null);
                 AlertDialog.Builder mDialogBuilderDelete = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 mDialogBuilderDelete.setView(viewDelete);
-
                 mDialogBuilderDelete
                         .setCancelable(false)
                         .setPositiveButton("OK",
@@ -150,9 +149,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                 break;
         }
         return super.
-
                 onOptionsItemSelected(item);
-
     }
 
     @Override
