@@ -38,4 +38,5 @@
     <string name="useOAuth">Use saved login</string>
     <string name="noAuthYet">You dont have it ,yet</string>
     <string name="logout">LogOut</string>
+    <string name="http">http</string>
 </resources>
