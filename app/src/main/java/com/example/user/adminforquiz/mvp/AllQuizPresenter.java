@@ -39,7 +39,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        loadQuizzesFromPage(1);
+//        loadQuizzesFromPage(1);
         compositeDisposable.add(quizDao.getAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
