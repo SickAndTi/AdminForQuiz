@@ -32,6 +32,7 @@ import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
 import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -121,13 +122,9 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                     @Override
                     public void afterTextChanged(Editable s) {
                         String[] locales = Locale.getISOLanguages();
-                        for (String locale : locales) {
-                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().matches(locale));
-//                            Timber.d("LOCALES LANG: %s", locale);
-                        }
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(Arrays.asList(locales).contains(s.toString()));
                     }
                 };
-
                 etEnterLangCode.addTextChangedListener(watcher);
                 break;
 
