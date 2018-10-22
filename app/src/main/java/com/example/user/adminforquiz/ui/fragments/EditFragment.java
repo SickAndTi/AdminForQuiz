@@ -1,19 +1,5 @@
 package com.example.user.adminforquiz.ui.fragments;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenterTag;
-import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.api.ApiClient;
-import com.example.user.adminforquiz.model.db.Quiz;
-import com.example.user.adminforquiz.model.db.QuizTranslation;
-import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
-import com.example.user.adminforquiz.model.db.dao.QuizDao;
-import com.example.user.adminforquiz.mvp.EditPresenter;
-import com.example.user.adminforquiz.mvp.EditView;
-import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenterTag;
+import com.example.user.adminforquiz.R;
+import com.example.user.adminforquiz.api.ApiClient;
+import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.model.db.QuizTranslation;
+import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
+import com.example.user.adminforquiz.model.db.dao.QuizDao;
+import com.example.user.adminforquiz.mvp.EditPresenter;
+import com.example.user.adminforquiz.mvp.EditView;
+import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -123,9 +123,11 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                         String[] locales = Locale.getISOLanguages();
                         for (String locale : locales) {
                             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().equals(locale));
+                            Timber.d("LOCALES LANG: %s", locale);
                         }
                     }
                 };
+
                 etEnterLangCode.addTextChangedListener(watcher);
                 break;
 
@@ -138,19 +140,13 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
                 mDialogBuilderDelete
                         .setCancelable(false)
-                        .
-
-                                setPositiveButton("OK",
-                                        (dialog, id) ->
-
-                                        {
-                                            editPresenter.deleteNwQuizById();
-                                            dialog.cancel();
-                                        })
-                        .
-
-                                setNegativeButton("Cancel",
-                                        (dialog, id) -> dialog.cancel());
+                        .setPositiveButton("OK",
+                                (dialog, id) -> {
+                                    editPresenter.deleteNwQuizById();
+                                    dialog.cancel();
+                                })
+                        .setNegativeButton("Cancel",
+                                (dialog, id) -> dialog.cancel());
 
                 AlertDialog alertDialogDelete = mDialogBuilderDelete.create();
                 alertDialogDelete.show();

@@ -100,9 +100,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        if (!TextUtils.isEmpty(s) && s.toString().startsWith("http")) {
-                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                        }
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().startsWith("http"));
                     }
                 };
                 etEnterImageUrl.addTextChangedListener(watcher);
