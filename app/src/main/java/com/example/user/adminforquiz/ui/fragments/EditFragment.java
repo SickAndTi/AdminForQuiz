@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +32,7 @@ import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
 import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -121,12 +121,8 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        Locale[] locales = Locale.getAvailableLocales();
-                        for (Locale locale : locales) {
-                            if (s.toString().equals(locale.getISO3Language()) && !TextUtils.isEmpty(s)) {
-                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                            }
-                        }
+                        String[] locales = Locale.getISOLanguages();
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(Arrays.asList(locales).contains(s.toString()));
                     }
                 };
                 etEnterLangCode.addTextChangedListener(watcher);

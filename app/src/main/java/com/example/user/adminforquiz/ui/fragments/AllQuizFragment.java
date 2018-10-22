@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -102,9 +101,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        if (!TextUtils.isEmpty(s) && s.toString().startsWith("http")) {
-                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                        }
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().startsWith(getString(R.string.http)));
                     }
                 };
                 etEnterImageUrl.addTextChangedListener(watcher);

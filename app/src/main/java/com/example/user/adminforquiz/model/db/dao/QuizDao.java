@@ -157,8 +157,11 @@ public abstract class QuizDao {
     public Quiz getQuizWithTranslationsAndPhrases(Long id) {
         Quiz quiz = getById(id);
         quiz.quizTranslations = getQuizTranslationsByQuizId(id);
+        //authorId is primary key for User
+//        quiz.user = getUserById(quiz.authorId);
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
+//            quizTranslation.user = getUserById(quizTranslation.authorId);
             quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id);
         }
         return quiz;
