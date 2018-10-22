@@ -122,7 +122,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
                     public void afterTextChanged(Editable s) {
                         String[] locales = Locale.getISOLanguages();
                         for (String locale : locales) {
-                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().equals(locale));
+                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().matches(locale));
 //                            Timber.d("LOCALES LANG: %s", locale);
                         }
                     }
