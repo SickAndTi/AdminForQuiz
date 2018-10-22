@@ -74,6 +74,10 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                                 getViewState().showError(error.toString())));
     }
 
+    public void goToRegistrationScreen() {
+        router.navigateTo(Constants.REGISTRATION_SCREEN);
+    }
+
     public void onLoginChanged(String login) {
         loginRelay.accept(login);
     }

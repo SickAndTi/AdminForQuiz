@@ -39,4 +39,7 @@
     <string name="noAuthYet">You dont have it ,yet</string>
     <string name="logout">LogOut</string>
     <string name="http">http</string>
+    <string name="goToRegScreen">Registration</string>
+    <string name="registration">Registration</string>
+    <string name="repeatPassword">Repeat password</string>
 </resources>
