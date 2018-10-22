@@ -8,12 +8,12 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/textAuthorization"
+        android:id="@+id/textRegistration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
-        android:text="@string/authorization" />
+        android:text="@string/registration" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:hint="@string/enterLogin">
 
         <EditText
-            android:id="@+id/etEnterLogin"
+            android:id="@+id/etEnterLoginReg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -34,7 +34,20 @@
         android:hint="@string/enterPassword">
 
         <EditText
-            android:id="@+id/etEnterPassword"
+            android:id="@+id/etEnterPasswordReg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            tools:ignore="Autofill,LabelFor,TextFields" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/repeatPassword">
+
+        <EditText
+            android:id="@+id/etRepeatPasswordReg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -47,7 +60,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnOK"
+            android:id="@+id/btnOkReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -55,25 +68,17 @@
             tools:ignore="ButtonStyle" />
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnCancelReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="@string/cancel"
             tools:ignore="ButtonStyle" />
 
-        <Button
-            android:id="@+id/btnRegistration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/goToRegScreen"
-            tools:ignore="ButtonStyle" />
-
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/flProgressBarAuth"
+        android:id="@+id/flProgressBarRegistration"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"

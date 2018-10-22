@@ -20,6 +20,7 @@ import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.AuthFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
+import com.example.user.adminforquiz.ui.fragments.RegistrationFragment;
 
 import javax.inject.Inject;
 
@@ -38,7 +39,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @InjectPresenter
     MainPresenter mainPresenter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +54,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return AllQuizFragment.newInstance();
                 case Constants.AUTH_SCREEN:
                     return AuthFragment.newInstance();
+                case Constants.REGISTRATION_SCREEN:
+                    return RegistrationFragment.newInstance();
                 case Constants.ONE_QUIZ_SCREEN:
                     return OneQuizFragment.newInstance((Long) data);
                 case Constants.EDIT_SCREEN:

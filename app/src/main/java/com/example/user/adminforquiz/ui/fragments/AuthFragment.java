@@ -32,7 +32,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     @Inject
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
-    Button btnOK, btnCancel;
+    Button btnOK, btnCancel, btnRegistration;
     View progressBarAuth;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -63,6 +63,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         btnOK.setOnClickListener(v -> authPresenter.authTry());
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> authCancel());
+        btnRegistration = view.findViewById(R.id.btnRegistration);
+        btnRegistration.setOnClickListener(v -> authPresenter.goToRegistrationScreen());
         compositeDisposable.add(RxTextView.textChanges(etEnterLogin)
                 .subscribe(charSequence -> authPresenter.onLoginChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etEnterPassword)
