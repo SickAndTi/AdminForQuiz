@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
-    EditInterface editInterface;
+    private EditInterface editInterface;
 
     public interface EditInterface {
         void onTranslationEditClicked(QuizTranslation quizTranslation);

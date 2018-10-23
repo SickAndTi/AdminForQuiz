@@ -172,7 +172,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showBottomProgress(boolean showBottomProgress) {
-        ((AllQuizRecyclerViewAdapter) recyclerView.getAdapter()).showBottomProgress(showBottomProgress);
+        ((AllQuizRecyclerViewAdapter) Objects.requireNonNull(recyclerView.getAdapter())).showBottomProgress(showBottomProgress);
     }
 
     @Override

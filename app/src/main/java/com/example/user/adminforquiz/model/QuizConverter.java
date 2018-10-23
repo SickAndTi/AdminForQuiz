@@ -24,7 +24,6 @@ public class QuizConverter {
             Quiz quiz = convert(nwQuiz);
             quizList.add(quiz);
         }
-
         return quizList;
     }
 
@@ -42,7 +41,7 @@ public class QuizConverter {
         return quiz;
     }
 
-    public List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList, Long quizId) {
+    private List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList, Long quizId) {
         List<QuizTranslation> quizTranslationList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationList.size(); i++) {
             NwQuizTranslation nwQuizTranslation = nwQuizTranslationList.get(i);
@@ -68,7 +67,7 @@ public class QuizConverter {
         return quizTranslation;
     }
 
-    public List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList, Long nwQuizTranslationId) {
+    private List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList, Long nwQuizTranslationId) {
         List<QuizTranslationPhrase> quizTranslationPhraseList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationPhraseList.size(); i++) {
             NwQuizTranslationPhrase nwQuizTranslationPhrase = nwQuizTranslationPhraseList.get(i);
@@ -78,7 +77,7 @@ public class QuizConverter {
         return quizTranslationPhraseList;
     }
 
-    public QuizTranslationPhrase convertTranslationPhrase(NwQuizTranslationPhrase nwQuizTranslationPhrase, Long nwQuizTranslationId) {
+    private QuizTranslationPhrase convertTranslationPhrase(NwQuizTranslationPhrase nwQuizTranslationPhrase, Long nwQuizTranslationId) {
         QuizTranslationPhrase quizTranslationPhrase = new QuizTranslationPhrase();
         quizTranslationPhrase.id = nwQuizTranslationPhrase.id;
         quizTranslationPhrase.approved = nwQuizTranslationPhrase.approved;

@@ -9,12 +9,10 @@ import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
-
 import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
-
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -39,18 +37,19 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-//        loadQuizzesFromPage(1);
-        compositeDisposable.add(quizDao.getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
-                .doOnEach(notification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            getViewState().enableScrollListner(true);
-                        },
-                        error -> getViewState().showError(error.toString())
-                ));
+        loadQuizzesFromPage(1);
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
+                        .doOnEach(notification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> {
+                                    getViewState().showQuizList(quizzes);
+                                    getViewState().enableScrollListner(true);
+                                },
+                                error -> getViewState().showError(error.toString()))
+        );
     }
 
     public void loadQuizzesFromPage(int page) {

@@ -89,10 +89,13 @@ dependencies {
     //views
     implementation 'com.google.android:flexbox:1.0.0'
     implementation 'jp.wasabeef:blurry:2.1.1'
-
     //dialog
     implementation 'com.afollestad.material-dialogs:core:2.0.0-alpha05'
+    //flags
+    implementation 'com.michaelfotiadis:android-country-flags:1.0.3'
+    implementation 'com.jwang123.flagkit:flagkit:1.0'
 }
 repositories {
+    maven { url "https://dl.bintray.com/mikefot/maven/" }
     mavenCentral()
 }
