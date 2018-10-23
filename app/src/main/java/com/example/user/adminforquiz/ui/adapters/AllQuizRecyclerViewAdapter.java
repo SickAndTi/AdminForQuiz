@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
@@ -66,11 +67,12 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
                     if (quizTranslation.langCode.contains("en")) {
                         flagImage.setCountryCode("gb");
+                        viewHolder.flagLayout.addView(flagImage);
                     }
                     if (quizTranslation.langCode.contains("ru")) {
                         flagImage.setCountryCode("ru");
+                        viewHolder.flagLayout.addView(flagImage);
                     }
-                    viewHolder.flagLayout.addView(flagImage);
                 }
                 GlideApp
                         .with(holder.itemView.getContext())

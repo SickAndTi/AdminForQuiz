@@ -9,8 +9,11 @@ import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
+
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,18 +41,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         loadQuizzesFromPage(1);
-        compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
-                        .doOnEach(notification -> getViewState().showProgressBar(false))
-                        .subscribe(quizzes -> {
-                                    getViewState().showQuizList(quizzes);
-                                    getViewState().enableScrollListner(true);
-                                },
-                                error -> getViewState().showError(error.toString()))
-        );
+        setQuizzesFromDb();
     }
 
     public void loadQuizzesFromPage(int page) {
@@ -58,7 +50,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
             getViewState().showBottomProgress(true);
         }
         compositeDisposable.add(apiClient.getNwQuizList()
-                .delay(2, TimeUnit.SECONDS)
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
                 .subscribeOn(Schedulers.io())
@@ -77,22 +68,22 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 ));
     }
 
-    public void loadDataFromApiAndGetFromDb() {
-        compositeDisposable.add(apiClient.getNwQuizList()
-                .doOnEvent((nwQuizs, error) -> quizDao.deleteAllTables())
-                .map(nwQuizs -> quizConverter.convert(nwQuizs))
-                .map(quizzes -> quizDao.insertQuizesWithQuizTranslations(quizzes))
-                .toFlowable()
-                .flatMap(longs -> quizDao.getAll())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach((notification) -> {
-                    getViewState().showProgressBar(false);
-                    getViewState().showSwipeRefresherBar(false);
-                })
-                .subscribe(listFlowable -> getViewState().showQuizList(listFlowable),
-                        error -> getViewState().showError(error.toString()))
+    public void setQuizzesFromDb() {
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
+                        .doOnEach(notification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> {
+                                    getViewState().showSwipeRefresherBar(false);
+                                    getViewState().showQuizList(quizzes);
+                                    getViewState().enableScrollListner(true);
+                                },
+                                error -> {
+                                    getViewState().showError(error.toString());
+                                    getViewState().showSwipeRefresherBar(false);
+                                })
         );
     }
 
