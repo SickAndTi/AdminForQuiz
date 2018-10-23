@@ -9,14 +9,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.AllQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
-import com.jwang123.flagkit.FlagKit;
+import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,14 +63,12 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
                 viewHolder.flagLayout.removeAllViews();
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
-                    ImageView flagImage = new ImageView(viewHolder.flagLayout.getContext());
+                    FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
                     if (quizTranslation.langCode.contains("en")) {
-//                        flagImage.setImageDrawable(FlagKit.drawableWithFlag(flagImage.getContext(), "US"));
-                        flagImage.setImageResource(R.drawable.gbrflag);
+                        flagImage.setCountryCode("gb");
                     }
                     if (quizTranslation.langCode.contains("ru")) {
-//                        flagImage.setImageDrawable(FlagKit.drawableWithFlag(flagImage.getContext(), "RU"));
-                        flagImage.setImageResource(R.drawable.rflag);
+                        flagImage.setCountryCode("ru");
                     }
                     viewHolder.flagLayout.addView(flagImage);
                 }

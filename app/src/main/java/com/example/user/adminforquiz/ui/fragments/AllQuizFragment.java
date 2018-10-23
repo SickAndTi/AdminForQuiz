@@ -122,7 +122,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                                 })
                         .setNegativeButton("Cancel",
                                 (dialog, id) -> dialog.cancel());
-
                 AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
                 alertDialogLogout.show();
                 break;
