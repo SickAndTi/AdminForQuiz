@@ -88,4 +88,3 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         navigatorHolder.removeNavigator();
     }
 }
-

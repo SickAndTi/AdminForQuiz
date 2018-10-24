@@ -9,11 +9,7 @@ import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
-
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
-
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
