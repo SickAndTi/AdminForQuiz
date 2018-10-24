@@ -60,8 +60,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(quiz ->
-                        getViewState().showEditQuiz(quiz)));
+                .subscribe(quiz -> getViewState().showEditQuiz(quiz)));
     }
 
     @Override
@@ -73,23 +72,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
     public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
         preferences.setAccessToken(null);
         compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
-                .map(nwQuizTranslation ->
-                        quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable ->
-                        getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) ->
-                        getViewState().showProgress(false))
-                .subscribe(aLong -> {
-                        }, error ->
-                                getViewState().showError(error.toString())
-                ));
-    }
-
-    public void addTranslation(String langCode, String translationText, String translationDescription) {
-        compositeDisposable.add(apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
-                .map(nwQuiz -> quizDao.insertQuizWithQuizTranslations(quizConverter.convert(nwQuiz)))
+                .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgress(true))
@@ -161,5 +144,9 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     private void backToAllQuizFragment() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
+    }
+
+    public void goToAddTranslationFragment() {
+        router.navigateTo(Constants.ADD_TRANSLATION_SCREEN, quizId);
     }
 }

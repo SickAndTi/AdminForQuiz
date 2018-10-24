@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.user.adminforquiz.R;
@@ -42,7 +43,7 @@ public class CreateQuizFragment extends MvpAppCompatFragment implements CreateQu
         btnOK = view.findViewById(R.id.btnOK);
         btnOK.setOnClickListener(v -> createQuizPresenter.createQuiz());
         btnCancel = view.findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(v -> createQuizPresenter.backToAllQuizFragment());
+        btnCancel.setOnClickListener(v -> createQuizPresenter.cancel());
         etEnterScpNumber = view.findViewById(R.id.etEnterScpNumber);
         etEnterImageUrl = view.findViewById(R.id.etEnterImageUrl);
         progressBarCreateQuiz = view.findViewById(R.id.flProgressBarCreateQuiz);

@@ -1,7 +1,5 @@
 package com.example.user.adminforquiz.mvp;
 
-import android.annotation.SuppressLint;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
@@ -21,7 +19,6 @@ import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Triple;
 import ru.terrakok.cicerone.Router;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -42,10 +39,8 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         this.quizId = quizId;
     }
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onFirstViewAttach() {
-        Timber.d("onFirstViewAttach:%s", quizId);
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         compositeDisposable.add(Flowable.combineLatest(

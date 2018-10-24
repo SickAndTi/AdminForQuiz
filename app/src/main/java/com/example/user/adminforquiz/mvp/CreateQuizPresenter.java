@@ -1,6 +1,7 @@
 package com.example.user.adminforquiz.mvp;
 
 import android.text.TextUtils;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
@@ -9,7 +10,9 @@ import com.example.user.adminforquiz.model.QuizConverter;
 import com.example.user.adminforquiz.model.api.NwQuiz;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.jakewharton.rxrelay2.BehaviorRelay;
+
 import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -52,7 +55,7 @@ public class CreateQuizPresenter extends MvpPresenter<CreateQuizView> {
         imageRelay.accept(imageUrl);
     }
 
-    public void backToAllQuizFragment() {
+    public void cancel() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
     }
 

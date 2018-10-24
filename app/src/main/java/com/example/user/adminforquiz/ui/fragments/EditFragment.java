@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +20,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
+import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.db.Quiz;
@@ -32,14 +31,13 @@ import com.example.user.adminforquiz.mvp.EditPresenter;
 import com.example.user.adminforquiz.mvp.EditView;
 import com.example.user.adminforquiz.ui.adapters.EditQuizRecyclerViewAdapter;
 
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
+import toothpick.Toothpick;
 
 public class EditFragment extends MvpAppCompatFragment implements EditView, EditQuizRecyclerViewAdapter.EditInterface {
     public final static String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
@@ -63,7 +61,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         return fragment;
     }
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit, container, false);
@@ -83,6 +80,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         setHasOptionsMenu(true);
     }
 
@@ -90,44 +88,8 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addTranslation:
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_add_translation, null);
-                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                mDialogBuilder.setView(view);
-                final EditText etEnterLangCode = view.findViewById(R.id.etEnterLangCode);
-                final EditText etEnterText = view.findViewById(R.id.etEnterTitle);
-                final EditText etEnterDescription = view.findViewById(R.id.etEnterDescription);
-                mDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                (dialog, id) -> {
-                                    editPresenter.addTranslation(etEnterLangCode.getText().toString(), etEnterText.getText().toString(), etEnterDescription.getText().toString());
-                                    dialog.cancel();
-                                })
-                        .setNegativeButton("Cancel",
-                                (dialog, id) -> dialog.cancel());
-
-                AlertDialog alertDialog = mDialogBuilder.create();
-                alertDialog.show();
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                TextWatcher watcher = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        String[] locales = Locale.getISOLanguages();
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(Arrays.asList(locales).contains(s.toString()));
-                    }
-                };
-                etEnterLangCode.addTextChangedListener(watcher);
+                editPresenter.goToAddTranslationFragment();
                 break;
-
             case R.id.deleteNwQuiz:
                 LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
                 @SuppressLint("InflateParams")
