@@ -1,20 +1,22 @@
 package com.example.user.adminforquiz.ui.adapters;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.di.GlideApp;
 import com.example.user.adminforquiz.model.db.Quiz;
+import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.AllQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
+import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,6 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (allQuizRecyclerViewItemList.get(position).type) {
@@ -61,6 +62,18 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 viewHolder.approved.setClickable(false);
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
+                viewHolder.flagLayout.removeAllViews();
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
+                    if (quizTranslation.langCode.contains("en")) {
+                        flagImage.setCountryCode("gb");
+                        viewHolder.flagLayout.addView(flagImage);
+                    }
+                    if (quizTranslation.langCode.contains("ru")) {
+                        flagImage.setCountryCode("ru");
+                        viewHolder.flagLayout.addView(flagImage);
+                    }
+                }
                 GlideApp
                         .with(holder.itemView.getContext())
                         .load(quiz.imageUrl)
@@ -93,6 +106,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         ImageView imageView;
         TextView dateCreated, dateUpdated;
         TextView tvDateCreated, tvDateUpdated;
+        LinearLayout flagLayout;
 
         QuizViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,6 +117,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
             tvDateCreated = itemView.findViewById(R.id.tvDateCreated);
             tvDateUpdated = itemView.findViewById(R.id.tvDateUpdated);
+            flagLayout = itemView.findViewById(R.id.flagLayout);
         }
     }
 

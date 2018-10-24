@@ -34,6 +34,9 @@ public abstract class QuizDao {
     @Query("SELECT * FROM Quiz ORDER BY id ASC")
     public abstract Flowable<List<Quiz>> getAll();
 
+    @Query("SELECT id FROM Quiz ORDER BY id ASC")
+    public abstract List<Long> getAllQuizIds();
+
     @Query("SELECT * FROM Quiz ORDER BY RANDOM() LIMIT :count")
     public abstract Flowable<List<Quiz>> getRandomQuizes(int count);
 
@@ -165,5 +168,14 @@ public abstract class QuizDao {
             quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id);
         }
         return quiz;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrases() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIds()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
     }
 }

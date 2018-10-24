@@ -63,7 +63,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadDataFromApiAndGetFromDb());
+        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.setQuizzesFromDb());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -122,7 +122,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                                 })
                         .setNegativeButton("Cancel",
                                 (dialog, id) -> dialog.cancel());
-
                 AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
                 alertDialogLogout.show();
                 break;
@@ -172,7 +171,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showBottomProgress(boolean showBottomProgress) {
-        ((AllQuizRecyclerViewAdapter) recyclerView.getAdapter()).showBottomProgress(showBottomProgress);
+        ((AllQuizRecyclerViewAdapter) Objects.requireNonNull(recyclerView.getAdapter())).showBottomProgress(showBottomProgress);
     }
 
     @Override

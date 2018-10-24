@@ -57,8 +57,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId),
                 (Function3<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) Triple::new
         )
-                .map(o ->
-                        quizDao.getQuizWithTranslationsAndPhrases(quizId))
+                .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(quiz ->
