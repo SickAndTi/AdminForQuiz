@@ -118,15 +118,11 @@ public abstract class QuizDao {
 
     @Transaction
     public Long insertQuizWithQuizTranslations(Quiz quiz) {
-
         if (quiz.quizTranslations != null) {
-
             for (int i = 0; i < quiz.quizTranslations.size(); i++) {
                 quiz.quizTranslations.get(i).quizId = quiz.id;
-
                 if (quiz.quizTranslations != null) {
                     QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
-
                     for (int j = 0; j < quizTranslation.quizTranslationPhrases.size(); j++) {
                         quizTranslation.quizTranslationPhrases.get(j).quizTranslationId = quizTranslation.id;
                     }
