@@ -8,15 +8,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -71,46 +68,12 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.createQuiz:
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.dialog_create_quiz, null);
-                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                mDialogBuilder.setView(view);
-                final EditText etEnterScpNumber = view.findViewById(R.id.etEnterScpNumber);
-                final EditText etEnterImageUrl = view.findViewById(R.id.etEnterImageUrl);
-                mDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                (dialog, id) -> {
-                                    allQuizPresenter.createNwQuiz(etEnterScpNumber.getText().toString(), etEnterImageUrl.getText().toString());
-                                    dialog.cancel();
-                                })
-                        .setNegativeButton("Cancel",
-                                (dialog, id) -> dialog.cancel());
-
-                AlertDialog alertDialog = mDialogBuilder.create();
-                alertDialog.show();
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                TextWatcher watcher = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.toString().startsWith(getString(R.string.http)));
-                    }
-                };
-                etEnterImageUrl.addTextChangedListener(watcher);
+                allQuizPresenter.goToCreateQuizFragment();
                 break;
 
             case R.id.logout:
                 LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams")
-                View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
+                @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
                 AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 mDialogBuilderLogout.setView(viewLogout);
                 mDialogBuilderLogout

@@ -18,6 +18,7 @@ import com.example.user.adminforquiz.mvp.MainPresenter;
 import com.example.user.adminforquiz.mvp.MainView;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.AuthFragment;
+import com.example.user.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.RegistrationFragment;
@@ -60,6 +61,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return OneQuizFragment.newInstance((Long) data);
                 case Constants.EDIT_SCREEN:
                     return EditFragment.newInstance((Long) data);
+                case Constants.CREATE_QUIZ_SCREEN:
+                    return CreateQuizFragment.newInstance();
                 default:
                     throw new RuntimeException("Unknown screen key !");
             }
