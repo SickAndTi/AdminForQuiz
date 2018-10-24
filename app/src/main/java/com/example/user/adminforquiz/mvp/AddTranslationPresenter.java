@@ -1,7 +1,6 @@
 package com.example.user.adminforquiz.mvp;
 
 import android.text.TextUtils;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;

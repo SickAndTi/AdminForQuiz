@@ -214,23 +214,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
     @Override
     public void onTranslationAddPhraseClicked(QuizTranslation quizTranslation) {
-        LayoutInflater inflaterPhrase = LayoutInflater.from(getContext());
-        @SuppressLint("InflateParams") View viewPhrase = inflaterPhrase.inflate(R.layout.dialog_add_translation_phrase, null);
-        AlertDialog.Builder mDialogBuilderPhrase = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        mDialogBuilderPhrase.setView(viewPhrase);
-        final EditText etAddingTextPhrase = viewPhrase.findViewById(R.id.etTranslationPhrase);
-        mDialogBuilderPhrase
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        (dialog, id) -> {
-                            editPresenter.addTranslationPhrase(quizTranslation.id, etAddingTextPhrase.getText().toString());
-                            dialog.cancel();
-                        })
-                .setNegativeButton("Cancel",
-                        (dialog, id) -> dialog.cancel());
-
-        AlertDialog alertDialogPhrase = mDialogBuilderPhrase.create();
-        alertDialogPhrase.show();
+        editPresenter.goToAddPhraseFragment(quizTranslation.id);
     }
 
     @Override

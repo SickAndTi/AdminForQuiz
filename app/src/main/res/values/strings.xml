@@ -11,7 +11,7 @@
     <string name="editQuiz">Edit Quiz</string>
     <string name="SaveChanges">Save Changes</string>
     <string name="addTranslation">Add Translation</string>
-    <string name="addTranslationPhrase">Add TranslationPhrase</string>
+    <string name="addTranslationPhrase">Add Phrase</string>
     <string name="addText">Add Text</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
@@ -26,7 +26,7 @@
     <string name="enterImageUrl">Enter Image Url</string>
     <string name="deleteTranslation">Delete Translation</string>
     <string name="deleteTranslationPhrase">Delete Phrase</string>
-    <string name="enterTranslationPhrase">Enter Translation Phrase</string>
+    <string name="enterTranslationPhrase">Enter Phrase</string>
     <string name="enterTitle">Enter Title</string>
     <string name="enterLogin">Enter Login</string>
     <string name="enterPassword">Enter Password</string>

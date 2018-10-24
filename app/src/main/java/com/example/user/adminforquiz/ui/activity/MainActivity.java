@@ -10,6 +10,7 @@ import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.mvp.MainPresenter;
 import com.example.user.adminforquiz.mvp.MainView;
+import com.example.user.adminforquiz.ui.fragments.AddPhraseFragment;
 import com.example.user.adminforquiz.ui.fragments.AddTranslationFragment;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.AuthFragment;
@@ -57,6 +58,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return CreateQuizFragment.newInstance();
                 case Constants.ADD_TRANSLATION_SCREEN:
                     return AddTranslationFragment.newInstance((Long) data);
+                case Constants.ADD_PHRASE_SCREEN:
+                    return AddPhraseFragment.newInstance((Long) data);
                 default:
                     throw new RuntimeException("Unknown screen key !");
             }
