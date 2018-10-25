@@ -19,18 +19,18 @@ import ru.terrakok.cicerone.Router;
 import toothpick.Toothpick;
 
 @InjectViewState
-public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
-    @Inject
-    ApiClient apiClient;
+public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTranslationDescriptionView> {
     @Inject
     QuizDao quizDao;
+    @Inject
+    ApiClient apiClient;
     @Inject
     Router router;
     @Inject
     QuizConverter quizConverter;
     private Long quizTranslationId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private BehaviorRelay<String> phraseRelay = BehaviorRelay.create();
+    private BehaviorRelay<String> descriptionRelay = BehaviorRelay.create();
 
     public void setQuizTranslationId(Long quizTranslationId) {
         this.quizTranslationId = quizTranslationId;
@@ -42,9 +42,24 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
     }
 
-    public void addPhrase() {
-        compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(quizTranslationId, phraseRelay.getValue())
-                .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizDao.getQuizIdByQuizTranslationId(quizTranslationId))))
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
+    }
+
+    public void onDescriptionChanged(String description) {
+        descriptionRelay.accept(description);
+        getViewState().enableButton(!TextUtils.isEmpty(descriptionRelay.getValue()));
+    }
+
+    public void cancel() {
+        router.backTo(Constants.EDIT_SCREEN);
+    }
+
+    public void updateDescription() {
+        compositeDisposable.add(apiClient.updateNwQuizTranslationDescription(quizTranslationId, descriptionRelay.getValue())
+                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizDao.getQuizIdByQuizTranslationId(quizTranslationId))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -52,20 +67,5 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
                 .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN)
                         , error -> getViewState().showError(error.toString())
                 ));
-    }
-
-    public void cancel() {
-        router.backTo(Constants.EDIT_SCREEN);
-    }
-
-    public void onPhraseChanged(String phrase) {
-        phraseRelay.accept(phrase);
-        getViewState().enableButton(!TextUtils.isEmpty(phraseRelay.getValue()));
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        compositeDisposable.clear();
     }
 }

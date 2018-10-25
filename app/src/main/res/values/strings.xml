@@ -19,7 +19,7 @@
     <string name="enterLangCode">Enter Language</string>
     <string name="enterDescription">Enter Description</string>
     <string name="createNwQuiz">Create Quiz</string>
-    <string name="updateNwQuizTranslationDescription">Update Description</string>
+    <string name="updateQuizTranslationDescription">Update Description</string>
     <string name="delete">Delete?</string>
     <string name="deleteNwQuiz">Delete Quiz</string>
     <string name="enterScpNumber">Enter ScpNumber</string>

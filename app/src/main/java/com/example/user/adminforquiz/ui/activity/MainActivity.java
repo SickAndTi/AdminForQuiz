@@ -18,6 +18,7 @@ import com.example.user.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.RegistrationFragment;
+import com.example.user.adminforquiz.ui.fragments.UpdateTranslationDescriptionFragment;
 
 import javax.inject.Inject;
 
@@ -60,6 +61,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return AddTranslationFragment.newInstance((Long) data);
                 case Constants.ADD_PHRASE_SCREEN:
                     return AddPhraseFragment.newInstance((Long) data);
+                case Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN:
+                    return UpdateTranslationDescriptionFragment.newInstance((Long) data);
                 default:
                     throw new RuntimeException("Unknown screen key !");
             }

@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -152,24 +151,12 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
     @Override
     public void onTranslationEditClicked(QuizTranslation quizTranslation) {
-        LayoutInflater inflaterUpDescription = LayoutInflater.from(getContext());
-        @SuppressLint("InflateParams") View viewUpDescription = inflaterUpDescription.inflate(R.layout.dialog_edit_translation_description, null);
-        AlertDialog.Builder mDialogBuilderUpDescription = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        mDialogBuilderUpDescription.setView(viewUpDescription);
-        final EditText etUpdateDescription = viewUpDescription.findViewById(R.id.etTranslationPhrase);
-        etUpdateDescription.setText(quizTranslation.description);
-        mDialogBuilderUpDescription
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        (dialog, id) -> {
-                            editPresenter.updateTranslationDescription(quizTranslation.id, etUpdateDescription.getText().toString());
-                            dialog.cancel();
-                        })
-                .setNegativeButton("Cancel",
-                        (dialog, id) -> dialog.cancel());
+        editPresenter.goToUpdateTranslationDescriptionFragment(quizTranslation.id);
+    }
 
-        AlertDialog alertDialogUpDescription = mDialogBuilderUpDescription.create();
-        alertDialogUpDescription.show();
+    @Override
+    public void onTranslationAddPhraseClicked(QuizTranslation quizTranslation) {
+        editPresenter.goToAddPhraseFragment(quizTranslation.id);
     }
 
     @Override
@@ -210,11 +197,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
         AlertDialog alertDialogDeleteTranslationPhrase = mDialogBuilderDeleteTranslationPhrase.create();
         alertDialogDeleteTranslationPhrase.show();
-    }
-
-    @Override
-    public void onTranslationAddPhraseClicked(QuizTranslation quizTranslation) {
-        editPresenter.goToAddPhraseFragment(quizTranslation.id);
     }
 
     @Override

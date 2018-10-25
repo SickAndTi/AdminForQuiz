@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -19,15 +18,12 @@ import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.mvp.AddPhrasePresenter;
 import com.example.user.adminforquiz.mvp.AddPhraseView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-
 import java.util.Objects;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class AddPhraseFragment extends MvpAppCompatFragment implements AddPhraseView {
 
     public static final String EXTRA_QUIZ_TRANSLATION_ID = "EXTRA_QUIZ_TRANSLATION_ID";
-    public static final String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     @InjectPresenter
     AddPhrasePresenter addPhrasePresenter;
