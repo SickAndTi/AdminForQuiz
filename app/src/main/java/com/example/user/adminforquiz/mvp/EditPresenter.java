@@ -60,55 +60,13 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(quiz ->
-                        getViewState().showEditQuiz(quiz)));
+                .subscribe(quiz -> getViewState().showEditQuiz(quiz)));
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear();
-    }
-
-    public void addTranslationPhrase(Long nwQuizTranslationId, String translationPhrase) {
-        preferences.setAccessToken(null);
-        compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(nwQuizTranslationId, translationPhrase)
-                .map(nwQuizTranslation ->
-                        quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable ->
-                        getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) ->
-                        getViewState().showProgress(false))
-                .subscribe(aLong -> {
-                        }, error ->
-                                getViewState().showError(error.toString())
-                ));
-    }
-
-    public void addTranslation(String langCode, String translationText, String translationDescription) {
-        compositeDisposable.add(apiClient.addNwQuizTranslation(quizId, langCode, translationText, translationDescription)
-                .map(nwQuiz -> quizDao.insertQuizWithQuizTranslations(quizConverter.convert(nwQuiz)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
-                .subscribe(aLong -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
-    }
-
-    public void updateTranslationDescription(Long quizTranslationId, String description) {
-        compositeDisposable.add(apiClient.updateNwQuizTranslationDescription(quizTranslationId, description)
-                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
-                .subscribe(aLong -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
     }
 
     public void deleteNwQuizById() {
@@ -161,5 +119,17 @@ public class EditPresenter extends MvpPresenter<EditView> {
 
     private void backToAllQuizFragment() {
         router.backTo(Constants.ALL_QUIZ_SCREEN);
+    }
+
+    public void goToAddTranslationFragment() {
+        router.navigateTo(Constants.ADD_TRANSLATION_SCREEN, quizId);
+    }
+
+    public void goToAddPhraseFragment(Long quizTranslationId) {
+        router.navigateTo(Constants.ADD_PHRASE_SCREEN, quizTranslationId);
+    }
+
+    public void goToUpdateTranslationDescriptionFragment(Long quizTranslationId) {
+        router.navigateTo(Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN, quizTranslationId);
     }
 }
