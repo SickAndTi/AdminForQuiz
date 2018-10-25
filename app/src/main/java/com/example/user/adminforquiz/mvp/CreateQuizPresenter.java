@@ -44,7 +44,7 @@ public class CreateQuizPresenter extends MvpPresenter<CreateQuizView> {
                 imageRelay,
                 (numberText, imageText) -> !TextUtils.isEmpty(numberText) && imageText.startsWith("http")
         )
-                .subscribe(aBoolean -> getViewState().enableButton(aBoolean)));
+                .subscribe(isValid -> getViewState().enableButton(isValid)));
     }
 
     public void onNumberChanged(String scpNumber) {

@@ -44,7 +44,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                 (login, password) ->
                         !TextUtils.isEmpty(login) && Patterns.EMAIL_ADDRESS.matcher(login).matches() && !TextUtils.isEmpty(password)
         )
-                .subscribe(aBoolean -> getViewState().enableButton(aBoolean)));
+                .subscribe(isValid -> getViewState().enableButton(isValid)));
     }
 
     private void goToAllQuizFragment() {

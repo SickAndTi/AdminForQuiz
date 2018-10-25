@@ -75,6 +75,11 @@ public class UpdateTranslationDescriptionFragment extends MvpAppCompatFragment i
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void setTranslationDescription(String descriptionText) {
+        etTranslationDescription.setText(descriptionText);
+    }
+
     @ProvidePresenter
     UpdateTranslationDescriptionPresenter provideUpdateTranslationDescription() {
         UpdateTranslationDescriptionPresenter updateTranslationDescriptionPresenter = new UpdateTranslationDescriptionPresenter();

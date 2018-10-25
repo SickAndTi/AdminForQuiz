@@ -1,6 +1,7 @@
 package com.example.user.adminforquiz.mvp;
 
 import android.text.TextUtils;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.user.adminforquiz.Constants;
@@ -10,7 +11,9 @@ import com.example.user.adminforquiz.model.db.dao.QuizDao;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import java.util.Arrays;
 import java.util.Locale;
+
 import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,10 +38,6 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
     private BehaviorRelay<String> descriptionRelay = BehaviorRelay.create();
     private String[] locales = Locale.getISOLanguages();
 
-    public Long getQuizId() {
-        return quizId;
-    }
-
     public void setQuizId(Long quizId) {
         this.quizId = quizId;
     }
@@ -52,7 +51,7 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
                 titleRelay,
                 descriptionRelay,
                 (langCodeText, titleText, descriptionText) -> !TextUtils.isEmpty(titleText) && !TextUtils.isEmpty(descriptionText) && Arrays.asList(locales).contains(langCodeText))
-                .subscribe(aBoolean -> getViewState().enableButton(aBoolean))
+                .subscribe(isValid -> getViewState().enableButton(isValid))
         );
     }
 

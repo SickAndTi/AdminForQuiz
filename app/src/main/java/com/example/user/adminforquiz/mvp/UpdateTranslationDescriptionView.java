@@ -9,4 +9,6 @@ public interface UpdateTranslationDescriptionView extends MvpView {
     void enableButton(boolean enableButton);
 
     void showError(String errorMessage);
+
+    void setTranslationDescription(String descriptionText);
 }

@@ -8,7 +8,6 @@ import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
-import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import javax.inject.Inject;
 
@@ -30,7 +29,7 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
     QuizConverter quizConverter;
     private Long quizTranslationId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private BehaviorRelay<String> phraseRelay = BehaviorRelay.create();
+    private String phraseText;
 
     public void setQuizTranslationId(Long quizTranslationId) {
         this.quizTranslationId = quizTranslationId;
@@ -43,14 +42,14 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
     }
 
     public void addPhrase() {
-        compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(quizTranslationId, phraseRelay.getValue())
+        compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(quizTranslationId, phraseText)
                 .map(nwQuizTranslation -> quizDao.insertQuizTranslationWithPhrases(quizConverter.convertTranslation(nwQuizTranslation, quizDao.getQuizIdByQuizTranslationId(quizTranslationId))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN)
-                        , error -> getViewState().showError(error.toString())
+                .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN),
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 
@@ -59,8 +58,8 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
     }
 
     public void onPhraseChanged(String phrase) {
-        phraseRelay.accept(phrase);
-        getViewState().enableButton(!TextUtils.isEmpty(phraseRelay.getValue()));
+        phraseText = phrase;
+        getViewState().enableButton(!TextUtils.isEmpty(phraseText));
     }
 
     @Override

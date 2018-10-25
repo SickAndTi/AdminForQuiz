@@ -52,6 +52,9 @@ public abstract class QuizDao {
     @Query("SELECT quizId FROM QuizTranslation WHERE id =:quizTranslationId")
     public abstract Long getQuizIdByQuizTranslationId(Long quizTranslationId);
 
+    @Query("SELECT description FROM QuizTranslation WHERE id = :quizTranslationId")
+    public abstract Single<String> getQuizTranslationDescriptionByQuizTranslationId(Long quizTranslationId);
+
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
     public abstract Flowable<List<QuizTranslation>> getQuizTranslationsByQuizIdWithUpdates(Long id);
 

@@ -8,7 +8,6 @@ import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.api.ApiClient;
 import com.example.user.adminforquiz.model.QuizConverter;
 import com.example.user.adminforquiz.model.db.dao.QuizDao;
-import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import javax.inject.Inject;
 
@@ -30,7 +29,7 @@ public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTr
     QuizConverter quizConverter;
     private Long quizTranslationId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private BehaviorRelay<String> descriptionRelay = BehaviorRelay.create();
+    private String descriptionText;
 
     public void setQuizTranslationId(Long quizTranslationId) {
         this.quizTranslationId = quizTranslationId;
@@ -40,6 +39,15 @@ public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTr
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+        compositeDisposable.add(
+                quizDao.getQuizTranslationDescriptionByQuizTranslationId(quizTranslationId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEvent((s, throwable) -> getViewState().showProgressBar(false))
+                        .subscribe(s -> getViewState().setTranslationDescription(s),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     @Override
@@ -49,8 +57,8 @@ public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTr
     }
 
     public void onDescriptionChanged(String description) {
-        descriptionRelay.accept(description);
-        getViewState().enableButton(!TextUtils.isEmpty(descriptionRelay.getValue()));
+        descriptionText = description;
+        getViewState().enableButton(!TextUtils.isEmpty(descriptionText));
     }
 
     public void cancel() {
@@ -58,14 +66,14 @@ public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTr
     }
 
     public void updateDescription() {
-        compositeDisposable.add(apiClient.updateNwQuizTranslationDescription(quizTranslationId, descriptionRelay.getValue())
+        compositeDisposable.add(apiClient.updateNwQuizTranslationDescription(quizTranslationId, descriptionText)
                 .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizDao.getQuizIdByQuizTranslationId(quizTranslationId))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN)
-                        , error -> getViewState().showError(error.toString())
+                .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN),
+                        error -> getViewState().showError(error.toString())
                 ));
     }
 }
