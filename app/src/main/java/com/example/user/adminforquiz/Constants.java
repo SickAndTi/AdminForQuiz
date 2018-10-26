@@ -11,6 +11,7 @@ public class Constants {
     public static final String ONE_QUIZ_SCREEN = "ONE_QUIZ_SCREEN";
     public static final String EDIT_SCREEN = "EDIT_SCREEN";
     public static final String AUTH_SCREEN = "AUTH_SCREEN";
+    public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String REGISTRATION_SCREEN = "REGISTRATION_SCREEN";
     public static final String CREATE_QUIZ_SCREEN = "CREATE_QUIZ_SCREEN";
     public static final String ADD_TRANSLATION_SCREEN = "ADD_TRANSLATION_SCREEN";
@@ -24,4 +25,5 @@ public class Constants {
     public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
     //scrollListener
     public static final int PAGE_SIZE = 10;
+
 }

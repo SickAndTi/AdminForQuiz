@@ -14,6 +14,7 @@ import com.example.user.adminforquiz.ui.fragments.AddPhraseFragment;
 import com.example.user.adminforquiz.ui.fragments.AddTranslationFragment;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.AuthFragment;
+import com.example.user.adminforquiz.ui.fragments.LoginFragment;
 import com.example.user.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
@@ -47,8 +48,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             switch (screenKey) {
                 case Constants.ALL_QUIZ_SCREEN:
                     return AllQuizFragment.newInstance();
-                case Constants.AUTH_SCREEN:
-                    return AuthFragment.newInstance();
+                case Constants.LOGIN_SCREEN:
+                    return LoginFragment.newInstance();
                 case Constants.REGISTRATION_SCREEN:
                     return RegistrationFragment.newInstance();
                 case Constants.ONE_QUIZ_SCREEN:
@@ -63,6 +64,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return AddPhraseFragment.newInstance((Long) data);
                 case Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN:
                     return UpdateTranslationDescriptionFragment.newInstance((Long) data);
+                case Constants.AUTH_SCREEN:
+                    return AuthFragment.newInstance();
                 default:
                     throw new RuntimeException("Unknown screen key !");
             }

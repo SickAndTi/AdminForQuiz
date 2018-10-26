@@ -43,4 +43,9 @@
     <string name="registration">Registration</string>
     <string name="repeatPassword">Repeat password</string>
     <string name="filter">Filter</string>
+    <string name="orConnectWith">Or connect with …</string>
+    <string-array name="authTabTitles">
+        <item>Sign Up</item>
+        <item>Login</item>
+    </string-array>
 </resources>

@@ -1,90 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        tools:ignore="UnusedAttribute" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/textAuthorization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:padding="16dp"
-        android:text="@string/authorization" />
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enterLogin">
-
-        <EditText
-            android:id="@+id/etEnterLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            tools:ignore="Autofill,LabelFor,TextFields" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enterPassword">
-
-        <EditText
-            android:id="@+id/etEnterPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            tools:ignore="Autofill,LabelFor,TextFields" />
-    </android.support.design.widget.TextInputLayout>
+        android:text="@string/orConnectWith" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnOK"
-            android:layout_width="wrap_content"
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/OK"
-            tools:ignore="ButtonStyle" />
+            android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/vkImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_vk_icon"
+            tools:ignore="ContentDescription" />
+
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/cancel"
-            tools:ignore="ButtonStyle" />
+            android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btnRegistration"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/googleImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_google"
+            tools:ignore="ContentDescription" />
+
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/goToRegScreen"
-            tools:ignore="ButtonStyle" />
+            android:layout_weight="1" />
 
+        <ImageView
+            android:id="@+id/faceBookImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_fb_icon"
+            tools:ignore="ContentDescription" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/flProgressBarAuth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
-
 </LinearLayout>
