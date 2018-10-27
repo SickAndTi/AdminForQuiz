@@ -14,30 +14,27 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.mvp.LoginPresenter;
-import com.example.user.adminforquiz.mvp.LoginView;
+import com.example.user.adminforquiz.mvp.SignInPresenter;
+import com.example.user.adminforquiz.mvp.SignInView;
 import com.example.user.adminforquiz.preference.MyPreferenceManager;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import toothpick.Toothpick;
 
-public class LoginFragment extends MvpAppCompatFragment implements LoginView {
+public class SignInFragment extends MvpAppCompatFragment implements SignInView {
     @InjectPresenter
-    LoginPresenter loginPresenter;
+    SignInPresenter signInPresenter;
     @Inject
     MyPreferenceManager preferences;
     EditText etEnterLogin, etEnterPassword;
-    Button btnOK, btnCancel, btnRegistration;
-    View progressBarAuth;
+    Button btnEnter;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
+    public static SignInFragment newInstance() {
+        return new SignInFragment();
     }
 
     @Override
@@ -49,26 +46,21 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_sign_in, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBarAuth = view.findViewById(R.id.flProgressBarAuth);
         etEnterLogin = view.findViewById(R.id.etEnterLogin);
         etEnterPassword = view.findViewById(R.id.etEnterPassword);
-        btnOK = view.findViewById(R.id.btnOK);
-        btnOK.setEnabled(false);
-        btnOK.setOnClickListener(v -> loginPresenter.authTry());
-        btnCancel = view.findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(v -> authCancel());
-        btnRegistration = view.findViewById(R.id.btnRegistration);
-        btnRegistration.setOnClickListener(v -> loginPresenter.goToRegistrationScreen());
+        btnEnter = view.findViewById(R.id.btnEnter);
+        btnEnter.setEnabled(false);
+        btnEnter.setOnClickListener(v -> signInPresenter.authTry());
         compositeDisposable.add(RxTextView.textChanges(etEnterLogin)
-                .subscribe(charSequence -> loginPresenter.onLoginChanged(charSequence.toString())));
+                .subscribe(charSequence -> signInPresenter.onLoginChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etEnterPassword)
-                .subscribe(charSequence -> loginPresenter.onPasswordChanged(charSequence.toString())));
+                .subscribe(charSequence -> signInPresenter.onPasswordChanged(charSequence.toString())));
     }
 
     @Override
@@ -77,22 +69,13 @@ public class LoginFragment extends MvpAppCompatFragment implements LoginView {
     }
 
     @Override
-    public void showProgressBar(boolean showProgressBar) {
-        progressBarAuth.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
     public void enableButton(boolean enableButton) {
-        btnOK.setEnabled(enableButton);
+        btnEnter.setEnabled(enableButton);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.clear();
-    }
-
-    public void authCancel() {
-        Objects.requireNonNull(getActivity()).finish();
     }
 }

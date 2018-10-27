@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -32,7 +31,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public static AuthFragment newInstance() {
         return new AuthFragment();
     }
-
 
     @Nullable
     @Override
@@ -78,9 +76,5 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
             }
         });
         tabLayout.getTabAt(0).select();
-//
-//        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.SimpleOnPageChangeListener();
-//        viewPager.addOnPageChangeListener(onPageChangeListener);
-//        onPageChangeListener.onPageSelected(1);
     }
 }

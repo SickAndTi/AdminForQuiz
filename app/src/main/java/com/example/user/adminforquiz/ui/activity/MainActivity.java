@@ -14,11 +14,11 @@ import com.example.user.adminforquiz.ui.fragments.AddPhraseFragment;
 import com.example.user.adminforquiz.ui.fragments.AddTranslationFragment;
 import com.example.user.adminforquiz.ui.fragments.AllQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.AuthFragment;
-import com.example.user.adminforquiz.ui.fragments.LoginFragment;
+import com.example.user.adminforquiz.ui.fragments.SignInFragment;
 import com.example.user.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.example.user.adminforquiz.ui.fragments.EditFragment;
 import com.example.user.adminforquiz.ui.fragments.OneQuizFragment;
-import com.example.user.adminforquiz.ui.fragments.RegistrationFragment;
+import com.example.user.adminforquiz.ui.fragments.SignUpFragment;
 import com.example.user.adminforquiz.ui.fragments.UpdateTranslationDescriptionFragment;
 
 import javax.inject.Inject;
@@ -48,10 +48,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             switch (screenKey) {
                 case Constants.ALL_QUIZ_SCREEN:
                     return AllQuizFragment.newInstance();
-                case Constants.LOGIN_SCREEN:
-                    return LoginFragment.newInstance();
-                case Constants.REGISTRATION_SCREEN:
-                    return RegistrationFragment.newInstance();
+                case Constants.SIGN_IN_SCREEN:
+                    return SignInFragment.newInstance();
+                case Constants.SIGN_UP_SCREEN:
+                    return SignUpFragment.newInstance();
                 case Constants.ONE_QUIZ_SCREEN:
                     return OneQuizFragment.newInstance((Long) data);
                 case Constants.EDIT_SCREEN:

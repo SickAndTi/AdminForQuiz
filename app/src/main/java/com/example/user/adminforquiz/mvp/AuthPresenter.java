@@ -6,4 +6,8 @@ import com.arellomobile.mvp.MvpPresenter;
 @InjectViewState
 public class AuthPresenter extends MvpPresenter<AuthView> {
 
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+    }
 }

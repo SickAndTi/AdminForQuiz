@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.user.adminforquiz.ui.fragments.LoginFragment;
-import com.example.user.adminforquiz.ui.fragments.RegistrationFragment;
+import com.example.user.adminforquiz.ui.fragments.SignInFragment;
+import com.example.user.adminforquiz.ui.fragments.SignUpFragment;
 
 public class AuthPagerAdapter extends FragmentPagerAdapter {
 
@@ -22,9 +22,9 @@ public class AuthPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return LoginFragment.newInstance();
+                return SignInFragment.newInstance();
             case 1:
-                return RegistrationFragment.newInstance();
+                return SignUpFragment.newInstance();
             default:
                 throw new IllegalArgumentException("Unexpected position: " + position);
         }

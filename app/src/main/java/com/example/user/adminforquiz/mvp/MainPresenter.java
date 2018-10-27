@@ -10,7 +10,6 @@ import com.example.user.adminforquiz.preference.MyPreferenceManager;
 import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Router;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState

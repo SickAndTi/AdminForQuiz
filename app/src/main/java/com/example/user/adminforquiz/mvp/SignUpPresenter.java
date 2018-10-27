@@ -16,7 +16,7 @@ import ru.terrakok.cicerone.Router;
 import toothpick.Toothpick;
 
 @InjectViewState
-public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
+public class SignUpPresenter extends MvpPresenter<SignUpView> {
 
     @Inject
     Router router;
@@ -36,7 +36,7 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
                 passwordRelayReg,
                 passwordRepeatRelayReg,
                 (login, password, passwordRepeat) -> !TextUtils.isEmpty(login) && !TextUtils.isEmpty(login) && password.matches(passwordRepeat))
-                .subscribe(aBoolean -> getViewState().enableButton(aBoolean))
+                .subscribe(isValid -> getViewState().enableButton(isValid))
         );
     }
 
@@ -60,9 +60,5 @@ public class RegistrationPresenter extends MvpPresenter<RegistrationView> {
 
     public void regUser() {
         // TODO server registration method
-    }
-
-    public void backToAuthScreen() {
-        router.backTo(Constants.AUTH_SCREEN);
     }
 }

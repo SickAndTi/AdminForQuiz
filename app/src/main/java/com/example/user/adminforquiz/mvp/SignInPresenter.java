@@ -21,7 +21,7 @@ import ru.terrakok.cicerone.Router;
 import toothpick.Toothpick;
 
 @InjectViewState
-public class LoginPresenter extends MvpPresenter<LoginView> {
+public class SignInPresenter extends MvpPresenter<SignInView> {
     @Inject
     Router router;
     @Inject
@@ -71,10 +71,6 @@ public class LoginPresenter extends MvpPresenter<LoginView> {
                                 goToAllQuizFragment(),
                         error ->
                                 getViewState().showError(error.toString())));
-    }
-
-    public void goToRegistrationScreen() {
-        router.navigateTo(Constants.REGISTRATION_SCREEN);
     }
 
     public void onLoginChanged(String login) {
