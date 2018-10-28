@@ -48,7 +48,7 @@
     <string name="registrationRu">Зарегистрироваться</string>
     <string name="confirmPassword">Confirm password</string>
     <string-array name="authTabTitles">
-        <item>Sign In</item>
-        <item>Sign Up</item>
+        <item>SIGN IN</item>
+        <item>SIGN UP</item>
     </string-array>
 </resources>

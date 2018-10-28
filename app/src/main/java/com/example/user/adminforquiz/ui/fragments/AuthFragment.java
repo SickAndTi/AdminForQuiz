@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,33 +49,17 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         googleImage = view.findViewById(R.id.googleImage);
         faceBookImage = view.findViewById(R.id.faceBookImage);
         authPagerAdapter = new AuthPagerAdapter(getChildFragmentManager());
-
         viewPager.setAdapter(authPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
         String[] tabTitles = getResources().getStringArray(R.array.authTabTitles);
+
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);//TODO inflate TextView with parameters into this
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
             TextView textView = new TextView(getContext());
             textView.setText(tabTitles[i]);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(getResources().getColor(R.color.black));
             tab.setCustomView(textView);
         }
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackgroundResource(R.color.selectTabColor);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackgroundResource(android.R.color.transparent);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                tab.getCustomView().setBackgroundResource(R.color.selectTabColor);
-            }
-        });
-        tabLayout.getTabAt(0).select();
     }
 }
