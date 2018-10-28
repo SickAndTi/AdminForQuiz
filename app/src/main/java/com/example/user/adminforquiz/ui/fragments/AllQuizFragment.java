@@ -56,6 +56,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.allquiz_menu);
         toolbar.setTitle(R.string.app_name);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.createQuiz:

@@ -6,5 +6,6 @@
     <color name="selectTabColor">#636AB6FC</color>
     <color name="buttonAuthColor">#6AB6FC</color>#636AB6FC
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="backGroundColor">#EDEDED</color>
 </resources>
