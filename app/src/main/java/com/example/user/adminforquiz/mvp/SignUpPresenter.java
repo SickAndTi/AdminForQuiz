@@ -22,6 +22,7 @@ public class SignUpPresenter extends MvpPresenter<SignUpView> {
     Router router;
     @Inject
     ApiClient apiClient;
+    private BehaviorRelay<String> nameRelayReg = BehaviorRelay.create();
     private BehaviorRelay<String> loginRelayReg = BehaviorRelay.create();
     private BehaviorRelay<String> passwordRelayReg = BehaviorRelay.create();
     private BehaviorRelay<String> passwordRepeatRelayReg = BehaviorRelay.create();
@@ -32,10 +33,11 @@ public class SignUpPresenter extends MvpPresenter<SignUpView> {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         compositeDisposable.add(Observable.combineLatest(
+                nameRelayReg,
                 loginRelayReg,
                 passwordRelayReg,
                 passwordRepeatRelayReg,
-                (login, password, passwordRepeat) -> !TextUtils.isEmpty(login) && !TextUtils.isEmpty(login) && password.matches(passwordRepeat))
+                (name, login, password, passwordRepeat) -> !TextUtils.isEmpty(name) && !TextUtils.isEmpty(login) && !TextUtils.isEmpty(password) && password.matches(passwordRepeat))
                 .subscribe(isValid -> getViewState().enableButton(isValid))
         );
     }
@@ -44,6 +46,10 @@ public class SignUpPresenter extends MvpPresenter<SignUpView> {
     public void onDestroy() {
         super.onDestroy();
         compositeDisposable.clear();
+    }
+
+    public void onNameChanged(String name) {
+        nameRelayReg.accept(name);
     }
 
     public void onLoginRegChanged(String loginReg) {

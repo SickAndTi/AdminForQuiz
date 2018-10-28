@@ -47,6 +47,9 @@
     <string name="enter">Войти</string>
     <string name="registrationRu">Зарегистрироваться</string>
     <string name="confirmPassword">Confirm password</string>
+    <string name="password">Password</string>
+    <string name="email">E-mail</string>
+    <string name="name">Name</string>
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
         <item>SIGN UP</item>

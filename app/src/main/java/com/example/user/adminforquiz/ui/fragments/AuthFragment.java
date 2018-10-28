@@ -46,8 +46,11 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         vkImage = view.findViewById(R.id.vkImage);
+        vkImage.setOnClickListener(v -> authPresenter.regViaVk());
         googleImage = view.findViewById(R.id.googleImage);
+        googleImage.setOnClickListener(v -> authPresenter.regViaGoogle());
         faceBookImage = view.findViewById(R.id.faceBookImage);
+        faceBookImage.setOnClickListener(v -> authPresenter.regViaFacebook());
         authPagerAdapter = new AuthPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(authPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

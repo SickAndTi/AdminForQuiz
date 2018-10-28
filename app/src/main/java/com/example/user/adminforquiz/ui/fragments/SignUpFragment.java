@@ -25,7 +25,7 @@ public class SignUpFragment extends MvpAppCompatFragment implements SignUpView {
     @InjectPresenter
     SignUpPresenter signUpPresenter;
     Button btnOK;
-    EditText etLoginReg, etPasswordReg, etRepeatPasswordReg;
+    EditText etLoginReg, etPasswordReg, etRepeatPasswordReg, etName;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static SignUpFragment newInstance() {
@@ -50,9 +50,12 @@ public class SignUpFragment extends MvpAppCompatFragment implements SignUpView {
         btnOK = view.findViewById(R.id.btnOkReg);
         btnOK.setEnabled(false);
         btnOK.setOnClickListener(v -> signUpPresenter.regUser());
+        etName = view.findViewById(R.id.etName);
         etLoginReg = view.findViewById(R.id.etEnterLoginReg);
         etPasswordReg = view.findViewById(R.id.etEnterPasswordReg);
         etRepeatPasswordReg = view.findViewById(R.id.etRepeatPasswordReg);
+        compositeDisposable.add(RxTextView.textChanges(etName)
+                .subscribe(charSequence -> signUpPresenter.onNameChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etLoginReg)
                 .subscribe(charSequence -> signUpPresenter.onLoginRegChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etPasswordReg)
