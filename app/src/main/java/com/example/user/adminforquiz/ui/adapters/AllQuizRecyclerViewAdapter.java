@@ -58,6 +58,9 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 QuizViewHolder viewHolder = (QuizViewHolder) holder;
                 Quiz quiz = (Quiz) allQuizRecyclerViewItemList.get(position).data;
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    viewHolder.tvTitle.setText(quizTranslation.translation);
+                }
                 viewHolder.approved.setChecked(quiz.approved);
                 viewHolder.approved.setClickable(false);
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
@@ -67,9 +70,15 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
                     if (quizTranslation.langCode.contains("en")) {
                         flagImage.setCountryCode("gb");
+                        flagImage.setMaxWidth(50);
+                        flagImage.setMaxHeight(38);
+                        flagImage.setPadding(6, 6, 6, 6);
                         viewHolder.flagLayout.addView(flagImage);
                     } else if (quizTranslation.langCode.contains("ru")) {
                         flagImage.setCountryCode("ru");
+                        flagImage.setMaxWidth(50);
+                        flagImage.setMaxHeight(38);
+                        flagImage.setPadding(6, 6, 6, 6);
                         viewHolder.flagLayout.addView(flagImage);
                     }
                 }
@@ -101,6 +110,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     static class QuizViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvScpNumber;
+        TextView tvTitle;
         Switch approved;
         ImageView imageView;
         TextView dateCreated, dateUpdated;
@@ -110,6 +120,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         QuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
             approved = itemView.findViewById(R.id.approved);
             imageView = itemView.findViewById(R.id.imageView);
             dateCreated = itemView.findViewById(R.id.dateCreated);

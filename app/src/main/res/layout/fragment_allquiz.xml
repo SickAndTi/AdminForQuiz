@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C4C4C4"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -20,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#c3c3c3"
+        android:background="#C4C4C4"
         android:orientation="vertical">
 
         <android.support.v4.widget.SwipeRefreshLayout

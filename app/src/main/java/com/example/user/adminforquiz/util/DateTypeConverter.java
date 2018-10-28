@@ -1,5 +1,6 @@
 package com.example.user.adminforquiz.util;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.TypeConverter;
 
 import java.text.ParseException;
@@ -9,10 +10,11 @@ import java.util.Locale;
 
 public class DateTypeConverter {
 
+    @SuppressLint("ConstantLocale")
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", Locale.getDefault());
-
-    private static final SimpleDateFormat DATE_SHOW = new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.getDefault());
+    @SuppressLint("ConstantLocale")
+    private static final SimpleDateFormat DATE_SHOW = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
     public static String formatDate(Date date) {
         return DATE_SHOW.format(date);
