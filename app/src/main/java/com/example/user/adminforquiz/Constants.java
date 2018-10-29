@@ -11,8 +11,6 @@ public class Constants {
     public static final String ONE_QUIZ_SCREEN = "ONE_QUIZ_SCREEN";
     public static final String EDIT_SCREEN = "EDIT_SCREEN";
     public static final String AUTH_SCREEN = "AUTH_SCREEN";
-    public static final String SIGN_IN_SCREEN = "SIGN_IN_SCREEN";
-    public static final String SIGN_UP_SCREEN = "SIGN_UP_SCREEN";
     public static final String CREATE_QUIZ_SCREEN = "CREATE_QUIZ_SCREEN";
     public static final String ADD_TRANSLATION_SCREEN = "ADD_TRANSLATION_SCREEN";
     public static final String ADD_PHRASE_SCREEN = "ADD_PHRASE_SCREEN";

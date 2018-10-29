@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape>
-            <solid android:color="@color/buttonAuthColor" />
-            <corners android:radius="90dp" />
-        </shape>
-    </item>
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/buttonAuthColor" />
+    <corners android:radius="90dp" />
+</shape>

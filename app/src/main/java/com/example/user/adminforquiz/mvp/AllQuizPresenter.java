@@ -42,7 +42,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void loadQuizzesFromPage(int page) {
-        getViewState().enableScrollListner(false);
+//        getViewState().enableScrollListner(false);
         if (page > 1) {
             getViewState().showBottomProgress(true);
         }
@@ -75,7 +75,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .subscribe(quizzes -> {
                                     getViewState().showSwipeRefresherBar(false);
                                     getViewState().showQuizList(quizzes);
-                                    getViewState().enableScrollListner(true);
+//                                    getViewState().enableScrollListner(true);
                                 },
                                 error -> {
                                     getViewState().showError(error.toString());

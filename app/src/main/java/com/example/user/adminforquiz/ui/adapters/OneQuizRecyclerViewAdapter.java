@@ -15,6 +15,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.OneQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
+import com.example.user.adminforquiz.util.DimensionUtils;
 import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
@@ -70,15 +71,15 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
                     if (quizTranslation.langCode.contains("en")) {
                         flagImage.setCountryCode("gb");
-                        flagImage.setMaxWidth(70);
-                        flagImage.setMaxHeight(50);
-                        flagImage.setPadding(8, 8, 8, 8);
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
                         viewHolder.flagLayout.addView(flagImage);
                     } else if (quizTranslation.langCode.contains("ru")) {
                         flagImage.setCountryCode("ru");
-                        flagImage.setMaxWidth(70);
-                        flagImage.setMaxHeight(50);
-                        flagImage.setPadding(8, 8, 8, 8);
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
                         viewHolder.flagLayout.addView(flagImage);
                     }
                 }

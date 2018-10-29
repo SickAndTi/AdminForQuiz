@@ -16,6 +16,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.AllQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
+import com.example.user.adminforquiz.util.DimensionUtils;
 import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
@@ -70,15 +71,15 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
                     if (quizTranslation.langCode.contains("en")) {
                         flagImage.setCountryCode("gb");
-                        flagImage.setMaxWidth(50);
-                        flagImage.setMaxHeight(38);
-                        flagImage.setPadding(6, 6, 6, 6);
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(38));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6));
                         viewHolder.flagLayout.addView(flagImage);
                     } else if (quizTranslation.langCode.contains("ru")) {
                         flagImage.setCountryCode("ru");
-                        flagImage.setMaxWidth(50);
-                        flagImage.setMaxHeight(38);
-                        flagImage.setPadding(6, 6, 6, 6);
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(38));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6));
                         viewHolder.flagLayout.addView(flagImage);
                     }
                 }
