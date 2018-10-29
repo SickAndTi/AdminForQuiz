@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.user.adminforquiz.R;
 import com.example.user.adminforquiz.di.GlideApp;
@@ -17,6 +18,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.db.QuizTranslationPhrase;
 import com.example.user.adminforquiz.model.ui.OneQuizRecyclerViewItem;
+import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,29 +67,48 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (oneQuizRecyclerViewItemList.get(position).type) {
             case QUIZ:
-                EditOneQuizViewHolder editOneQuizViewHolder = (EditOneQuizViewHolder) viewHolder;
+                EditOneQuizViewHolder viewHolder = (EditOneQuizViewHolder) holder;
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
-                editOneQuizViewHolder.approved.setChecked(quiz.approved);
-                editOneQuizViewHolder.approved.setOnCheckedChangeListener((buttonView, isChecked) -> editInterface.onApproveQuizClicked(quiz));
-                editOneQuizViewHolder.etScpNumber.setText(quiz.scpNumber);
+                viewHolder.approved.setChecked(quiz.approved);
+                viewHolder.approved.setOnCheckedChangeListener((buttonView, isChecked) -> editInterface.onApproveQuizClicked(quiz));
+                viewHolder.tvScpNumber.setText(quiz.scpNumber);
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    viewHolder.tvTitleTranslation.setText(quizTranslation.translation);
+                }
+                viewHolder.flagLayout.removeAllViews();
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
+                    if (quizTranslation.langCode.contains("en")) {
+                        flagImage.setCountryCode("gb");
+                        flagImage.setMaxWidth(70);
+                        flagImage.setMaxHeight(50);
+                        flagImage.setPadding(8, 8, 8, 8);
+                        viewHolder.flagLayout.addView(flagImage);
+                    } else if (quizTranslation.langCode.contains("ru")) {
+                        flagImage.setCountryCode("ru");
+                        flagImage.setMaxWidth(70);
+                        flagImage.setMaxHeight(50);
+                        flagImage.setPadding(8, 8, 8, 8);
+                        viewHolder.flagLayout.addView(flagImage);
+                    }
+                }
                 GlideApp
                         .with(viewHolder.itemView.getContext())
                         .load(quiz.imageUrl)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
-                        .into(editOneQuizViewHolder.imageView);
+                        .into(viewHolder.imageView);
                 break;
             case QUIZ_TRANSLATION:
-                EditOneQuizTranslationViewHolder editOneQuizTranslationViewHolder = (EditOneQuizTranslationViewHolder) viewHolder;
+                EditOneQuizTranslationViewHolder editOneQuizTranslationViewHolder = (EditOneQuizTranslationViewHolder) holder;
                 QuizTranslation quizTranslation = (QuizTranslation) oneQuizRecyclerViewItemList.get(position).data;
-                editOneQuizTranslationViewHolder.etQuizTitle.setText(quizTranslation.translation);
-                editOneQuizTranslationViewHolder.etQuizDescription.setText(quizTranslation.description);
+                editOneQuizTranslationViewHolder.tvQuizTitle.setText(quizTranslation.translation);
+                editOneQuizTranslationViewHolder.tvQuizDescription.setText(quizTranslation.description);
                 editOneQuizTranslationViewHolder.btnDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 editOneQuizTranslationViewHolder.etPhrasesLayout.removeAllViews();
-//                for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
                 for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
                     EditText editText = new EditText(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
                     editText.setText(quizTranslationPhrase.translation);
@@ -97,8 +118,8 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     btnDeleteTranslationPhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
                 }
-                editOneQuizTranslationViewHolder.etQuizDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
-                editOneQuizTranslationViewHolder.etQuizTitle.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
+                editOneQuizTranslationViewHolder.tvQuizDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
+                editOneQuizTranslationViewHolder.tvQuizTitle.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
                 break;
         }
     }
@@ -106,7 +127,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return oneQuizRecyclerViewItemList.size();
-
     }
 
     @Override
@@ -116,29 +136,33 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     static class EditOneQuizViewHolder extends RecyclerView.ViewHolder {
 
-        EditText etScpNumber;
+        TextView tvScpNumber;
         Switch approved;
         ImageView imageView;
+        TextView tvTitleTranslation;
+        LinearLayout flagLayout;
 
         EditOneQuizViewHolder(@NonNull View itemView) {
             super(itemView);
-            etScpNumber = itemView.findViewById(R.id.etScpNumber);
+            tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
             approved = itemView.findViewById(R.id.approved);
             imageView = itemView.findViewById(R.id.imageView);
+            tvTitleTranslation = itemView.findViewById(R.id.tvTitleTranslation);
+            flagLayout = itemView.findViewById(R.id.flagLayout);
         }
     }
 
     static class EditOneQuizTranslationViewHolder extends RecyclerView.ViewHolder {
-        EditText etQuizTitle;
-        EditText etQuizDescription;
+        TextView tvQuizTitle;
+        TextView tvQuizDescription;
         LinearLayout etPhrasesLayout;
         Button btnDeleteTranslation;
 
         EditOneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
             etPhrasesLayout = itemView.findViewById(R.id.etPhrasesLayout);
-            etQuizTitle = itemView.findViewById(R.id.etQuizTitle);
-            etQuizDescription = itemView.findViewById(R.id.etQuizDescription);
+            tvQuizTitle = itemView.findViewById(R.id.tvQuizTitle);
+            tvQuizDescription = itemView.findViewById(R.id.tvQuizDescription);
             btnDeleteTranslation = itemView.findViewById(R.id.btnDeleteTranslation);
         }
     }

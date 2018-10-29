@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backGroundColor"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etQuizTitle"
+    <TextView
+        android:id="@+id/tvQuizTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:importantForAutofill="no"
-        android:inputType="text"
         android:padding="16dp"
-        tools:ignore="LabelFor"
-        tools:targetApi="o" />
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/etQuizDescription"
+    <TextView
+        android:id="@+id/tvQuizDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:importantForAutofill="no"
-        android:inputType="text"
         android:padding="16dp"
-        tools:ignore="LabelFor"
-        tools:targetApi="o" />
+        android:textSize="16sp"
+        />
 
     <Button
         android:id="@+id/btnDeleteTranslation"

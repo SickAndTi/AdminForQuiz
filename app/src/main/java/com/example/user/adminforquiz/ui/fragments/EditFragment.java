@@ -7,10 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -50,6 +48,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
     Router router;
     RecyclerView recyclerViewEditQuiz;
     View progressBarEdit;
+    Toolbar toolbar;
     EditQuizRecyclerViewAdapter editQuizRecyclerViewAdapter;
 
     public static EditFragment newInstance(Long quizId) {
@@ -62,15 +61,43 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_edit, container, false);
-        recyclerViewEditQuiz = view.findViewById(R.id.recyclerViewEditQuiz);
-        progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
-        return view;
+        return inflater.inflate(R.layout.fragment_edit, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.edit_menu);
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.addTranslation:
+                    editPresenter.goToAddTranslationFragment();
+                    break;
+                case R.id.deleteNwQuiz:
+                    LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
+                    @SuppressLint("InflateParams")
+                    View viewDelete = inflaterDelete.inflate(R.layout.dialog_delete, null);
+                    AlertDialog.Builder mDialogBuilderDelete = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    mDialogBuilderDelete.setView(viewDelete);
+                    mDialogBuilderDelete
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    (dialog, id) -> {
+                                        editPresenter.deleteNwQuizById();
+                                        dialog.cancel();
+                                    })
+                            .setNegativeButton("Cancel",
+                                    (dialog, id) -> dialog.cancel());
+
+                    AlertDialog alertDialogDelete = mDialogBuilderDelete.create();
+                    alertDialogDelete.show();
+                    break;
+            }
+            return super.onOptionsItemSelected(menuItem);
+        });
+        recyclerViewEditQuiz = view.findViewById(R.id.recyclerViewEditQuiz);
+        progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
         recyclerViewEditQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
         editQuizRecyclerViewAdapter = new EditQuizRecyclerViewAdapter(this);
         recyclerViewEditQuiz.setAdapter(editQuizRecyclerViewAdapter);
@@ -81,42 +108,6 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         super.onCreate(savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.addTranslation:
-                editPresenter.goToAddTranslationFragment();
-                break;
-            case R.id.deleteNwQuiz:
-                LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams")
-                View viewDelete = inflaterDelete.inflate(R.layout.dialog_delete, null);
-                AlertDialog.Builder mDialogBuilderDelete = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                mDialogBuilderDelete.setView(viewDelete);
-                mDialogBuilderDelete
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                (dialog, id) -> {
-                                    editPresenter.deleteNwQuizById();
-                                    dialog.cancel();
-                                })
-                        .setNegativeButton("Cancel",
-                                (dialog, id) -> dialog.cancel());
-
-                AlertDialog alertDialogDelete = mDialogBuilderDelete.create();
-                alertDialogDelete.show();
-                break;
-        }
-        return super.
-                onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.edit_menu, menu);
     }
 
     @ProvidePresenter
