@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -30,8 +30,8 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     OneQuizPresenter oneQuizPresenter;
     RecyclerView recyclerViewOneQuiz;
     OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter;
-    Button editQuiz;
     View progressBarEdit;
+    Toolbar toolbar;
     public final static String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
 
     public static OneQuizFragment newInstance(Long quizId) {
@@ -51,9 +51,17 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.onequiz_menu);
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.editQuiz:
+                    oneQuizPresenter.goToEditQuiz();
+                    break;
+            }
+            return super.onOptionsItemSelected(menuItem);
+        });
         progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
-        editQuiz = view.findViewById(R.id.editQuiz);
-        editQuiz.setOnClickListener(v -> oneQuizPresenter.goToEditQuiz());
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
         recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
         oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();

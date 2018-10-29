@@ -80,6 +80,9 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                     AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
                     alertDialogLogout.show();
                     break;
+
+                case R.id.filter:
+                    //TODO filters
             }
             return super.onOptionsItemSelected(menuItem);
         });

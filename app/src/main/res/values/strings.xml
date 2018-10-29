@@ -54,8 +54,13 @@
     <string name="langTextRu">Язык</string>
     <string name="dateCreatedRu">Дата Создания</string>
     <string name="dateUpdatedRu">Дата Обновления</string>
+    <string name="auth">Авторизация</string>
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
         <item>SIGN UP</item>
+    </string-array>
+    <string-array name="toolBarAuthTitles">
+        <item>Авторизация</item>
+        <item>Регистрация</item>
     </string-array>
 </resources>

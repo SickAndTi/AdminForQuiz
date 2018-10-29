@@ -28,6 +28,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     ViewPager viewPager;
     ImageView vkImage, googleImage, faceBookImage;
     AuthPagerAdapter authPagerAdapter;
+    TextView toolbarTitle;
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
@@ -43,6 +44,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         toolbar = view.findViewById(R.id.toolbar);
+        toolbarTitle = view.findViewById(R.id.toolbarTitle);
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         vkImage = view.findViewById(R.id.vkImage);
@@ -55,7 +57,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         viewPager.setAdapter(authPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         String[] tabTitles = getResources().getStringArray(R.array.authTabTitles);
-
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             TextView textView = new TextView(getContext());
