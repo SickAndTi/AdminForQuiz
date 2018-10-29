@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -110,9 +109,9 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 editOneQuizTranslationViewHolder.btnDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 editOneQuizTranslationViewHolder.etPhrasesLayout.removeAllViews();
                 for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
-                    EditText editText = new EditText(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
-                    editText.setText(quizTranslationPhrase.translation);
-                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(editText);
+                    TextView textView = new TextView(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
+                    textView.setText(quizTranslationPhrase.translation);
+                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(textView);
                     Button btnDeleteTranslationPhrase = new Button(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
                     btnDeleteTranslationPhrase.setText(R.string.deleteTranslationPhrase);
                     btnDeleteTranslationPhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));

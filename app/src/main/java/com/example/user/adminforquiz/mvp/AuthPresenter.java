@@ -20,7 +20,6 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     @Inject
     Router router;
 
-
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -28,14 +27,14 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     }
 
     public void regViaVk() {
-        //TODO
+        //TODO получить email ФИО и ссылку на аватарку
     }
 
     public void regViaGoogle() {
-        //TODO
+        //TODO получть токен
     }
 
     public void regViaFacebook() {
-        //TODO
+        //TODO получить токен
     }
 }
