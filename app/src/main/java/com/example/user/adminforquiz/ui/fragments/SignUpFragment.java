@@ -14,24 +14,22 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.user.adminforquiz.Constants;
 import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.mvp.RegistrationPresenter;
-import com.example.user.adminforquiz.mvp.RegistrationView;
+import com.example.user.adminforquiz.mvp.SignUpPresenter;
+import com.example.user.adminforquiz.mvp.SignUpView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.disposables.CompositeDisposable;
 import toothpick.Toothpick;
 
-public class RegistrationFragment extends MvpAppCompatFragment implements RegistrationView {
+public class SignUpFragment extends MvpAppCompatFragment implements SignUpView {
     @InjectPresenter
-    RegistrationPresenter registrationPresenter;
-    View flProgressBarRegistration;
-    Button btnOK, btnCancel;
-    EditText etLoginReg, etPasswordReg, etRepeatPasswordReg;
+    SignUpPresenter signUpPresenter;
+    Button btnOK;
+    EditText etLoginReg, etPasswordReg, etRepeatPasswordReg, etName;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-
-    public static RegistrationFragment newInstance() {
-        return new RegistrationFragment();
+    public static SignUpFragment newInstance() {
+        return new SignUpFragment();
     }
 
     @Override
@@ -43,32 +41,27 @@ public class RegistrationFragment extends MvpAppCompatFragment implements Regist
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        flProgressBarRegistration = view.findViewById(R.id.flProgressBarRegistration);
         btnOK = view.findViewById(R.id.btnOkReg);
         btnOK.setEnabled(false);
-        btnOK.setOnClickListener(v -> registrationPresenter.regUser());
-        btnCancel = view.findViewById(R.id.btnCancelReg);
-        btnCancel.setOnClickListener(v -> registrationPresenter.backToAuthScreen());
+        btnOK.setOnClickListener(v -> signUpPresenter.regUser());
+        etName = view.findViewById(R.id.etName);
         etLoginReg = view.findViewById(R.id.etEnterLoginReg);
         etPasswordReg = view.findViewById(R.id.etEnterPasswordReg);
         etRepeatPasswordReg = view.findViewById(R.id.etRepeatPasswordReg);
+        compositeDisposable.add(RxTextView.textChanges(etName)
+                .subscribe(charSequence -> signUpPresenter.onNameChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etLoginReg)
-                .subscribe(charSequence -> registrationPresenter.onLoginRegChanged(charSequence.toString())));
+                .subscribe(charSequence -> signUpPresenter.onLoginRegChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etPasswordReg)
-                .subscribe(charSequence -> registrationPresenter.onPasswordRegChanged(charSequence.toString())));
+                .subscribe(charSequence -> signUpPresenter.onPasswordRegChanged(charSequence.toString())));
         compositeDisposable.add(RxTextView.textChanges(etRepeatPasswordReg)
-                .subscribe(charSequence -> registrationPresenter.onPasswordRepeatRegChanged(charSequence.toString())));
-    }
-
-    @Override
-    public void showProgressBar(boolean showProgressBar) {
-        flProgressBarRegistration.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+                .subscribe(charSequence -> signUpPresenter.onPasswordRepeatRegChanged(charSequence.toString())));
     }
 
     @Override

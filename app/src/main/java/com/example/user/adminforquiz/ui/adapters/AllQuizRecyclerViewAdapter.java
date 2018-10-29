@@ -16,6 +16,7 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.AllQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
+import com.example.user.adminforquiz.util.DimensionUtils;
 import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
@@ -58,6 +59,9 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 QuizViewHolder viewHolder = (QuizViewHolder) holder;
                 Quiz quiz = (Quiz) allQuizRecyclerViewItemList.get(position).data;
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    viewHolder.tvTitle.setText(quizTranslation.translation);
+                }
                 viewHolder.approved.setChecked(quiz.approved);
                 viewHolder.approved.setClickable(false);
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
@@ -67,9 +71,15 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
                     if (quizTranslation.langCode.contains("en")) {
                         flagImage.setCountryCode("gb");
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(38));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6));
                         viewHolder.flagLayout.addView(flagImage);
                     } else if (quizTranslation.langCode.contains("ru")) {
                         flagImage.setCountryCode("ru");
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(38));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6), DimensionUtils.convertDpToPixels(6));
                         viewHolder.flagLayout.addView(flagImage);
                     }
                 }
@@ -101,6 +111,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     static class QuizViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvScpNumber;
+        TextView tvTitle;
         Switch approved;
         ImageView imageView;
         TextView dateCreated, dateUpdated;
@@ -110,6 +121,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         QuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
             approved = itemView.findViewById(R.id.approved);
             imageView = itemView.findViewById(R.id.imageView);
             dateCreated = itemView.findViewById(R.id.dateCreated);

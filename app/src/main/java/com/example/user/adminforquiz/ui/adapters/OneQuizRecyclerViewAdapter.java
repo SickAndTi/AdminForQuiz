@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.user.adminforquiz.R;
@@ -16,6 +15,8 @@ import com.example.user.adminforquiz.model.db.Quiz;
 import com.example.user.adminforquiz.model.db.QuizTranslation;
 import com.example.user.adminforquiz.model.ui.OneQuizRecyclerViewItem;
 import com.example.user.adminforquiz.util.DateTypeConverter;
+import com.example.user.adminforquiz.util.DimensionUtils;
+import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-
     @NonNull
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (OneQuizRecyclerViewItem.RecyclerAdapterItemType.values()[viewType]) {
@@ -62,16 +61,31 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 OneQuizViewHolder viewHolder = (OneQuizViewHolder) holder;
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
-                viewHolder.approved.setChecked(quiz.approved);
-                viewHolder.approved.setClickable(false);
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    viewHolder.tvTitleTranslation.setText(quizTranslation.translation);
+                }
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
-                viewHolder.authorId.setText(String.valueOf(quiz.authorId));
-                viewHolder.approverId.setText(String.valueOf(quiz.approverId));
+                viewHolder.flagLayout.removeAllViews();
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
+                    if (quizTranslation.langCode.contains("en")) {
+                        flagImage.setCountryCode("gb");
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
+                        viewHolder.flagLayout.addView(flagImage);
+                    } else if (quizTranslation.langCode.contains("ru")) {
+                        flagImage.setCountryCode("ru");
+                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
+                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
+                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
+                        viewHolder.flagLayout.addView(flagImage);
+                    }
+                }
                 GlideApp
                         .with(holder.itemView.getContext())
                         .load(quiz.imageUrl)
-                        .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(viewHolder.imageView);
                 break;
@@ -86,7 +100,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     textView.setText(quizTranslation.quizTranslationPhrases.get(i).translation);
                     oneQuizTranslationViewHolder.phrasesLayout.addView(textView);
                 }
-                Timber.d(quizTranslation.toString());
                 break;
         }
     }
@@ -99,20 +112,19 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     static class OneQuizViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvScpNumber, approverId, authorId;
-        Switch approved;
+        TextView tvScpNumber, tvTitleTranslation;
         ImageView imageView;
         TextView dateCreated, dateUpdated;
+        LinearLayout flagLayout;
 
         OneQuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
-            approved = itemView.findViewById(R.id.approved);
+            tvTitleTranslation = itemView.findViewById(R.id.tvTitleTranslation);
             imageView = itemView.findViewById(R.id.imageView);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
-            authorId = itemView.findViewById(R.id.authorId);
-            approverId = itemView.findViewById(R.id.approverId);
+            flagLayout = itemView.findViewById(R.id.flagLayout);
         }
     }
 

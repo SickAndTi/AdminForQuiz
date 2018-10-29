@@ -42,4 +42,25 @@
     <string name="goToRegScreen">Registration</string>
     <string name="registration">Registration</string>
     <string name="repeatPassword">Repeat password</string>
+    <string name="filter">Filter</string>
+    <string name="orConnectWith">Or connect with …</string>
+    <string name="enter">Войти</string>
+    <string name="registrationRu">Зарегистрироваться</string>
+    <string name="confirmPassword">Confirm password</string>
+    <string name="password">Password</string>
+    <string name="email">E-mail</string>
+    <string name="name">Name</string>
+    <string name="scpText">SCP-</string>
+    <string name="langTextRu">Язык</string>
+    <string name="dateCreatedRu">Дата Создания</string>
+    <string name="dateUpdatedRu">Дата Обновления</string>
+    <string name="auth">Авторизация</string>
+    <string-array name="authTabTitles">
+        <item>SIGN IN</item>
+        <item>SIGN UP</item>
+    </string-array>
+    <string-array name="toolBarAuthTitles">
+        <item>Авторизация</item>
+        <item>Регистрация</item>
+    </string-array>
 </resources>

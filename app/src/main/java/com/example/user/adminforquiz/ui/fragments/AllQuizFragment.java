@@ -8,10 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -39,6 +37,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
     View progressBarAllQuiz;
     SwipeRefreshLayout swipeRefreshLayout;
+    Toolbar toolbar;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
@@ -48,66 +47,58 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_allquiz, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
-        recyclerView.setAdapter(allQuizRecyclerViewAdapter);
-        return view;
+        return inflater.inflate(R.layout.fragment_allquiz, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.allquiz_menu);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.createQuiz:
+                    allQuizPresenter.goToCreateQuizFragment();
+                    break;
+
+                case R.id.logout:
+                    LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
+                    @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
+                    AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    mDialogBuilderLogout.setView(viewLogout);
+                    mDialogBuilderLogout
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    (dialog, id) -> {
+                                        allQuizPresenter.logout();
+                                        dialog.cancel();
+                                    })
+                            .setNegativeButton("Cancel",
+                                    (dialog, id) -> dialog.cancel());
+                    AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
+                    alertDialogLogout.show();
+                    break;
+
+                case R.id.filter:
+                    //TODO filters
+            }
+            return super.onOptionsItemSelected(menuItem);
+        });
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
+        recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.setQuizzesFromDb());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.createQuiz:
-                allQuizPresenter.goToCreateQuizFragment();
-                break;
-
-            case R.id.logout:
-                LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
-                @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
-                AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                mDialogBuilderLogout.setView(viewLogout);
-                mDialogBuilderLogout
-                        .setCancelable(false)
-                        .setPositiveButton("OK",
-                                (dialog, id) -> {
-                                    allQuizPresenter.logout();
-                                    dialog.cancel();
-                                })
-                        .setNegativeButton("Cancel",
-                                (dialog, id) -> dialog.cancel());
-                AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
-                alertDialogLogout.show();
-                break;
-        }
-        return super.
-                onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.allquiz_menu, menu);
-    }
-
-    @Override
     public void showProgressBar(boolean showProgressBar) {
         progressBarAllQuiz.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override

@@ -38,17 +38,18 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         loadQuizzesFromPage(1);
-        setQuizzesFromDb();
+//        setQuizzesFromDb();
     }
 
     public void loadQuizzesFromPage(int page) {
-        getViewState().enableScrollListner(false);
+//        getViewState().enableScrollListner(false);
         if (page > 1) {
             getViewState().showBottomProgress(true);
         }
         compositeDisposable.add(apiClient.getNwQuizList()
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
+                .map(longs -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -59,8 +60,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         getViewState().showBottomProgress(false);
                     }
                 })
-                .subscribe((longs) -> {
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -75,7 +75,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .subscribe(quizzes -> {
                                     getViewState().showSwipeRefresherBar(false);
                                     getViewState().showQuizList(quizzes);
-                                    getViewState().enableScrollListner(true);
+//                                    getViewState().enableScrollListner(true);
                                 },
                                 error -> {
                                     getViewState().showError(error.toString());
