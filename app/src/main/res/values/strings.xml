@@ -55,6 +55,8 @@
     <string name="dateCreatedRu">Дата Создания</string>
     <string name="dateUpdatedRu">Дата Обновления</string>
     <string name="auth">Авторизация</string>
+    <string name="server_client_id">854558605045-937t3kgdt9619pumi4s2mgiqs3eeanob.apps.googleusercontent.com</string>
+
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
         <item>SIGN UP</item>

@@ -105,7 +105,7 @@ public class AppModule extends Module {
 
         bind(QuizDao.class).toInstance(dataBase.quizDao());
 
-
         bind(QuizConverter.class).singletonInScope();
+
     }
 }
