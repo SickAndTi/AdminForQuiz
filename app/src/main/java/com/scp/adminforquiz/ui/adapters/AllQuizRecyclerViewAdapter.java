@@ -1,4 +1,4 @@
-package com.example.user.adminforquiz.ui.adapters;
+package com.scp.adminforquiz.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,13 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.di.GlideApp;
-import com.example.user.adminforquiz.model.db.Quiz;
-import com.example.user.adminforquiz.model.db.QuizTranslation;
-import com.example.user.adminforquiz.model.ui.AllQuizRecyclerViewItem;
-import com.example.user.adminforquiz.util.DateTypeConverter;
-import com.example.user.adminforquiz.util.DimensionUtils;
+import com.scp.adminforquiz.R;
+import com.scp.adminforquiz.di.GlideApp;
+import com.scp.adminforquiz.model.db.Quiz;
+import com.scp.adminforquiz.model.db.QuizTranslation;
+import com.scp.adminforquiz.model.ui.AllQuizRecyclerViewItem;
+import com.scp.adminforquiz.util.DateTypeConverter;
+import com.scp.adminforquiz.util.DimensionUtils;
 import com.haipq.android.flagkit.FlagImageView;
 
 import java.util.ArrayList;

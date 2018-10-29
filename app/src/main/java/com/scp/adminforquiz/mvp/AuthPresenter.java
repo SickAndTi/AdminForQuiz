@@ -1,10 +1,10 @@
-package com.example.user.adminforquiz.mvp;
+package com.scp.adminforquiz.mvp;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.user.adminforquiz.Constants;
-import com.example.user.adminforquiz.api.ApiClient;
-import com.example.user.adminforquiz.model.db.dao.QuizDao;
+import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.api.ApiClient;
+import com.scp.adminforquiz.model.db.dao.QuizDao;
 
 import javax.inject.Inject;
 

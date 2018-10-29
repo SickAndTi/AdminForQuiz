@@ -1,4 +1,4 @@
-package com.example.user.adminforquiz.mvp;
+package com.scp.adminforquiz.mvp;
 
 import com.arellomobile.mvp.MvpView;
 

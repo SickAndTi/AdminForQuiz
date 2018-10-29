@@ -1,4 +1,4 @@
-package com.example.user.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.example.user.adminforquiz.Constants;
-import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.mvp.SignUpPresenter;
-import com.example.user.adminforquiz.mvp.SignUpView;
+import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.R;
+import com.scp.adminforquiz.mvp.SignUpPresenter;
+import com.scp.adminforquiz.mvp.SignUpView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.disposables.CompositeDisposable;

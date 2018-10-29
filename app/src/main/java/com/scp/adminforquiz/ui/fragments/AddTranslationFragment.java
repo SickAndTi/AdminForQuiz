@@ -1,4 +1,4 @@
-package com.example.user.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +13,9 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
-import com.example.user.adminforquiz.R;
-import com.example.user.adminforquiz.mvp.AddTranslationPresenter;
-import com.example.user.adminforquiz.mvp.AddTranslationView;
+import com.scp.adminforquiz.R;
+import com.scp.adminforquiz.mvp.AddTranslationPresenter;
+import com.scp.adminforquiz.mvp.AddTranslationView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import java.util.Objects;
 import io.reactivex.disposables.CompositeDisposable;
