@@ -85,7 +85,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 GlideApp
                         .with(holder.itemView.getContext())
                         .load(quiz.imageUrl)
-                        .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(viewHolder.imageView);
                 break;
@@ -100,7 +99,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     textView.setText(quizTranslation.quizTranslationPhrases.get(i).translation);
                     oneQuizTranslationViewHolder.phrasesLayout.addView(textView);
                 }
-                Timber.d(quizTranslation.toString());
                 break;
         }
     }
