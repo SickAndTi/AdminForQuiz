@@ -86,12 +86,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <ImageView
-            android:id="@+id/faceBookImage"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_fb_icon"
-            tools:ignore="ContentDescription" />
+        <!--<ImageView-->
+        <!--android:id="@+id/faceBookImage"-->
+        <!--android:layout_width="48dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:src="@drawable/ic_fb_icon"-->
+        <!--tools:ignore="ContentDescription" />-->
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp" />
 
         <Space
             android:layout_width="0dp"

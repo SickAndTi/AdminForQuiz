@@ -17,8 +17,6 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,7 +25,6 @@ import com.scp.adminforquiz.mvp.AuthPresenter;
 import com.scp.adminforquiz.mvp.AuthView;
 import com.scp.adminforquiz.ui.adapters.AuthPagerAdapter;
 import com.vk.sdk.VKAccessToken;
-import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
@@ -35,7 +32,6 @@ import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.util.VKUtil;
 
 import timber.log.Timber;
 
