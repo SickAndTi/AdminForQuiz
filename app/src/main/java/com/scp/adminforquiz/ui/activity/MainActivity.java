@@ -1,6 +1,8 @@
 package com.scp.adminforquiz.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
@@ -18,12 +20,17 @@ import com.scp.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.scp.adminforquiz.ui.fragments.EditFragment;
 import com.scp.adminforquiz.ui.fragments.OneQuizFragment;
 import com.scp.adminforquiz.ui.fragments.UpdateTranslationDescriptionFragment;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKError;
 
 import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
@@ -80,6 +87,25 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     protected void onResume() {
         super.onResume();
         navigatorHolder.setNavigator(navigator);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                Timber.d("RESULT : %s", res.accessToken);
+                for (Fragment fragment:getSupportFragmentManager().getFragments()){
+                 fragment.onActivityResult(requestCode, resultCode, data);
+                }
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Timber.d("Error ; %s", error.toString());
+            }
+        })) ;
     }
 
     @Override

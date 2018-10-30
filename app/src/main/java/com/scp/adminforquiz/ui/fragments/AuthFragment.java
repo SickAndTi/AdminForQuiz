@@ -26,6 +26,16 @@ import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.mvp.AuthPresenter;
 import com.scp.adminforquiz.mvp.AuthView;
 import com.scp.adminforquiz.ui.adapters.AuthPagerAdapter;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKAccessTokenTracker;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKScope;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.util.VKUtil;
 
 import timber.log.Timber;
 
@@ -67,7 +77,11 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         vkImage = view.findViewById(R.id.vkImage);
-        vkImage.setOnClickListener(v -> authPresenter.regViaVk());
+        vkImage.setOnClickListener(v -> {
+            authPresenter.regViaVk();
+            VKSdk.login(getActivity(), VKScope.EMAIL);
+
+        });
         googleImage = view.findViewById(R.id.googleImage);
         googleImage.setOnClickListener(v -> {
             authPresenter.regViaGoogle();
@@ -92,18 +106,41 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
-        Timber.d("account : %s", account);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Timber.d("RESULT:%s", result.getSignInAccount().getEmail());
         }
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                Timber.d("RESULT : %s", res.accessToken);
+                VKRequest request = VKApi.users().get();
+                request.executeWithListener(new VKRequest.VKRequestListener() {
+                    @Override
+                    public void onComplete(VKResponse response) {
+                        Timber.d("VK RESPONSE :%s", response.toString());
+//TODO make User Class to request on Serever
+                    }
+
+                    @Override
+                    public void onError(VKError error) {
+                        Timber.d("VKERROR : %s", error.toString());
+                    }
+
+                    @Override
+                    public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError(VKError error) {
+                Timber.d("Error ; %s", error.toString());
+            }
+        })) ;
     }
 }
+

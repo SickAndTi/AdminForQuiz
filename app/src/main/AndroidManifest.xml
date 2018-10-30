@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+
         android:name="com.scp.adminforquiz.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,6 +16,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:supportsRtl">
+        <activity
+            android:name="com.vk.sdk.VKServiceActivity"
+            android:label="ServiceActivity"
+            android:theme="@style/VK.Transparent" />
         <activity
             android:name="com.scp.adminforquiz.ui.activity.MainActivity"
             android:windowSoftInputMode="adjustPan">
