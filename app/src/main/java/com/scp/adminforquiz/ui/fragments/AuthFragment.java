@@ -16,6 +16,12 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -46,6 +52,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     AuthPagerAdapter authPagerAdapter;
     TextView toolbarTitle;
     GoogleSignInOptions gso;
+    CallbackManager callbackManager;
+    LoginButton loginButton;
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
@@ -73,6 +81,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         vkImage = view.findViewById(R.id.vkImage);
+        loginButton = view.findViewById(R.id.login_button);
+        loginButton.setFragment(this);
         vkImage.setOnClickListener(v -> {
             authPresenter.regViaVk();
             VKSdk.login(getActivity(), VKScope.EMAIL);
@@ -86,7 +96,27 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 
         });
         faceBookImage = view.findViewById(R.id.faceBookImage);
-        faceBookImage.setOnClickListener(v -> authPresenter.regViaFacebook());
+        faceBookImage.setOnClickListener(v -> {
+            authPresenter.regViaFacebook();
+            callbackManager = CallbackManager.Factory.create();
+            LoginManager.getInstance().registerCallback(callbackManager,
+                    new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            Timber.d("LOGIN FB RESULT : %s", loginResult.getAccessToken().toString());
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onError(FacebookException exception) {
+                            Timber.d("ON ERROR FB :%s", exception.toString());
+                        }
+                    });
+        });
         authPagerAdapter = new AuthPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(authPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -103,11 +133,11 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Timber.d("RESULT:%s", result.getSignInAccount().getEmail());
         }
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
@@ -137,6 +167,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                 Timber.d("Error ; %s", error.toString());
             }
         })) ;
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 
