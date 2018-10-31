@@ -59,8 +59,8 @@
     <integer name="com_vk_sdk_AppId">6736524</integer>
     <string name="vk_key">BQI851DoTMlo8yk6fIzP</string>
     <string name="service_vk_access_key">9b56d7ec9b56d7ec9b56d7ece19b301d6099b569b56d7ecc08eea61380bd08630dc59ec></string>
-    <string name="facebook_app_id">249308399100006</string>
-    <string name="fb_login_protocol_scheme">fb249308399100006</string>
+    <string name="facebook_app_id">1513219612156286</string>
+    <string name="fb_login_protocol_scheme">fb1513219612156286</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

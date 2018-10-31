@@ -21,7 +21,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -39,10 +38,12 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
+import java.util.Arrays;
+
 import timber.log.Timber;
 
 public class AuthFragment extends MvpAppCompatFragment implements AuthView {
-    private static final int RC_SIGN_IN = 23;
+    private static final int REQUEST_CODE_GOOGLE = 23;
     @InjectPresenter
     AuthPresenter authPresenter;
     Toolbar toolbar;
@@ -92,18 +93,19 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         googleImage.setOnClickListener(v -> {
             authPresenter.regViaGoogle();
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+            startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE);
 
         });
         faceBookImage = view.findViewById(R.id.faceBookImage);
         faceBookImage.setOnClickListener(v -> {
             authPresenter.regViaFacebook();
             callbackManager = CallbackManager.Factory.create();
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
             LoginManager.getInstance().registerCallback(callbackManager,
                     new FacebookCallback<LoginResult>() {
                         @Override
                         public void onSuccess(LoginResult loginResult) {
-                            Timber.d("LOGIN FB RESULT : %s", loginResult.getAccessToken().toString());
+                            Timber.d("LOGIN FB RESULT : %s", loginResult.getAccessToken().getToken());
                         }
 
                         @Override
@@ -133,11 +135,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
-        }
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
@@ -166,8 +163,17 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
             public void onError(VKError error) {
                 Timber.d("Error ; %s", error.toString());
             }
-        })) ;
-        super.onActivityResult(requestCode, resultCode, data);
+        }))
+            switch (requestCode) {
+                case REQUEST_CODE_GOOGLE:
+                    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                    Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
+                    break;
+                default:
+                    callbackManager.onActivityResult(requestCode, resultCode, data);
+                    super.onActivityResult(requestCode, resultCode, data);
+            }
     }
 }
+
 
