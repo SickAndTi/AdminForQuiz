@@ -92,7 +92,7 @@ public abstract class QuizDao {
     public abstract List<Long> insertQuizTranslations(List<QuizTranslation> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long insertUser(@NotNull User user);
+    public abstract Long insertUser(User user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract Long insertQuizTranslation(QuizTranslation quizTranslation);

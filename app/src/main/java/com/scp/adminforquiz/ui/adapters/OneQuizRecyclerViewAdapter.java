@@ -87,7 +87,14 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                         .with(holder.itemView.getContext())
                         .load(quiz.imageUrl)
                         .placeholder(R.drawable.ic_launcher_background)
+                        .centerCrop()
                         .into(viewHolder.imageView);
+                GlideApp
+                        .with(holder.itemView.getContext())
+                        .load(quiz.author.avatar)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .centerCrop()
+                        .into(viewHolder.userIcon);
                 break;
             case QUIZ_TRANSLATION:
                 OneQuizTranslationViewHolder oneQuizTranslationViewHolder = (OneQuizTranslationViewHolder) holder;
@@ -113,7 +120,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     static class OneQuizViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvScpNumber, tvTitleTranslation;
-        ImageView imageView;
+        ImageView imageView, userIcon;
         TextView dateCreated, dateUpdated;
         LinearLayout flagLayout;
 
@@ -122,6 +129,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
             tvTitleTranslation = itemView.findViewById(R.id.tvTitleTranslation);
             imageView = itemView.findViewById(R.id.imageView);
+            userIcon = itemView.findViewById(R.id.userIcon);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
             flagLayout = itemView.findViewById(R.id.flagLayout);
