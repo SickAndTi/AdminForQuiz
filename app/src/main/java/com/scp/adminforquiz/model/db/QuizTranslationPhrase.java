@@ -1,12 +1,14 @@
 package com.scp.adminforquiz.model.db;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
 import com.scp.adminforquiz.util.DateTypeConverter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class QuizTranslationPhrase {
@@ -20,6 +22,7 @@ public class QuizTranslationPhrase {
     public Boolean approved;
     public Long authorId;
     public Long approverId;
+    public User user;
     //dates
     @TypeConverters(DateTypeConverter.class)
     public Date created;

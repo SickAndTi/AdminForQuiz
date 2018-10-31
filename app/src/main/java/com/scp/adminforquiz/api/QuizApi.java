@@ -18,7 +18,6 @@ public interface QuizApi {
     @GET("quiz/all")
     Single<List<NwQuiz>> getNwQuizList();
 
-    // TODO all logic with User
     @GET("quiz/allWithUsers")
     Single<List<NwQuiz>> getAllWithUser();
 

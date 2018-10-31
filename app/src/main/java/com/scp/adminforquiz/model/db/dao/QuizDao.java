@@ -11,6 +11,7 @@ import android.arch.persistence.room.Update;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
+import com.scp.adminforquiz.model.db.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,9 @@ public abstract class QuizDao {
 
     @Query("SELECT * FROM Quiz WHERE id = :id")
     public abstract Quiz getById(Long id);
+
+    @Query("SELECT * FROM User WHERE id = :authorId")
+    public abstract User getUserById(Long authorId);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
     public abstract List<QuizTranslation> getQuizTranslationsByQuizId(Long id);
@@ -162,11 +166,10 @@ public abstract class QuizDao {
     public Quiz getQuizWithTranslationsAndPhrases(Long id) {
         Quiz quiz = getById(id);
         quiz.quizTranslations = getQuizTranslationsByQuizId(id);
-        //authorId is primary key for User
-//        quiz.user = getUserById(quiz.authorId);
+        quiz.user = getUserById(quiz.authorId);
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
-//            quizTranslation.user = getUserById(quizTranslation.authorId);
+            quizTranslation.user = getUserById(quizTranslation.authorId);
             quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id);
         }
         return quiz;

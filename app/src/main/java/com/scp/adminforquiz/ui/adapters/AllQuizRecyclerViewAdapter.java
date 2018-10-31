@@ -89,6 +89,12 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(viewHolder.imageView);
+                GlideApp
+                        .with(holder.itemView.getContext())
+                        .load(quiz.user.avatar)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .into(viewHolder.userIcon);
                 viewHolder.itemView.setOnClickListener(view ->
                         onQuizClickListener.onQuizClick(quiz)
                 );
@@ -113,7 +119,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView tvScpNumber;
         TextView tvTitle;
         Switch approved;
-        ImageView imageView;
+        ImageView imageView, userIcon;
         TextView dateCreated, dateUpdated;
         TextView tvDateCreated, tvDateUpdated;
         LinearLayout flagLayout;
@@ -124,6 +130,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             tvTitle = itemView.findViewById(R.id.tvTitle);
             approved = itemView.findViewById(R.id.approved);
             imageView = itemView.findViewById(R.id.imageView);
+            userIcon = itemView.findViewById(R.id.userIcon);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
             tvDateCreated = itemView.findViewById(R.id.tvDateCreated);

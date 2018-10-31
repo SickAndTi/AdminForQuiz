@@ -11,7 +11,8 @@ import com.scp.adminforquiz.util.DateTypeConverter;
 @Database(version = 2,
         entities = {Quiz.class,
                 QuizTranslation.class,
-                QuizTranslationPhrase.class},
+                QuizTranslationPhrase.class,
+                User.class},
         exportSchema = false)
 
 @TypeConverters(DateTypeConverter.class)

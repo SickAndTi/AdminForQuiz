@@ -3,9 +3,11 @@ package com.scp.adminforquiz.model;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
+import com.scp.adminforquiz.model.api.NwUser;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
+import com.scp.adminforquiz.model.db.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public class QuizConverter {
         quiz.created = nwQuiz.created;
         quiz.updated = nwQuiz.updated;
         quiz.quizTranslations = convertTranslation(nwQuiz.quizTranslations, nwQuiz.id);
+        quiz.user = convertUser(nwQuiz.nwUser);
         return quiz;
     }
 
@@ -64,6 +67,7 @@ public class QuizConverter {
         quizTranslation.quizId = quizId;
         quizTranslation.translation = nwQuizTranslation.translation;
         quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases, nwQuizTranslation.id);
+        quizTranslation.user = convertUser(nwQuizTranslation.nwUser);
         return quizTranslation;
     }
 
@@ -87,6 +91,15 @@ public class QuizConverter {
         quizTranslationPhrase.updated = nwQuizTranslationPhrase.updated;
         quizTranslationPhrase.quizTranslationId = nwQuizTranslationId;
         quizTranslationPhrase.translation = nwQuizTranslationPhrase.translation;
+        quizTranslationPhrase.user = convertUser(nwQuizTranslationPhrase.nwUser);
         return quizTranslationPhrase;
+    }
+
+    private User convertUser(NwUser nwUser) {
+        User user = new User();
+        user.id = nwUser.id;
+        user.fullName = nwUser.fullName;
+        user.avatar = nwUser.avatar;
+        return user;
     }
 }

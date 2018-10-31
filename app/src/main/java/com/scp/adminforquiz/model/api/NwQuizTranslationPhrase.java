@@ -24,4 +24,6 @@ public class NwQuizTranslationPhrase {
     public Date created;
     @SerializedName("updated")
     public Date updated;
+    @SerializedName("user")
+    public NwUser nwUser;
 }

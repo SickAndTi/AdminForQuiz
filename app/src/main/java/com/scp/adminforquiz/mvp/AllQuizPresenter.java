@@ -46,7 +46,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         if (page > 1) {
             getViewState().showBottomProgress(true);
         }
-        compositeDisposable.add(apiClient.getNwQuizList()
+        compositeDisposable.add(apiClient.getAllWithUser()
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
                 .map(longs -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
