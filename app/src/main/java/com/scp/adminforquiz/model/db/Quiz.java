@@ -7,6 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.scp.adminforquiz.util.DateTypeConverter;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class Quiz {
     @Ignore
     public User author;
     @Ignore
+    @Nullable
     public User approver;
 }
 

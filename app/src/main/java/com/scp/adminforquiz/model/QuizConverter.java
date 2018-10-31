@@ -40,7 +40,10 @@ public class QuizConverter {
         quiz.created = nwQuiz.created;
         quiz.updated = nwQuiz.updated;
         quiz.quizTranslations = convertTranslation(nwQuiz.quizTranslations, nwQuiz.id);
-        quiz.user = convertUser(nwQuiz.nwUser);
+        quiz.author = convertUser(nwQuiz.author);
+        if (nwQuiz.approver != null) {
+            quiz.approver = convertUser(nwQuiz.approver);
+        }
         return quiz;
     }
 
@@ -67,7 +70,10 @@ public class QuizConverter {
         quizTranslation.quizId = quizId;
         quizTranslation.translation = nwQuizTranslation.translation;
         quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases, nwQuizTranslation.id);
-        quizTranslation.user = convertUser(nwQuizTranslation.nwUser);
+        quizTranslation.author = convertUser(nwQuizTranslation.author);
+        if (nwQuizTranslation.approver != null) {
+            quizTranslation.approver = convertUser(nwQuizTranslation.approver);
+        }
         return quizTranslation;
     }
 
@@ -91,7 +97,10 @@ public class QuizConverter {
         quizTranslationPhrase.updated = nwQuizTranslationPhrase.updated;
         quizTranslationPhrase.quizTranslationId = nwQuizTranslationId;
         quizTranslationPhrase.translation = nwQuizTranslationPhrase.translation;
-        quizTranslationPhrase.user = convertUser(nwQuizTranslationPhrase.nwUser);
+        quizTranslationPhrase.author = convertUser(nwQuizTranslationPhrase.author);
+        if (nwQuizTranslationPhrase.approver != null) {
+            quizTranslationPhrase.approver = convertUser(nwQuizTranslationPhrase.approver);
+        }
         return quizTranslationPhrase;
     }
 

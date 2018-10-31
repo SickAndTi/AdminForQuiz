@@ -91,7 +91,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .into(viewHolder.imageView);
                 GlideApp
                         .with(holder.itemView.getContext())
-                        .load(quiz.user.avatar)
+                        .load(quiz.author.avatar)
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(viewHolder.userIcon);
