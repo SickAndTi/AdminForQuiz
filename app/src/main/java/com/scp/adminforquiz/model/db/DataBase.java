@@ -19,7 +19,4 @@ import com.scp.adminforquiz.util.DateTypeConverter;
 
 public abstract class DataBase extends RoomDatabase {
     abstract public QuizDao quizDao();
-
-    abstract public QuizTranslationDao quizTranslationDao();
-
 }

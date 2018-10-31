@@ -91,13 +91,13 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
                 Timber.d("RESULT : %s", res.accessToken);
-                for (Fragment fragment:getSupportFragmentManager().getFragments()){
-                 fragment.onActivityResult(requestCode, resultCode, data);
+                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                    fragment.onActivityResult(requestCode, resultCode, data);
                 }
             }
 
@@ -106,6 +106,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                 Timber.d("Error ; %s", error.toString());
             }
         })) ;
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

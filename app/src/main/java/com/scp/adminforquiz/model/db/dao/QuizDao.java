@@ -13,6 +13,8 @@ import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.User;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +92,9 @@ public abstract class QuizDao {
     public abstract List<Long> insertQuizTranslations(List<QuizTranslation> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract Long insertUser(User user);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract Long insertQuizTranslation(QuizTranslation quizTranslation);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -128,26 +133,45 @@ public abstract class QuizDao {
 
     @Transaction
     public Long insertQuizWithQuizTranslations(Quiz quiz) {
+        insertUser(quiz.author);
+        if (quiz.approver != null) {
+            insertUser(quiz.approver);
+        }
         if (quiz.quizTranslations != null) {
-            for (int i = 0; i < quiz.quizTranslations.size(); i++) {
-                quiz.quizTranslations.get(i).quizId = quiz.id;
-                if (quiz.quizTranslations != null) {
-                    QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
-                    for (int j = 0; j < quizTranslation.quizTranslationPhrases.size(); j++) {
-                        quizTranslation.quizTranslationPhrases.get(j).quizTranslationId = quizTranslation.id;
+            for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                quizTranslation.quizId = quiz.id;
+                insertUser(quizTranslation.author);
+                if (quizTranslation.approver != null) {
+                    insertUser(quizTranslation.approver);
+                }
+                if (quizTranslation.quizTranslationPhrases != null) {
+                    for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
+                        quizTranslationPhrase.quizTranslationId = quizTranslation.id;
+                        insertUser(quizTranslationPhrase.author);
+                        if (quizTranslationPhrase.approver != null) {
+                            insertUser(quizTranslationPhrase.approver);
+                        }
                     }
                     insertQuizTranslationPhrases(quizTranslation.quizTranslationPhrases);
                 }
-                insertQuizTranslations(quiz.quizTranslations);
             }
+            insertQuizTranslations(quiz.quizTranslations);
         }
         return insert(quiz);
     }
 
     @Transaction
     public Long insertQuizTranslationWithPhrases(QuizTranslation quizTranslation) {
-        for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
-            quizTranslation.quizTranslationPhrases.get(i).quizTranslationId = quizTranslation.id;
+        insertUser(quizTranslation.author);
+        if (quizTranslation.approver != null) {
+            insertUser(quizTranslation.approver);
+        }
+        for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
+            quizTranslationPhrase.quizTranslationId = quizTranslation.id;
+            insertUser(quizTranslationPhrase.author);
+            if (quizTranslationPhrase.approver != null) {
+                insertUser(quizTranslationPhrase.approver);
+            }
         }
         insertQuizTranslationPhrases(quizTranslation.quizTranslationPhrases);
         return insertQuizTranslation(quizTranslation);
@@ -166,11 +190,17 @@ public abstract class QuizDao {
     public Quiz getQuizWithTranslationsAndPhrases(Long id) {
         Quiz quiz = getById(id);
         quiz.quizTranslations = getQuizTranslationsByQuizId(id);
-        quiz.user = getUserById(quiz.authorId);
+        quiz.author = getUserById(quiz.authorId);
+        quiz.approver = getUserById(quiz.approverId);
         for (int i = 0; i < quiz.quizTranslations.size(); i++) {
             QuizTranslation quizTranslation = quiz.quizTranslations.get(i);
-            quizTranslation.user = getUserById(quizTranslation.authorId);
+            quizTranslation.author = getUserById(quizTranslation.authorId);
+            quizTranslation.approver = getUserById(quizTranslation.approverId);
             quizTranslation.quizTranslationPhrases = getQuizTranslationPhrasesByQuizTranslationId(quizTranslation.id);
+            for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
+                quizTranslationPhrase.author = getUserById(quizTranslationPhrase.authorId);
+                quizTranslationPhrase.approver = getUserById(quizTranslationPhrase.approverId);
+            }
         }
         return quiz;
     }

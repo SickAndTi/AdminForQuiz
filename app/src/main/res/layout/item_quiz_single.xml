@@ -149,7 +149,6 @@
             android:layout_height="45dp"
             android:layout_gravity="end"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_add_box_24px"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>

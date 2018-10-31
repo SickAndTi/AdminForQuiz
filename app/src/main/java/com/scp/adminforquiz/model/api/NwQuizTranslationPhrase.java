@@ -2,6 +2,8 @@ package com.scp.adminforquiz.model.api;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Date;
 
 public class NwQuizTranslationPhrase {
@@ -24,6 +26,9 @@ public class NwQuizTranslationPhrase {
     public Date created;
     @SerializedName("updated")
     public Date updated;
-    @SerializedName("user")
-    public NwUser nwUser;
+    @SerializedName("author")
+    public NwUser author;
+    @SerializedName("approver")
+    @Nullable
+    public NwUser approver;
 }

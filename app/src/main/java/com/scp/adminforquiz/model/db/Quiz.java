@@ -7,6 +7,8 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.scp.adminforquiz.util.DateTypeConverter;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +25,6 @@ public class Quiz {
     public Long authorId;
     public boolean approved;
     public Long approverId;
-    public User user;
     //dates
     @TypeConverters(DateTypeConverter.class)
     public Date created;
@@ -47,6 +48,11 @@ public class Quiz {
 
     @Ignore
     public List<QuizTranslation> quizTranslations;
+    @Ignore
+    public User author;
+    @Ignore
+    @Nullable
+    public User approver;
 }
 
 

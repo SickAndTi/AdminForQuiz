@@ -135,7 +135,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Timber.d("RESULT:%s", result.getSignInAccount().getEmail());
+            Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
         }
         callbackManager.onActivityResult(requestCode, resultCode, data);
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
