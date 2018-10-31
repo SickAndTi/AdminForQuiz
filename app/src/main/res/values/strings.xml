@@ -55,6 +55,13 @@
     <string name="dateCreatedRu">Дата Создания</string>
     <string name="dateUpdatedRu">Дата Обновления</string>
     <string name="auth">Авторизация</string>
+    <string name="server_client_id">854558605045-937t3kgdt9619pumi4s2mgiqs3eeanob.apps.googleusercontent.com</string>
+    <integer name="com_vk_sdk_AppId">6736524</integer>
+    <string name="vk_key">BQI851DoTMlo8yk6fIzP</string>
+    <string name="service_vk_access_key">9b56d7ec9b56d7ec9b56d7ece19b301d6099b569b56d7ecc08eea61380bd08630dc59ec></string>
+    <string name="facebook_app_id">249308399100006</string>
+    <string name="fb_login_protocol_scheme">fb249308399100006</string>
+
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
         <item>SIGN UP</item>
