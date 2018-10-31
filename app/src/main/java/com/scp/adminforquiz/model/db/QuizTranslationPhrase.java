@@ -22,7 +22,6 @@ public class QuizTranslationPhrase {
     public Boolean approved;
     public Long authorId;
     public Long approverId;
-    public User user;
     //dates
     @TypeConverters(DateTypeConverter.class)
     public Date created;
@@ -42,4 +41,8 @@ public class QuizTranslationPhrase {
 //                ", updated=" + updated +
                 '}';
     }
+    @Ignore
+    public User author;
+    @Ignore
+    public User approver;
 }

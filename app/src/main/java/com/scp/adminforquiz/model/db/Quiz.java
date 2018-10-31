@@ -23,7 +23,6 @@ public class Quiz {
     public Long authorId;
     public boolean approved;
     public Long approverId;
-    public User user;
     //dates
     @TypeConverters(DateTypeConverter.class)
     public Date created;
@@ -47,6 +46,10 @@ public class Quiz {
 
     @Ignore
     public List<QuizTranslation> quizTranslations;
+    @Ignore
+    public User author;
+    @Ignore
+    public User approver;
 }
 
 
