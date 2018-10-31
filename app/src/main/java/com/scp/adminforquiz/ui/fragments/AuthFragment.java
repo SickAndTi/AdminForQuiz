@@ -53,7 +53,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     TextView toolbarTitle;
     GoogleSignInOptions gso;
     CallbackManager callbackManager;
-    LoginButton loginButton;
+//    LoginButton loginButton;
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
@@ -81,8 +81,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         tabLayout = view.findViewById(R.id.tablayout);
         viewPager = view.findViewById(R.id.viewpager);
         vkImage = view.findViewById(R.id.vkImage);
-        loginButton = view.findViewById(R.id.login_button);
-        loginButton.setFragment(this);
+//        loginButton = view.findViewById(R.id.login_button);
+//        loginButton.setFragment(this);
         vkImage.setOnClickListener(v -> {
             authPresenter.regViaVk();
             VKSdk.login(getActivity(), VKScope.EMAIL);
