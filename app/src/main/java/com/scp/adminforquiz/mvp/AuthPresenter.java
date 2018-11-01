@@ -4,10 +4,12 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
+import com.scp.adminforquiz.api.response.TokenResponse;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import ru.terrakok.cicerone.Router;
 import toothpick.Toothpick;
 
@@ -31,10 +33,17 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     }
 
     public void regViaGoogle() {
-        //TODO получть токен
+
     }
 
     public void regViaFacebook() {
         //TODO получить токен
     }
+
+//    public Single<TokenResponse> socialLogin(String provider, String token) {
+//        switch (provider) {
+//            case Constants.VK:
+//
+//        }
+//    }
 }

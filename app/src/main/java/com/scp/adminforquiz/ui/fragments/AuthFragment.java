@@ -25,7 +25,10 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.scp.adminforquiz.CommonUserData;
+import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
+import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.mvp.AuthPresenter;
 import com.scp.adminforquiz.mvp.AuthView;
 import com.scp.adminforquiz.ui.adapters.AuthPagerAdapter;
@@ -40,12 +43,22 @@ import com.vk.sdk.api.VKResponse;
 
 import java.util.Arrays;
 
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
+import toothpick.Toothpick;
 
 public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     private static final int REQUEST_CODE_GOOGLE = 23;
     @InjectPresenter
     AuthPresenter authPresenter;
+    @Inject
+    ApiClient apiClient;
+    @Inject
+    Router router;
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -68,6 +81,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         toolbar = view.findViewById(R.id.toolbar);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -103,6 +117,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                         @Override
                         public void onSuccess(LoginResult loginResult) {
                             Timber.d("LOGIN FB RESULT : %s", loginResult.getAccessToken().getToken());
+
                         }
 
                         @Override
@@ -140,7 +155,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                 request.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override
                     public void onComplete(VKResponse response) {
-                        Timber.d("VK RESPONSE :%s", response.toString());
+                        Timber.d("VK RESPONSE :%s", response.json.toString());
 
                     }
 
@@ -165,6 +180,10 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                 case REQUEST_CODE_GOOGLE:
                     GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                     Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
+                    apiClient.loginSocial(Constants.GOOGLE, result.getSignInAccount().getIdToken())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN));
                     break;
                 default:
                     callbackManager.onActivityResult(requestCode, resultCode, data);

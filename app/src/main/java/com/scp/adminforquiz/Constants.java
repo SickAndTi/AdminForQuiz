@@ -23,5 +23,8 @@ public class Constants {
     public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
     //scrollListener
     public static final int PAGE_SIZE = 10;
-
+    //social
+    public static final String VK = "VK";
+    public static final String GOOGLE = "GOOGLE";
+    public static final String FACEBOOK = "FACEBOOK";
 }

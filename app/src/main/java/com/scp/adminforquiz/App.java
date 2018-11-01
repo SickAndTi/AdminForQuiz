@@ -19,7 +19,6 @@ public class App extends Application {
         Timber.plant(new Timber.DebugTree());
         Toothpick.openScope(Constants.APP_SCOPE).installModules(new AppModule(this));
         VKSdk.initialize(this);
-        SystemUtils.printCertificateFingerprints(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
     }
