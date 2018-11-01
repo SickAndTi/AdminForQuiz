@@ -26,4 +26,13 @@ public interface AuthApi {
             @Field("grant_type") String testRefreshToken,
             @Field("refresh_token") String testRefreshTokenValue
     );
+
+    @FormUrlEncoded
+    @POST("auth/socialLogin")
+    Single<TokenResponse> socialLogin(
+            @Field("provider") String socialName,
+            @Field("token") String tokenValue,
+            @Field("clientId") String clientId,
+            @Field("clientSecret") String clientSecret
+    );
 }

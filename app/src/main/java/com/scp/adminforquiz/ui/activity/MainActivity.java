@@ -30,7 +30,6 @@ import javax.inject.Inject;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
@@ -91,11 +90,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+        VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                Timber.d("RESULT : %s", res.accessToken);
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                     fragment.onActivityResult(requestCode, resultCode, data);
                 }
@@ -103,9 +100,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
             @Override
             public void onError(VKError error) {
-                Timber.d("Error ; %s", error.toString());
             }
-        })) ;
+        });
         super.onActivityResult(requestCode, resultCode, data);
     }
 

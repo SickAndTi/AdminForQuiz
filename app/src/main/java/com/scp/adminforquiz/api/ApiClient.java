@@ -41,6 +41,15 @@ public class ApiClient {
         );
     }
 
+    public Single<TokenResponse> loginSocial(String socialName, String tokenValue) {
+        return authApi.socialLogin(
+                socialName,
+                tokenValue,
+                BuildConfig.CLIENT_ID,
+                BuildConfig.CLIENT_SECRET
+        );
+    }
+
     public Single<List<NwQuiz>> getNwQuizList() {
         return quizApi.getNwQuizList();
     }
