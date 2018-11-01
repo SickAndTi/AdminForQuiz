@@ -62,6 +62,11 @@
     <string name="facebook_app_id">1513219612156286</string>
     <string name="fb_login_protocol_scheme">fb1513219612156286</string>
     <string name="byAsc">По возрастанию</string>
+    <string name="filterbyid">Filter By Id</string>
+    <string name="filterByDateUpdated">Filter By Date Updated</string>
+    <string name="filterByDateCreated">Filter By Date Created</string>
+    <string name="filterByApproved">Filter By Approved</string>
+    <string name="nothingSelected">Ничего не выбрано</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

@@ -82,21 +82,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                     break;
 
                 case R.id.filter:
-                    LayoutInflater inflaterFilter = LayoutInflater.from(getContext());
-                    @SuppressLint("InflateParams") View viewFilter = inflaterFilter.inflate(R.layout.dialog_filter, null);
-                    AlertDialog.Builder mDialogBuilderFilter = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    mDialogBuilderFilter.setView(viewFilter);
-                    mDialogBuilderFilter
-                            .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    (dialog, id) -> {
-
-                                        dialog.cancel();
-                                    })
-                            .setNegativeButton("Cancel",
-                                    (dialog, id) -> dialog.cancel());
-                    AlertDialog alertDialogFilter = mDialogBuilderFilter.create();
-                    alertDialogFilter.show();
+                    allQuizPresenter.goToFilterFragment();
                     break;
             }
             return super.onOptionsItemSelected(menuItem);
