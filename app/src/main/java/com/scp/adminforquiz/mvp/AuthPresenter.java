@@ -31,7 +31,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
     }
 
     public void regViaGoogle() {
-        //TODO получть токен
+
     }
 
     public void regViaFacebook() {
