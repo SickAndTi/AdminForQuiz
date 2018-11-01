@@ -15,9 +15,12 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.jakewharton.rxbinding2.widget.RxCompoundButton;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.mvp.FilterPresenter;
 import com.scp.adminforquiz.mvp.FilterView;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 public class FilterFragment extends MvpAppCompatFragment implements FilterView {
     @InjectPresenter
@@ -27,6 +30,7 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
     RadioButton filterById, filterByDateCreated, filterByDateUpdated, filterByApproved;
     Button btnOK, btnCancel;
     View flProgressBar;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static Fragment newInstance() {
         return new FilterFragment();
@@ -52,6 +56,16 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
         filterByDateUpdated = view.findViewById(R.id.filterByDateUpdated);
         filterByApproved = view.findViewById(R.id.filterByApproved);
         flProgressBar = view.findViewById(R.id.flProgressBar);
+        compositeDisposable.add(RxCompoundButton.checkedChanges(ascSwitch)
+                .subscribe(isChecked -> filterPresenter.getViewState().isChecked(isChecked)));
+        compositeDisposable.add(RxCompoundButton.checkedChanges(filterById)
+                .subscribe(aBoolean -> filterPresenter.getViewState().isChecked(aBoolean)));
+        compositeDisposable.add(RxCompoundButton.checkedChanges(filterByDateCreated)
+                .subscribe(aBoolean -> filterPresenter.getViewState().isChecked(aBoolean)));
+        compositeDisposable.add(RxCompoundButton.checkedChanges(filterByDateUpdated)
+                .subscribe(aBoolean -> filterPresenter.getViewState().isChecked(aBoolean)));
+        compositeDisposable.add(RxCompoundButton.checkedChanges(filterByApproved)
+                .subscribe(aBoolean -> filterPresenter.getViewState().isChecked(aBoolean)));
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             radioGroup.clearCheck();
             switch (checkedId) {
@@ -83,5 +97,10 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void isChecked(View view, boolean isChecked) {
+        view.check
     }
 }
