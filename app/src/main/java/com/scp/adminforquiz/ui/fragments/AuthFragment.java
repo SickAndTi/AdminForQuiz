@@ -150,7 +150,9 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                Timber.d("RESULT : %s", res.accessToken);
+                CommonUserData commonUserData = new CommonUserData();
+
+                Timber.d("RESULT : %s", res.email);
                 VKRequest request = VKApi.users().get();
                 request.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override

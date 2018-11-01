@@ -61,6 +61,7 @@
     <string name="service_vk_access_key">9b56d7ec9b56d7ec9b56d7ece19b301d6099b569b56d7ecc08eea61380bd08630dc59ec></string>
     <string name="facebook_app_id">1513219612156286</string>
     <string name="fb_login_protocol_scheme">fb1513219612156286</string>
+    <string name="byAsc">По возрастанию</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
