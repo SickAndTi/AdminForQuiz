@@ -30,7 +30,7 @@ public interface AuthApi {
     @FormUrlEncoded
     @POST("auth/socialLogin")
     Single<TokenResponse> socialLogin(
-            @Field("provider") String socialName,
+            @Field("provider") String provider,
             @Field("token") String tokenValue,
             @Field("clientId") String clientId,
             @Field("clientSecret") String clientSecret

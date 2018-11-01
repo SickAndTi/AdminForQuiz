@@ -41,9 +41,9 @@ public class ApiClient {
         );
     }
 
-    public Single<TokenResponse> loginSocial(String socialName, String tokenValue) {
+    public Single<TokenResponse> loginSocial(String provider, String tokenValue) {
         return authApi.socialLogin(
-                socialName,
+                provider,
                 tokenValue,
                 BuildConfig.CLIENT_ID,
                 BuildConfig.CLIENT_SECRET
