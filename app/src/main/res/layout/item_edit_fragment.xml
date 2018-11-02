@@ -63,82 +63,170 @@
         android:scaleType="centerCrop"
         tools:ignore="ContentDescription" />
 
-
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enterLangCodeRu">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/etEnterLangCode"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_round_descriptionworld_24px"
+            tools:ignore="ContentDescription" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/enterLangCodeRu">
+
+            <EditText
+                android:id="@+id/etEnterLangCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor,TextFields"
+                tools:text="RU" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_lightblue_24dp"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_round_descriptionnumber_24px"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvScpNumber"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="8dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:ignore="Autofill,LabelFor,TextFields"
-            tools:text="RU" />
-    </android.support.design.widget.TextInputLayout>
+            tools:text="1488" />
 
-    <TextView
-        android:id="@+id/tvScpNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        tools:text="1488" />
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enterTitleRu">
-
-        <EditText
-            android:id="@+id/etEnterTitle"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:ignore="Autofill,LabelFor,TextFields"
-            tools:text="TITLE" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_edit_lightblue_24dp"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/enterDescriptionRu">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/etEnterDescription"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:ignore="Autofill,LabelFor,TextFields"
-            tools:text="Description" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_round_description_24px"
+            tools:ignore="ContentDescription" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/enterTitleRu">
+
+            <EditText
+                android:id="@+id/etEnterTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor,TextFields"
+                tools:text="TITLE" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_lightblue_24dp"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/enterPhrasesRu">
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/etEnterPhrases"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:ignore="Autofill,LabelFor,TextFields"
-            tools:text="Phrases" />
-    </android.support.design.widget.TextInputLayout>
+            android:src="@drawable/ic_description_black_24dp"
+            tools:ignore="ContentDescription" />
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/enterDescriptionRu">
+
+            <EditText
+                android:id="@+id/etEnterDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor,TextFields"
+                tools:text="Description" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_lightblue_24dp"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_insert_comment_black_24dp"
+            tools:ignore="ContentDescription" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/enterPhrasesRu">
+
+            <EditText
+                android:id="@+id/etEnterPhrases"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="Autofill,LabelFor,TextFields"
+                tools:text="Phrases" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_lightblue_24dp"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
 </LinearLayout>
