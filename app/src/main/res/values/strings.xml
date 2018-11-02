@@ -68,6 +68,9 @@
     <string name="filterByDateCreated">Filter By Date Created</string>
     <string name="filterByApproved">Filter By Approved</string>
     <string name="nothingSelected">Ничего не выбрано</string>
+    <string name="createNwQuizRu">Создать объект</string>
+    <string name="enterScpNumberRu">Номер объекта</string>
+    <string name="enterImageUrlRu">URL ссылка на изображение</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

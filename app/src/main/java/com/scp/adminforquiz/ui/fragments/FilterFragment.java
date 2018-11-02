@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
+import com.jakewharton.rxbinding2.widget.RxRadioGroup;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.mvp.FilterPresenter;
 import com.scp.adminforquiz.mvp.FilterView;
@@ -56,8 +57,10 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
         filterByDateUpdated = view.findViewById(R.id.filterByDateUpdated);
         filterByApproved = view.findViewById(R.id.filterByApproved);
         flProgressBar = view.findViewById(R.id.flProgressBar);
+//        compositeDisposable.add(RxRadioGroup.checked(radioGroup.getCheckedRadioButtonId()))
+//                .subscibe() TODO
         compositeDisposable.add(RxCompoundButton.checkedChanges(ascSwitch)
-                .subscribe(isChecked -> filterPresenter.getViewState().isChecked(isChecked)));
+                .subscribe(aBoolean -> filterPresenter.getViewState().isChecked(aBoolean)));
         compositeDisposable.add(RxCompoundButton.checkedChanges(filterById)
                 .subscribe(aBoolean -> filterPresenter.getViewState().isChecked(aBoolean)));
         compositeDisposable.add(RxCompoundButton.checkedChanges(filterByDateCreated)
@@ -100,7 +103,13 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
     }
 
     @Override
-    public void isChecked(View view, boolean isChecked) {
-        view.check
+    public void isChecked(boolean isChecked) {
+        ascSwitch.setChecked(isChecked);
     }
+
+    @Override
+    public void getSwitchIdButton(long buttonId) {
+
+    }
+
 }

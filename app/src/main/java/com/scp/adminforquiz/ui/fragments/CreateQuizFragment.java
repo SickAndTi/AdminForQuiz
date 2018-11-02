@@ -69,6 +69,11 @@ public class CreateQuizFragment extends MvpAppCompatFragment implements CreateQu
     }
 
     @Override
+    public void setColorEnableButton(boolean isValid) {
+        btnOK.setTextColor(isValid ? getResources().getColor(R.color.buttonAuthColor) : getResources().getColor(R.color.backGroundColor));
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.clear();

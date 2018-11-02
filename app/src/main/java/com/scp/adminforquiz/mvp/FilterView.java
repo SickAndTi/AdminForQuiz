@@ -1,7 +1,5 @@
 package com.scp.adminforquiz.mvp;
 
-import android.view.View;
-
 import com.arellomobile.mvp.MvpView;
 
 public interface FilterView extends MvpView {
@@ -10,5 +8,7 @@ public interface FilterView extends MvpView {
 
     void showError(String errorMessage);
 
-    void isChecked(View view, boolean isChecked);
+    void isChecked(boolean isChecked);
+
+    void getSwitchIdButton(long buttonId);
 }
