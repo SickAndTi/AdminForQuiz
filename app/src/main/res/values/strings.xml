@@ -71,6 +71,11 @@
     <string name="createNwQuizRu">Создать объект</string>
     <string name="enterScpNumberRu">Номер объекта</string>
     <string name="enterImageUrlRu">URL ссылка на изображение</string>
+    <string name="textCreateNewObjectRu">Создание нового объекта</string>
+    <string name="enterLangCodeRu">Введите код языка</string>
+    <string name="enterTitleRu">Введите название объекта</string>
+    <string name="enterDescriptionRu">Введите описание объекта</string>
+    <string name="enterPhrasesRu">Введите фразы для доктора</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
