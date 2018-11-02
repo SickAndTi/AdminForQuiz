@@ -16,11 +16,9 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
-import com.jakewharton.rxbinding2.widget.RxRadioGroup;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.mvp.FilterPresenter;
 import com.scp.adminforquiz.mvp.FilterView;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class FilterFragment extends MvpAppCompatFragment implements FilterView {
@@ -48,7 +46,7 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
         super.onViewCreated(view, savedInstanceState);
         ascSwitch = view.findViewById(R.id.ascSwitch);
         btnOK = view.findViewById(R.id.btnOK);
-        btnOK.setOnClickListener(v -> filterPresenter.filter());
+        btnOK.setOnClickListener(v -> onBtnOkClicked());
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> filterPresenter.cancel());
         radioGroup = view.findViewById(R.id.radioGroup);
@@ -78,18 +76,21 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
                 case R.id.filterById:
                     break;
                 case R.id.filterByDateCreated:
-
                     break;
                 case R.id.filterByDateUpdated:
-
                     break;
                 case R.id.filterByApproved:
-
                     break;
                 default:
                     throw new IllegalArgumentException("Unexpected button");
             }
         });
+    }
+
+    private void onBtnOkClicked() {
+        radioGroup.getCheckedRadioButtonId();
+        ascSwitch.isChecked()
+
     }
 
     @Override
