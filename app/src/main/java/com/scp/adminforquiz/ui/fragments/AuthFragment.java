@@ -138,7 +138,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                                     })
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
+                                    .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
+                                            Throwable::toString));
                         }
 
                         @Override

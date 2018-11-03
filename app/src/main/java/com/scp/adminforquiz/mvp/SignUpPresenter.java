@@ -7,11 +7,14 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.jakewharton.rxrelay2.BehaviorRelay;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 import toothpick.Toothpick;
 
@@ -22,6 +25,8 @@ public class SignUpPresenter extends MvpPresenter<SignUpView> {
     Router router;
     @Inject
     ApiClient apiClient;
+    @Inject
+    MyPreferenceManager preferences;
     private BehaviorRelay<String> nameRelayReg = BehaviorRelay.create();
     private BehaviorRelay<String> loginRelayReg = BehaviorRelay.create();
     private BehaviorRelay<String> passwordRelayReg = BehaviorRelay.create();
@@ -64,7 +69,19 @@ public class SignUpPresenter extends MvpPresenter<SignUpView> {
         passwordRepeatRelayReg.accept(passwordRepeatReg);
     }
 
+    private void goToAllQuizFragment() {
+        router.newRootScreen(Constants.ALL_QUIZ_SCREEN);
+    }
+
     public void regUser() {
-        // TODO server registration method
+        compositeDisposable.add(apiClient.signUp(loginRelayReg.getValue(), passwordRelayReg.getValue(), nameRelayReg.getValue(), null)
+                .doOnSuccess(tokenResponse -> {
+                    preferences.setAccessToken(tokenResponse.accessToken);
+                    preferences.setRefreshToken(tokenResponse.refreshToken);
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tokenResponse -> goToAllQuizFragment(),
+                        error -> getViewState().showError(error.toString())));
     }
 }
