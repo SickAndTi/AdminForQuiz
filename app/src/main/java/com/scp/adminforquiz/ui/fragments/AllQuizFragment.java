@@ -82,7 +82,8 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                     break;
 
                 case R.id.filter:
-                    //TODO filters
+                    allQuizPresenter.goToFilterFragment();
+                    break;
             }
             return super.onOptionsItemSelected(menuItem);
         });

@@ -1,5 +1,6 @@
 package com.scp.adminforquiz.ui.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,12 +26,15 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.scp.adminforquiz.CommonUserData;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.mvp.AuthPresenter;
 import com.scp.adminforquiz.mvp.AuthView;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AuthPagerAdapter;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -40,12 +44,16 @@ import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiUser;
+import com.vk.sdk.api.model.VKApiUserFull;
+import com.vk.sdk.api.model.VKList;
 
 import java.util.Arrays;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
@@ -59,6 +67,9 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     ApiClient apiClient;
     @Inject
     Router router;
+    @Inject
+    MyPreferenceManager preferences;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -67,6 +78,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     TextView toolbarTitle;
     GoogleSignInOptions gso;
     CallbackManager callbackManager;
+    GoogleApiClient googleApiClient;
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
@@ -83,11 +95,12 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         super.onViewCreated(view, savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         toolbar = view.findViewById(R.id.toolbar);
+
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(getActivity())
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
                 .enableAutoManage(getActivity(), connectionResult -> Timber.d("ERROR"))
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
@@ -117,12 +130,19 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                         @Override
                         public void onSuccess(LoginResult loginResult) {
                             Timber.d("LOGIN FB RESULT : %s", loginResult.getAccessToken().getToken());
+                            compositeDisposable.add(apiClient.loginSocial(Constants.FACEBOOK, loginResult.getAccessToken().getToken())
+                                    .doOnSuccess(tokenResponse -> {
+                                        preferences.setAccessToken(tokenResponse.accessToken);
+                                        preferences.setRefreshToken(tokenResponse.refreshToken);
 
+                                    })
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
                         }
 
                         @Override
                         public void onCancel() {
-
                         }
 
                         @Override
@@ -147,16 +167,33 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+        if (VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
-            public void onResult(VKAccessToken res) {
-                Timber.d("RESULT : %s", res.accessToken);
+            public void onResult(VKAccessToken vkAccessToken) {
+                CommonUserData commonUserData = new CommonUserData();
+                commonUserData.email = vkAccessToken.email;
+                commonUserData.id = vkAccessToken.userId;
+                Timber.d("RESULT : %s,,,RESULT userID : %s", vkAccessToken.email, vkAccessToken.userId);
                 VKRequest request = VKApi.users().get();
                 request.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override
                     public void onComplete(VKResponse response) {
-                        Timber.d("VK RESPONSE :%s", response.json.toString());
+                        VKApiUserFull user = ((VKList<VKApiUserFull>) response.parsedModel).get(0);
+                        commonUserData.firstName = user.first_name;
+                        commonUserData.lastName = user.last_name;
+                        commonUserData.avatarUrl = user.photo_200;
+                        commonUserData.fullName = user.first_name + "" + user.last_name;
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson gson = builder.create();
+                        compositeDisposable.add(apiClient.loginSocial(Constants.VK, gson.toJson(commonUserData))
+                                .doOnSuccess(tokenResponse -> {
+                                    preferences.setAccessToken(tokenResponse.accessToken);
+                                    preferences.setRefreshToken(tokenResponse.refreshToken);
 
+                                })
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
                     }
 
                     @Override
@@ -176,19 +213,40 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                 Timber.d("Error ; %s", error.toString());
             }
         }))
-            switch (requestCode) {
-                case REQUEST_CODE_GOOGLE:
-                    GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                    Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
-                    apiClient.loginSocial(Constants.GOOGLE, result.getSignInAccount().getIdToken())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN));
-                    break;
-                default:
-                    callbackManager.onActivityResult(requestCode, resultCode, data);
-                    super.onActivityResult(requestCode, resultCode, data);
-            }
+
+
+        {
+            return;
+        }
+        switch (requestCode)
+
+        {
+            case REQUEST_CODE_GOOGLE:
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
+                compositeDisposable.add(apiClient.loginSocial(Constants.GOOGLE, result.getSignInAccount().getIdToken())
+                        .doOnSuccess(tokenResponse -> {
+                            preferences.setAccessToken(tokenResponse.accessToken);
+                            preferences.setRefreshToken(tokenResponse.refreshToken);
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
+                break;
+            default:
+                callbackManager.onActivityResult(requestCode, resultCode, data);
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (googleApiClient != null) {
+            googleApiClient.stopAutoManage(getActivity());
+            googleApiClient.disconnect();
+            googleApiClient = null;
+        }
     }
 }
 

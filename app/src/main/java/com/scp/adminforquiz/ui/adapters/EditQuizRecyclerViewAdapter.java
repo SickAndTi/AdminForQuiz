@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -76,24 +77,9 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 viewHolder.approved.setOnCheckedChangeListener((buttonView, isChecked) -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
-                    viewHolder.tvTitleTranslation.setText(quizTranslation.translation);
-                }
-                viewHolder.flagLayout.removeAllViews();
-                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
-                    FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
-                    if (quizTranslation.langCode.contains("en")) {
-                        flagImage.setCountryCode("gb");
-                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
-                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
-                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
-                        viewHolder.flagLayout.addView(flagImage);
-                    } else if (quizTranslation.langCode.contains("ru")) {
-                        flagImage.setCountryCode("ru");
-                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
-                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
-                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
-                        viewHolder.flagLayout.addView(flagImage);
-                    }
+                    viewHolder.etEnterTitle.setText(quizTranslation.translation);
+                    viewHolder.etEnterLangCode.setText(quizTranslation.langCode);
+                    viewHolder.etEnterDescription.setText(quizTranslation.description);
                 }
                 GlideApp
                         .with(viewHolder.itemView.getContext())
@@ -139,16 +125,18 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tvScpNumber;
         Switch approved;
         ImageView imageView;
-        TextView tvTitleTranslation;
-        LinearLayout flagLayout;
+        EditText etEnterLangCode, etEnterTitle, etEnterDescription, etEnterPhrases;
 
         EditOneQuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
             approved = itemView.findViewById(R.id.approved);
             imageView = itemView.findViewById(R.id.imageView);
-            tvTitleTranslation = itemView.findViewById(R.id.tvTitleTranslation);
-            flagLayout = itemView.findViewById(R.id.flagLayout);
+            etEnterLangCode = itemView.findViewById(R.id.etEnterLangCode);
+            etEnterTitle = itemView.findViewById(R.id.etEnterTitle);
+            etEnterDescription = itemView.findViewById(R.id.etEnterDescription);
+            etEnterPhrases = itemView.findViewById(R.id.etEnterPhrases);
+
         }
     }
 

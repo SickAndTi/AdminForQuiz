@@ -13,8 +13,6 @@ import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.User;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +34,27 @@ public abstract class QuizDao {
      */
     @Query("SELECT * FROM Quiz ORDER BY id ASC")
     public abstract Flowable<List<Quiz>> getAll();
+
+    @Query("SELECT * FROM Quiz ORDER BY id DESC")
+    public abstract Flowable<List<Quiz>> getAllDesc();
+
+    @Query("SELECT * FROM Quiz ORDER BY created ASC")
+    public abstract Flowable<List<Quiz>> getAllByDateCreatedAsc();
+
+    @Query("SELECT * FROM Quiz ORDER BY created DESC")
+    public abstract Flowable<List<Quiz>> getAllByDateCreatedDesc();
+
+    @Query("SELECT * FROM Quiz ORDER BY updated ASC")
+    public abstract Flowable<List<Quiz>> getAllByDateUpeatedAsc();
+
+    @Query("SELECT * FROM Quiz ORDER BY updated DESC")
+    public abstract Flowable<List<Quiz>> getAllByDateUpeatedDesc();
+
+    @Query("SELECT * FROM Quiz ORDER BY approved ASC")
+    public abstract Flowable<List<Quiz>> getAllByApprovedAsc();
+
+    @Query("SELECT * FROM Quiz ORDER BY approved DESC")
+    public abstract Flowable<List<Quiz>> getAllByApprovedDesc();
 
     @Query("SELECT id FROM Quiz ORDER BY id ASC")
     public abstract List<Long> getAllQuizIds();

@@ -44,7 +44,10 @@ public class CreateQuizPresenter extends MvpPresenter<CreateQuizView> {
                 imageRelay,
                 (numberText, imageText) -> !TextUtils.isEmpty(numberText) && imageText.startsWith("http")
         )
-                .subscribe(isValid -> getViewState().enableButton(isValid)));
+                .subscribe(isValid -> {
+                    getViewState().enableButton(isValid);
+                    getViewState().setColorEnableButton(isValid);
+                }));
     }
 
     public void onNumberChanged(String scpNumber) {
@@ -66,7 +69,7 @@ public class CreateQuizPresenter extends MvpPresenter<CreateQuizView> {
         compositeDisposable.add(apiClient.createNwQuiz(nwQuiz)
                 .toFlowable()
                 .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
-                .map(quiz -> quizDao.insert(quiz))
+                .map(quiz -> quizDao.insertQuizWithQuizTranslations(quiz))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
