@@ -89,7 +89,7 @@ public class FilterFragment extends MvpAppCompatFragment implements FilterView {
 
     private void onBtnOkClicked() {
         radioGroup.getCheckedRadioButtonId();
-        ascSwitch.isChecked()
+        ascSwitch.isChecked();
 
     }
 

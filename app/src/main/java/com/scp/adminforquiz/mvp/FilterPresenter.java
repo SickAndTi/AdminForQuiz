@@ -14,7 +14,6 @@ import com.scp.adminforquiz.preference.MyPreferenceManager;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -37,17 +36,12 @@ public class FilterPresenter extends MvpPresenter<FilterView> {
     private BehaviorRelay<SwitchCompat> switchCompatBehaviorRelay = BehaviorRelay.create();
     private BehaviorRelay<RadioGroup> radioGroupBehaviorRelay = BehaviorRelay.create();
 
-//    @Override
-//    protected void onFirstViewAttach() {
-//        super.onFirstViewAttach();
-//        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-//        compositeDisposable.add(Observable.combineLatest(
-//                switchCompatBehaviorRelay,
-//                radioGroupBehaviorRelay,
-//                ((switchCompat, radioGroup) -> // TODO)
-//                .subscribe()
-//        );
-//    }
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+
+    }
 
 
     @Override
