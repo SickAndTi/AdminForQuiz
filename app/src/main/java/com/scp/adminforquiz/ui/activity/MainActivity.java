@@ -18,7 +18,6 @@ import com.scp.adminforquiz.ui.fragments.AllQuizFragment;
 import com.scp.adminforquiz.ui.fragments.AuthFragment;
 import com.scp.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.scp.adminforquiz.ui.fragments.EditFragment;
-import com.scp.adminforquiz.ui.fragments.FilterFragment;
 import com.scp.adminforquiz.ui.fragments.OneQuizFragment;
 import com.scp.adminforquiz.ui.fragments.UpdateTranslationDescriptionFragment;
 import com.vk.sdk.VKAccessToken;
@@ -67,8 +66,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return UpdateTranslationDescriptionFragment.newInstance((Long) data);
                 case Constants.AUTH_SCREEN:
                     return AuthFragment.newInstance();
-                case Constants.FILTER_SCREEN:
-                    return FilterFragment.newInstance();
                 default:
                     throw new RuntimeException("Unknown screen key !");
             }

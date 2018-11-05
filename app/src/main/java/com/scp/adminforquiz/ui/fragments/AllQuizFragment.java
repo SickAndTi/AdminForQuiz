@@ -40,6 +40,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     SwipeRefreshLayout swipeRefreshLayout;
     Toolbar toolbar;
     BottomSheetBehavior bottomSheetBehavior;
+    View bottomSheet;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
@@ -55,6 +56,8 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomSheet = view.findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.allquiz_menu);
         toolbar.setTitle(R.string.app_name);
@@ -64,27 +67,11 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 case R.id.createQuiz:
                     allQuizPresenter.goToCreateQuizFragment();
                     break;
-
-                case R.id.logout:
-                    LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
-                    @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
-                    AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    mDialogBuilderLogout.setView(viewLogout);
-                    mDialogBuilderLogout
-                            .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    (dialog, id) -> {
-                                        allQuizPresenter.logout();
-                                        dialog.cancel();
-                                    })
-                            .setNegativeButton("Cancel",
-                                    (dialog, id) -> dialog.cancel());
-                    AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
-                    alertDialogLogout.show();
-                    break;
-
                 case R.id.filter:
-                    allQuizPresenter.goToFilterFragment();
+                    toggleBottomSheet();
+                    break;
+                case R.id.logout:
+                    showLogoutDialog();
                     break;
             }
             return super.onOptionsItemSelected(menuItem);
@@ -102,6 +89,32 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showProgressBar(boolean showProgressBar) {
         progressBarAllQuiz.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+    }
+
+    public void toggleBottomSheet() {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
+    public void showLogoutDialog() {
+        LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
+        AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderLogout.setView(viewLogout);
+        mDialogBuilderLogout
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            allQuizPresenter.logout();
+                            dialog.cancel();
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+        AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
+        alertDialogLogout.show();
     }
 
     @Override

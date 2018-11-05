@@ -114,8 +114,4 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         error -> getViewState().showError(error.toString())
                 ));
     }
-
-    public void goToFilterFragment() {
-        router.navigateTo(Constants.FILTER_SCREEN);
-    }
 }

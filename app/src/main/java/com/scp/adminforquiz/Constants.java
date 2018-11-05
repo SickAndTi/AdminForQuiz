@@ -15,7 +15,6 @@ public class Constants {
     public static final String ADD_TRANSLATION_SCREEN = "ADD_TRANSLATION_SCREEN";
     public static final String ADD_PHRASE_SCREEN = "ADD_PHRASE_SCREEN";
     public static final String UPDATE_TRANSLATION_DESCRIPTION_SCREEN = "UPDATE_TRANSLATION_DESCRIPTION_SCREEN";
-    public static final String FILTER_SCREEN = "FILTER_SCREEN";
     //auth
     public static final String USER_FOR_AUTH = "USER_FOR_AUTH";
     public static final String PASSWORD_FOR_AUTH = "PASSWORD_FOR_AUTH";
