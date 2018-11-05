@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -48,7 +47,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     SwitchCompat ascSwitch;
     RadioGroup radioGroup;
     Button btnOK, btnCancel;
-    RadioButton btnFilterById, btnFilterByDateUpdated, btnFilterByDateCreated, btnFilterByApproved;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {

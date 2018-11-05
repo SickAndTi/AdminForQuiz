@@ -119,86 +119,96 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
     }
 
     public void filterByDateCreated() {
-        compositeDisposable.add(quizDao.getAllByDateCreatedAsc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByDateUpdated() {
-        compositeDisposable.add(quizDao.getAllByDateUpeatedAsc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByApproved() {
-        compositeDisposable.add(quizDao.getAllByApprovedAsc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByIdDesc() {
-        compositeDisposable.add(quizDao.getAllDesc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByDateCreatedDesc() {
-        compositeDisposable.add(quizDao.getAllByDateCreatedDesc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByDateUpdatedDesc() {
-        compositeDisposable.add(quizDao.getAllByDateUpeatedDesc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByApprovedDesc() {
-        compositeDisposable.add(quizDao.getAllByApprovedDesc()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 }
