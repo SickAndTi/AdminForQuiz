@@ -95,7 +95,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         } else {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 

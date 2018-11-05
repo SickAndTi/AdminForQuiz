@@ -101,8 +101,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     public void logout() {
         compositeDisposable.add(Completable.fromAction(() -> {
             quizDao.deleteAllTables();
-            preferences.setUserForAuth(null);
-            preferences.setPasswordForAuth(null);
             preferences.setAccessToken(null);
             preferences.setRefreshToken(null);
         })
