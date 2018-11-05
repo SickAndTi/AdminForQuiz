@@ -63,7 +63,7 @@
     <string name="fb_login_protocol_scheme">fb1513219612156286</string>
     <string name="byAsc">По возрастанию</string>
     <string name="byDesc">По убыванию</string>
-    <string name="filterbyid">Filter By Id</string>
+    <string name="filterById">Filter By Id</string>
     <string name="filterByDateUpdated">Filter By Date Updated</string>
     <string name="filterByDateCreated">Filter By Date Created</string>
     <string name="filterByApproved">Filter By Approved</string>

@@ -32,6 +32,22 @@ public class MyPreferenceManager {
     public String getRefreshToken() {
         return preferences.getString(Constants.REFRESH_TOKEN, null);
     }
+
+    public void setUserFilterAscending(boolean ascending) {
+        preferences.edit().putBoolean(Constants.USER_FILTER_ASCENDING, ascending).apply();
+    }
+
+    public boolean getUserFilterAscending() {
+        return preferences.getBoolean(Constants.USER_FILTER_ASCENDING, true);
+    }
+
+    public void setUserFilterBy(int filterItem) {
+        preferences.edit().putInt(Constants.USER_FILTER_BY, filterItem).apply();
+    }
+
+    public int getUserFilterBy() {
+        return preferences.getInt(Constants.USER_FILTER_BY, 0);
+    }
 }
 
 

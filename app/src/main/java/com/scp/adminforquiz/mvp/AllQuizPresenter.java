@@ -65,25 +65,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 ));
     }
 
-    public void setQuizzesFromDb() {
-        compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe(subscription -> getViewState().showProgressBar(true))
-                        .doOnEach(notification -> getViewState().showProgressBar(false))
-                        .subscribe(quizzes -> {
-                                    getViewState().showSwipeRefresherBar(false);
-                                    getViewState().showQuizList(quizzes);
-//                                    getViewState().enableScrollListner(true);
-                                },
-                                error -> {
-                                    getViewState().showError(error.toString());
-                                    getViewState().showSwipeRefresherBar(false);
-                                })
-        );
-    }
-
     public void goToQuizFragment(Quiz quiz) {
         router.navigateTo(Constants.ONE_QUIZ_SCREEN, quiz.id);
     }
@@ -130,11 +111,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByDateCreated() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesByDateCreatedAsc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
@@ -142,11 +126,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByDateUpdated() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesByDateUpdatedAsc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
@@ -154,11 +141,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByApproved() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesByApprovedAsc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
@@ -166,11 +156,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByIdDesc() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesDesc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
@@ -178,11 +171,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByDateCreatedDesc() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesByDateCreatedDesc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
@@ -190,11 +186,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByDateUpdatedDesc() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesByDateUpdatedDesc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));
@@ -202,11 +201,14 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
 
     public void filterByApprovedDesc() {
         compositeDisposable.add(
-                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrasesByApprovedDesc())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .doOnEach(listNotification -> {
+                            getViewState().showProgressBar(false);
+                            getViewState().showBottomSheet(false);
+                        })
                         .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                                 error -> getViewState().showError(error.toString())
                         ));

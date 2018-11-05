@@ -15,9 +15,7 @@ public class Constants {
     public static final String ADD_TRANSLATION_SCREEN = "ADD_TRANSLATION_SCREEN";
     public static final String ADD_PHRASE_SCREEN = "ADD_PHRASE_SCREEN";
     public static final String UPDATE_TRANSLATION_DESCRIPTION_SCREEN = "UPDATE_TRANSLATION_DESCRIPTION_SCREEN";
-    //auth
-    public static final String USER_FOR_AUTH = "USER_FOR_AUTH";
-    public static final String PASSWORD_FOR_AUTH = "PASSWORD_FOR_AUTH";
+
     //server
     public static final String GRANT_TYPE = "password";
     public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
@@ -27,5 +25,8 @@ public class Constants {
     public static final String VK = "VK";
     public static final String GOOGLE = "GOOGLE";
     public static final String FACEBOOK = "FACEBOOK";
+    //filter
+    public static final String USER_FILTER_ASCENDING = "USER_FILTER_ASCENDING";
+    public static final String USER_FILTER_BY = "USER_FILTER_BY";
 
 }

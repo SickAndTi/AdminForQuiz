@@ -35,29 +35,29 @@ public abstract class QuizDao {
     @Query("SELECT * FROM Quiz ORDER BY id ASC")
     public abstract Flowable<List<Quiz>> getAll();
 
-    @Query("SELECT * FROM Quiz ORDER BY id DESC")
-    public abstract Flowable<List<Quiz>> getAllDesc();
-
-    @Query("SELECT * FROM Quiz ORDER BY created ASC")
-    public abstract Flowable<List<Quiz>> getAllByDateCreatedAsc();
-
-    @Query("SELECT * FROM Quiz ORDER BY created DESC")
-    public abstract Flowable<List<Quiz>> getAllByDateCreatedDesc();
-
-    @Query("SELECT * FROM Quiz ORDER BY updated ASC")
-    public abstract Flowable<List<Quiz>> getAllByDateUpeatedAsc();
-
-    @Query("SELECT * FROM Quiz ORDER BY updated DESC")
-    public abstract Flowable<List<Quiz>> getAllByDateUpeatedDesc();
-
-    @Query("SELECT * FROM Quiz ORDER BY approved ASC")
-    public abstract Flowable<List<Quiz>> getAllByApprovedAsc();
-
-    @Query("SELECT * FROM Quiz ORDER BY approved DESC")
-    public abstract Flowable<List<Quiz>> getAllByApprovedDesc();
-
     @Query("SELECT id FROM Quiz ORDER BY id ASC")
     public abstract List<Long> getAllQuizIds();
+
+    @Query("SELECT id FROM Quiz ORDER BY id DESC")
+    public abstract List<Long> getAllQuizIdsDesc();
+
+    @Query("SELECT id FROM Quiz ORDER BY created ASC")
+    public abstract List<Long> getAllQuizIdsByDateCreatedAsc();
+
+    @Query("SELECT id FROM Quiz ORDER BY created DESC")
+    public abstract List<Long> getAllQuizIdsByDateCreatedDesc();
+
+    @Query("SELECT id FROM Quiz ORDER BY updated ASC")
+    public abstract List<Long> getAllQuizIdsByDateUpdatedAsc();
+
+    @Query("SELECT id FROM Quiz ORDER BY updated DESC")
+    public abstract List<Long> getAllQuizIdsByDateUpdatedDesc();
+
+    @Query("SELECT id FROM Quiz ORDER BY approved ASC")
+    public abstract List<Long> getAllQuizIdsByApprovedAsc();
+
+    @Query("SELECT id FROM Quiz ORDER BY approved DESC")
+    public abstract List<Long> getAllQuizIdsByApprovedDesc();
 
     @Query("SELECT * FROM Quiz ORDER BY RANDOM() LIMIT :count")
     public abstract Flowable<List<Quiz>> getRandomQuizes(int count);
@@ -228,6 +228,69 @@ public abstract class QuizDao {
     public List<Quiz> getAllQuizzesWithTranslationsAndPhrases() {
         List<Quiz> quizList = new ArrayList<>();
         for (Long quizId : getAllQuizIds()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesDesc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsDesc()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateCreatedAsc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateCreatedDesc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateUpdatedAsc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateUpdatedDesc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByApprovedAsc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsByApprovedAsc()) {
+            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        }
+        return quizList;
+    }
+
+    @Transaction
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByApprovedDesc() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (Long quizId : getAllQuizIdsByApprovedDesc()) {
             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
         }
         return quizList;

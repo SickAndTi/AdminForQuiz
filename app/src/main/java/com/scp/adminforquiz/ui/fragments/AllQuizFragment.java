@@ -25,18 +25,24 @@ import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.mvp.AllQuizPresenter;
 import com.scp.adminforquiz.mvp.AllQuizView;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;
 
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
+import toothpick.Toothpick;
 
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
     @InjectPresenter
     AllQuizPresenter allQuizPresenter;
+    @Inject
+    MyPreferenceManager preferences;
     RecyclerView recyclerView;
     AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
     View progressBarAllQuiz;
@@ -62,10 +68,13 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         ascSwitch = view.findViewById(R.id.ascSwitch);
+        ascSwitch.setChecked(preferences.getUserFilterAscending());
         radioGroup = view.findViewById(R.id.radioGroup);
+        radioGroup.check(preferences.getUserFilterBy());
         btnOK = view.findViewById(R.id.btnOK);
         btnOK.setOnClickListener(v -> filterQuizzes());
         btnCancel = view.findViewById(R.id.btnCancel);
@@ -94,7 +103,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
-        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.setQuizzesFromDb());
+        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromPage(1));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -103,24 +112,40 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.filterById:
                     allQuizPresenter.filterById();
+                    preferences.setUserFilterAscending(true);
+                    preferences.setUserFilterBy(R.id.filterById);
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreated();
+                    preferences.setUserFilterAscending(true);
+                    preferences.setUserFilterBy(R.id.filterByDateCreated);
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdated();
+                    preferences.setUserFilterAscending(true);
+                    preferences.setUserFilterBy(R.id.filterByDateUpdated);
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApproved();
+                    preferences.setUserFilterAscending(true);
+                    preferences.setUserFilterBy(R.id.filterByApproved);
             }
         }
         if (!ascSwitch.isChecked()) {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.filterById:
                     allQuizPresenter.filterByIdDesc();
+                    preferences.setUserFilterAscending(false);
+                    preferences.setUserFilterBy(R.id.filterById);
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreatedDesc();
+                    preferences.setUserFilterAscending(false);
+                    preferences.setUserFilterBy(R.id.filterByDateCreated);
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdatedDesc();
+                    preferences.setUserFilterAscending(false);
+                    preferences.setUserFilterBy(R.id.filterByDateUpdated);
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApprovedDesc();
+                    preferences.setUserFilterAscending(false);
+                    preferences.setUserFilterBy(R.id.filterByApproved);
             }
         }
     }
