@@ -114,14 +114,15 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterById() {
-        compositeDisposable.add(quizDao.getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> getViewState().showProgressBar(false))
-                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
-                        error -> getViewState().showError(error.toString())
-                ));
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                        .doOnEach(listNotification -> getViewState().showProgressBar(false))
+                        .subscribe(quizzes -> getViewState().showQuizList(quizzes),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 
     public void filterByDateCreated() {
