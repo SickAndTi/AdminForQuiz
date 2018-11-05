@@ -9,10 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -41,6 +45,10 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     Toolbar toolbar;
     BottomSheetBehavior bottomSheetBehavior;
     View bottomSheet;
+    SwitchCompat ascSwitch;
+    RadioGroup radioGroup;
+    Button btnOK, btnCancel;
+    RadioButton btnFilterById, btnFilterByDateUpdated, btnFilterByDateCreated, btnFilterByApproved;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
@@ -58,6 +66,12 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         super.onViewCreated(view, savedInstanceState);
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        ascSwitch = view.findViewById(R.id.ascSwitch);
+        radioGroup = view.findViewById(R.id.radioGroup);
+        btnOK = view.findViewById(R.id.btnOK);
+        btnOK.setOnClickListener(v -> filterQuizzes());
+        btnCancel = view.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(v -> outFromBottomSheet());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.allquiz_menu);
         toolbar.setTitle(R.string.app_name);
@@ -84,6 +98,38 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.setQuizzesFromDb());
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void filterQuizzes() {
+        if (ascSwitch.isChecked()) {
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case R.id.filterById:
+                    allQuizPresenter.filterById();
+                case R.id.filterByDateCreated:
+                    allQuizPresenter.filterByDateCreated();
+                case R.id.filterByDateUpdated:
+                    allQuizPresenter.filterByDateUpdated();
+                case R.id.filterByApproved:
+                    allQuizPresenter.filterByApproved();
+            }
+        }
+        if (!ascSwitch.isChecked()) {
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case R.id.filterById:
+                    allQuizPresenter.filterByIdDesc();
+                case R.id.filterByDateCreated:
+                    allQuizPresenter.filterByDateCreatedDesc();
+                case R.id.filterByDateUpdated:
+                    allQuizPresenter.filterByDateUpdatedDesc();
+                case R.id.filterByApproved:
+                    allQuizPresenter.filterByApprovedDesc();
+            }
+        }
+    }
+
+
+    private void outFromBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
@@ -155,5 +201,10 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 }
             });
         }
+    }
+
+    @Override
+    public void showBottomSheet(boolean showBottomSheet) {
+        bottomSheetBehavior.setState(showBottomSheet ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_HIDDEN);
     }
 }
