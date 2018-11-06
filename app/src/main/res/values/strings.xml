@@ -76,6 +76,7 @@
     <string name="enterTitleRu">Введите название объекта</string>
     <string name="enterDescriptionRu">Введите описание объекта</string>
     <string name="enterPhrasesRu">Введите фразы для доктора</string>
+    <string name="chooseFilterRu">Выберите фильтр</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

@@ -109,6 +109,9 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     private void filterQuizzes() {
         if (ascSwitch.isChecked()) {
             switch (radioGroup.getCheckedRadioButtonId()) {
+                case -1:
+                    Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();
+                    break;
                 case R.id.filterById:
                     allQuizPresenter.filterById();
                     Timber.d("TRUE BY ID CALLED");
@@ -129,6 +132,9 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         }
         if (!ascSwitch.isChecked()) {
             switch (radioGroup.getCheckedRadioButtonId()) {
+                case -1:
+                    Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();
+                    break;
                 case R.id.filterById:
                     allQuizPresenter.filterByIdDesc();
                     Timber.d("FALSE BY ID CALLED");
