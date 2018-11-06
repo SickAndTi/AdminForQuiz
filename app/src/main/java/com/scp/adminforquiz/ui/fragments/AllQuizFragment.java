@@ -111,32 +111,40 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.filterById:
                     allQuizPresenter.filterById();
-
+                    Timber.d("TRUE BY ID CALLED");
+                    break;
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreated();
-
+                    Timber.d("TRUE BY CREATED CALLED");
+                    break;
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdated();
-
+                    Timber.d("TRUE BY UPDATED CALLED");
+                    break;
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApproved();
-
+                    Timber.d("TRUE BY APPROVE CALLED");
+                    break;
             }
         }
         if (!ascSwitch.isChecked()) {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.filterById:
                     allQuizPresenter.filterByIdDesc();
-
+                    Timber.d("FALSE BY ID CALLED");
+                    break;
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreatedDesc();
-
+                    Timber.d("FALSE BY CREATED CALLED");
+                    break;
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdatedDesc();
-
+                    Timber.d("FALSE BY UPDATED CALLED");
+                    break;
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApprovedDesc();
-
+                    Timber.d("FALSE BY APPROVE CALLED");
+                    break;
             }
         }
     }

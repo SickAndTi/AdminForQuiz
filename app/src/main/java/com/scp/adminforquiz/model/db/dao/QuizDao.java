@@ -234,18 +234,22 @@ public abstract class QuizDao {
                         for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                     case "updated":
                         for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                     case "approve":
                         for (Long quizId : getAllQuizIdsByApprovedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                     case "id":
                         for (Long quizId : getAllQuizIds()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                 }
             } else if (ascending = false) {
                 switch (sortFieldName) {
@@ -253,18 +257,22 @@ public abstract class QuizDao {
                         for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                     case "updated":
                         for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                     case "approve":
                         for (Long quizId : getAllQuizIdsByApprovedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                     case "id":
                         for (Long quizId : getAllQuizIdsDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                         }
+                        break;
                 }
             }
         } else {
