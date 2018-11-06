@@ -62,15 +62,11 @@ public class SignInPresenter extends MvpPresenter<SignInView> {
                 .doOnSuccess(tokenResponse -> {
                     preferences.setAccessToken(tokenResponse.accessToken);
                     preferences.setRefreshToken(tokenResponse.refreshToken);
-                    preferences.setUserForAuth(loginRelay.getValue());
-                    preferences.setPasswordForAuth(passwordRelay.getValue());
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tokenResponse ->
-                                goToAllQuizFragment(),
-                        error ->
-                                getViewState().showError(error.toString())));
+                .subscribe(tokenResponse -> goToAllQuizFragment(),
+                        error -> getViewState().showError(error.toString())));
     }
 
     public void onLoginChanged(String login) {

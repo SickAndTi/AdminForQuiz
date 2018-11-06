@@ -50,6 +50,17 @@ public class ApiClient {
         );
     }
 
+    public Single<TokenResponse> signUp(String email, String password, String userFullName, String avatarUrl) {
+        return authApi.signUp(
+                email,
+                password,
+                userFullName,
+                avatarUrl,
+                BuildConfig.CLIENT_ID,
+                BuildConfig.CLIENT_SECRET
+        );
+    }
+
     public Single<List<NwQuiz>> getNwQuizList() {
         return quizApi.getNwQuizList();
     }

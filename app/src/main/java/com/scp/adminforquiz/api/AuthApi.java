@@ -35,4 +35,15 @@ public interface AuthApi {
             @Field("clientId") String clientId,
             @Field("clientSecret") String clientSecret
     );
+
+    @FormUrlEncoded
+    @POST("auth/registration")
+    Single<TokenResponse> signUp(
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("fullName") String userFullName,
+            @Field("avatarUrl") String avatarUrl,
+            @Field("clientId") String clientId,
+            @Field("clientSecret") String clientSecret
+    );
 }
