@@ -41,12 +41,12 @@ public class MyPreferenceManager {
         return preferences.getBoolean(Constants.USER_FILTER_ASCENDING, true);
     }
 
-    public void setUserFilterBy(int filterItem) {
-        preferences.edit().putInt(Constants.USER_FILTER_BY, filterItem).apply();
+    public void setUserSortFieldName(String sortFieldName) {
+        preferences.edit().putString(Constants.USER_SORT_FIELD_NAME, sortFieldName).apply();
     }
 
-    public int getUserFilterBy() {
-        return preferences.getInt(Constants.USER_FILTER_BY, 0);
+    public String getUserSortFieldName() {
+        return preferences.getString(Constants.USER_SORT_FIELD_NAME, null);
     }
 }
 

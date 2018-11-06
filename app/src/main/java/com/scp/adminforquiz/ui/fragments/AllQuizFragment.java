@@ -74,7 +74,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         ascSwitch = view.findViewById(R.id.ascSwitch);
         ascSwitch.setChecked(preferences.getUserFilterAscending());
         radioGroup = view.findViewById(R.id.radioGroup);
-        radioGroup.check(preferences.getUserFilterBy());
         btnOK = view.findViewById(R.id.btnOK);
         btnOK.setOnClickListener(v -> filterQuizzes());
         btnCancel = view.findViewById(R.id.btnCancel);
@@ -112,40 +111,32 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.filterById:
                     allQuizPresenter.filterById();
-                    preferences.setUserFilterAscending(true);
-                    preferences.setUserFilterBy(R.id.filterById);
+
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreated();
-                    preferences.setUserFilterAscending(true);
-                    preferences.setUserFilterBy(R.id.filterByDateCreated);
+
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdated();
-                    preferences.setUserFilterAscending(true);
-                    preferences.setUserFilterBy(R.id.filterByDateUpdated);
+
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApproved();
-                    preferences.setUserFilterAscending(true);
-                    preferences.setUserFilterBy(R.id.filterByApproved);
+
             }
         }
         if (!ascSwitch.isChecked()) {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.filterById:
                     allQuizPresenter.filterByIdDesc();
-                    preferences.setUserFilterAscending(false);
-                    preferences.setUserFilterBy(R.id.filterById);
+
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreatedDesc();
-                    preferences.setUserFilterAscending(false);
-                    preferences.setUserFilterBy(R.id.filterByDateCreated);
+
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdatedDesc();
-                    preferences.setUserFilterAscending(false);
-                    preferences.setUserFilterBy(R.id.filterByDateUpdated);
+
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApprovedDesc();
-                    preferences.setUserFilterAscending(false);
-                    preferences.setUserFilterBy(R.id.filterByApproved);
+
             }
         }
     }

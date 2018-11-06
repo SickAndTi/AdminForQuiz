@@ -27,6 +27,5 @@ public class Constants {
     public static final String FACEBOOK = "FACEBOOK";
     //filter
     public static final String USER_FILTER_ASCENDING = "USER_FILTER_ASCENDING";
-    public static final String USER_FILTER_BY = "USER_FILTER_BY";
-
+    public static final String USER_SORT_FIELD_NAME = "USER_SORT_FIELD_NAME";
 }

@@ -225,73 +225,52 @@ public abstract class QuizDao {
     }
 
     @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrases() {
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrases(boolean ascending, String sortFieldName) {
         List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIds()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesDesc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsDesc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateCreatedAsc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateCreatedDesc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateUpdatedAsc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByDateUpdatedDesc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByApprovedAsc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsByApprovedAsc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-        }
-        return quizList;
-    }
-
-    @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrasesByApprovedDesc() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIdsByApprovedDesc()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        if (sortFieldName != null) {
+            if (ascending = true) {
+                switch (sortFieldName) {
+                    case "created":
+                        for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                    case "updated":
+                        for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                    case "approve":
+                        for (Long quizId : getAllQuizIdsByApprovedAsc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                    case "id":
+                        for (Long quizId : getAllQuizIds()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                }
+            } else if (ascending = false) {
+                switch (sortFieldName) {
+                    case "created":
+                        for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                    case "updated":
+                        for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                    case "approve":
+                        for (Long quizId : getAllQuizIdsByApprovedDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                    case "id":
+                        for (Long quizId : getAllQuizIdsDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                        }
+                }
+            }
+        } else {
+            for (Long quizId : getAllQuizIds()) {
+                quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+            }
         }
         return quizList;
     }
