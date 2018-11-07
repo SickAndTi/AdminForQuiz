@@ -81,6 +81,7 @@
     <string name="addTranslationPhraseRu">Добавить фразу для Доктора</string>
     <string name="enterTranslationPhraseRu">Введите фразу</string>
     <string name="addTranslationRu">Добавить перевод</string>
+    <string name="doctorPhrases">Doctor phrases</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
