@@ -5,6 +5,7 @@
     android:id="@+id/layout_dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backGroundColor"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -47,9 +48,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:textSize="23sp"
+            android:text="@string/updateQuizTranslationDescriptionRu"
             android:textColor="@color/black"
-            android:text="@string/updateQuizTranslationDescriptionRu" />
+            android:textSize="23sp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -59,7 +60,8 @@
             <EditText
                 android:id="@+id/etTranslationDescription"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:ignore="Autofill,LabelFor,TextFields">
 
             </EditText>
         </android.support.design.widget.TextInputLayout>

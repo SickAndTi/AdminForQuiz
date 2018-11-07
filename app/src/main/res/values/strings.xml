@@ -78,6 +78,8 @@
     <string name="enterPhrasesRu">Введите фразы для доктора</string>
     <string name="chooseFilterRu">Выберите фильтр</string>
     <string name="updateQuizTranslationDescriptionRu">Обновить описание</string>
+    <string name="addTranslationPhraseRu">Добавить фразу для Доктора</string>
+    <string name="enterTranslationPhraseRu">Введите фразу</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

@@ -7,7 +7,6 @@ import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
-import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
@@ -61,44 +60,8 @@ public class ApiClient {
         );
     }
 
-    public Single<List<NwQuiz>> getNwQuizList() {
-        return quizApi.getNwQuizList();
-    }
-
     public Single<List<NwQuiz>> getAllWithUser() {
         return quizApi.getAllWithUser();
-    }
-
-    public Single<NwQuiz> getNwQuizById(Long nwQuizId) {
-        return quizApi.getNwQuizById(nwQuizId);
-    }
-
-    public Single<NwQuiz> getNwQuizByQuizTranslationId(Long nwQuizTranslationId) {
-        return quizApi.getNwQuizByQuizTranslationId(nwQuizTranslationId);
-    }
-
-    public Single<List<NwQuiz>> getNwQuizListByLangCode(String langCode) {
-        return quizApi.getNwQuizListByLangCode(langCode);
-    }
-
-    public Single<List<NwQuiz>> getNwQuizListSorted(String sortFieldName, Boolean ascending) {
-        return quizApi.getNwQuizListSorted(sortFieldName, ascending);
-    }
-
-    public Single<List<NwQuizTranslation>> getNwQuizTranslationList() {
-        return quizApi.getNwQuizTranslationList();
-    }
-
-    public Single<NwQuizTranslation> getNwQuizTranslationById(Long nwQuizId) {
-        return quizApi.getNwQuizTranslationById(nwQuizId);
-    }
-
-    public Single<List<NwQuizTranslationPhrase>> getNwQuizTranslationPhraseList() {
-        return quizApi.getNwQuizTranslationPhraseList();
-    }
-
-    public Single<NwQuizTranslationPhrase> getNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
-        return quizApi.getNwQuizTranslationPhraseById(nwQuizTranslationPhraseId);
     }
 
     public Single<NwQuiz> createNwQuiz(NwQuiz nwQuiz) {

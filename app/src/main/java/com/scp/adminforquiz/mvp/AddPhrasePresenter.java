@@ -15,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -49,7 +50,10 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
                 .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN),
-                        error -> getViewState().showError(error.toString())
+                        error -> {
+                            getViewState().showError(error.toString());
+                            Timber.e(error);
+                        }
                 ));
     }
 
@@ -60,6 +64,7 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
     public void onPhraseChanged(String phrase) {
         phraseText = phrase;
         getViewState().enableButton(!TextUtils.isEmpty(phraseText));
+        getViewState().setColorEnableButton(!TextUtils.isEmpty(phraseText));
     }
 
     @Override

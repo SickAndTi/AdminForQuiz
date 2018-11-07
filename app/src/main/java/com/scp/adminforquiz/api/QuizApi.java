@@ -2,7 +2,6 @@ package com.scp.adminforquiz.api;
 
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
-import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 
 import java.util.List;
 
@@ -15,49 +14,8 @@ import retrofit2.http.Query;
 
 public interface QuizApi {
 
-    @GET("quiz/all")
-    Single<List<NwQuiz>> getNwQuizList();
-
     @GET("quiz/allWithUsers")
     Single<List<NwQuiz>> getAllWithUser();
-
-    @GET("quiz/{id}")
-    Single<NwQuiz> getNwQuizById(
-            @Path("id") Long id
-    );
-
-    @GET("quiz/getQuizByQuizTranslationId")
-    Single<NwQuiz> getNwQuizByQuizTranslationId(
-            @Query("quizTranslationId") Long quizTranslationId
-    );
-
-    @GET("quiz/getByLangCode")
-    Single<List<NwQuiz>> getNwQuizListByLangCode(
-            @Query("langCode") String langCode
-    );
-
-    @GET("quiz/allSorted")
-    Single<List<NwQuiz>> getNwQuizListSorted(
-            @Query("sortFieldName") String sortFieldName,
-            @Query("ascending") Boolean ascending
-    );
-
-    @GET("quiz/translations/all")
-    Single<List<NwQuizTranslation>> getNwQuizTranslationList();
-
-    @GET("quiz/translations/{id}")
-    Single<NwQuizTranslation> getNwQuizTranslationById(
-            @Path("id") Long id
-    );
-
-    @GET("quiz/translations/phrases/all")
-    Single<List<NwQuizTranslationPhrase>> getNwQuizTranslationPhraseList(
-    );
-
-    @GET("quiz/translations/phrases/{id}")
-    Single<NwQuizTranslationPhrase> getNwQuizTranslationPhraseById(
-            @Path("id") Long id
-    );
 
     @POST("quiz/create")
     Single<NwQuiz> createNwQuiz(
