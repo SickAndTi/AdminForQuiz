@@ -28,4 +28,9 @@ public class Constants {
     //filter
     public static final String USER_FILTER_ASCENDING = "USER_FILTER_ASCENDING";
     public static final String USER_SORT_FIELD_NAME = "USER_SORT_FIELD_NAME";
+    //fields for filter
+    public static final String ID = "ID";
+    public static final String CREATED = "CREATED";
+    public static final String UPDATED = "UPDATED";
+    public static final String APPROVE = "APPROVE";
 }

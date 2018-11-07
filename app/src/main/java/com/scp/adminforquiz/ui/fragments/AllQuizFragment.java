@@ -129,8 +129,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                     Timber.d("TRUE BY APPROVE CALLED");
                     break;
             }
-        }
-        if (!ascSwitch.isChecked()) {
+        } else {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case -1:
                     Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();

@@ -8,6 +8,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
+import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
@@ -228,67 +230,59 @@ public abstract class QuizDao {
     @Transaction
     public List<Quiz> getAllQuizzesWithTranslationsAndPhrases(boolean ascending, String sortFieldName) {
         List<Quiz> quizList = new ArrayList<>();
-        quizList.toArray();
         if (sortFieldName != null) {
             if (ascending) {
                 switch (sortFieldName) {
-                    case "created":
+                    case Constants.CREATED:
                         for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST true created %s:", quizList);
                         }
                         break;
-                    case "updated":
+                    case Constants.UPDATED:
                         for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST true updated %s:", quizList);
                         }
-
                         break;
-                    case "approve":
+                    case Constants.APPROVE:
                         for (Long quizId : getAllQuizIdsByApprovedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST true approve %s:", quizList);
                         }
-
                         break;
-                    case "id":
+                    case Constants.ID:
                         for (Long quizId : getAllQuizIds()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST true id %s:", quizList);
                         }
-
                         break;
                 }
             } else {
                 switch (sortFieldName) {
-                    case "created":
+                    case Constants.CREATED:
                         for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST false created %s:", quizList);
                         }
-
                         break;
-                    case "updated":
+                    case Constants.UPDATED:
                         for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST false updated %s:", quizList);
                         }
-
                         break;
-                    case "approve":
+                    case Constants.APPROVE:
                         for (Long quizId : getAllQuizIdsByApprovedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST false approve %s:", quizList.toString());
                         }
-
                         break;
-                    case "id":
+                    case Constants.ID:
                         for (Long quizId : getAllQuizIdsDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                             Timber.d("QUIZLIST false id %s:", quizList);
                         }
-
                         break;
                 }
             }
@@ -297,7 +291,6 @@ public abstract class QuizDao {
                 quizList.add(getQuizWithTranslationsAndPhrases(quizId));
                 Timber.d("QUIZLIST sorted field = null %s:", quizList);
             }
-
         }
         return quizList;
     }
