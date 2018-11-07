@@ -62,7 +62,8 @@
                 android:id="@+id/etEnterScpNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number">
+                android:inputType="number"
+                tools:ignore="Autofill,LabelFor">
 
             </EditText>
         </android.support.design.widget.TextInputLayout>
@@ -76,7 +77,8 @@
             <EditText
                 android:id="@+id/etEnterImageUrl"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:ignore="Autofill,LabelFor,TextFields">
 
             </EditText>
         </android.support.design.widget.TextInputLayout>
@@ -109,7 +111,6 @@
                 android:text="@string/OK"
                 android:textColor="@color/backGroundColor"
                 tools:ignore="ButtonStyle" />
-
         </LinearLayout>
     </LinearLayout>
 

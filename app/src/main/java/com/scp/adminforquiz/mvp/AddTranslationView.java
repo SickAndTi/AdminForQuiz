@@ -9,4 +9,6 @@ public interface AddTranslationView extends MvpView {
     void enableButton(boolean enableButton);
 
     void showError(String errorMessage);
+
+    void setColorEnableButton(boolean isValid);
 }

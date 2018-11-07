@@ -9,6 +9,7 @@ import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 import com.jakewharton.rxrelay2.BehaviorRelay;
+
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -51,7 +52,10 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
                 titleRelay,
                 descriptionRelay,
                 (langCodeText, titleText, descriptionText) -> !TextUtils.isEmpty(titleText) && !TextUtils.isEmpty(descriptionText) && Arrays.asList(locales).contains(langCodeText))
-                .subscribe(isValid -> getViewState().enableButton(isValid))
+                .subscribe(isValid -> {
+                    getViewState().enableButton(isValid);
+                    getViewState().setColorEnableButton(isValid);
+                })
         );
     }
 

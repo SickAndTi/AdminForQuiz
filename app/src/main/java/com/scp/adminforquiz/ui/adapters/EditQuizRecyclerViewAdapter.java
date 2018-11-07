@@ -1,6 +1,7 @@
 package com.scp.adminforquiz.ui.adapters;
 
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,18 +94,18 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 QuizTranslation quizTranslation = (QuizTranslation) oneQuizRecyclerViewItemList.get(position).data;
                 editOneQuizTranslationViewHolder.tvQuizTitle.setText(quizTranslation.translation);
                 editOneQuizTranslationViewHolder.tvQuizDescription.setText(quizTranslation.description);
-                editOneQuizTranslationViewHolder.btnDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
+                editOneQuizTranslationViewHolder.imvDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
+                editOneQuizTranslationViewHolder.imvUpdateDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
                 editOneQuizTranslationViewHolder.etPhrasesLayout.removeAllViews();
                 for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
                     TextView textView = new TextView(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
                     textView.setText(quizTranslationPhrase.translation);
                     editOneQuizTranslationViewHolder.etPhrasesLayout.addView(textView);
-                    Button btnDeleteTranslationPhrase = new Button(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
-                    btnDeleteTranslationPhrase.setText(R.string.deleteTranslationPhrase);
-                    btnDeleteTranslationPhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
-                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(btnDeleteTranslationPhrase);
+                    ImageView deleteImage = new ImageView(editOneQuizTranslationViewHolder.etPhrasesLayout.getContext());
+                    deleteImage.setImageResource(R.drawable.ic_delete_black_24dp);
+                    deleteImage.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
+                    editOneQuizTranslationViewHolder.etPhrasesLayout.addView(deleteImage);
                 }
-                editOneQuizTranslationViewHolder.tvQuizDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
                 editOneQuizTranslationViewHolder.tvQuizTitle.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
                 break;
         }
@@ -144,14 +145,15 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tvQuizTitle;
         TextView tvQuizDescription;
         LinearLayout etPhrasesLayout;
-        Button btnDeleteTranslation;
+        ImageView imvDeleteTranslation, imvUpdateDescription;
 
         EditOneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
             etPhrasesLayout = itemView.findViewById(R.id.etPhrasesLayout);
             tvQuizTitle = itemView.findViewById(R.id.tvQuizTitle);
             tvQuizDescription = itemView.findViewById(R.id.tvQuizDescription);
-            btnDeleteTranslation = itemView.findViewById(R.id.btnDeleteTranslation);
+            imvDeleteTranslation = itemView.findViewById(R.id.imvDeleteTranslation);
+            imvUpdateDescription = itemView.findViewById(R.id.imvUpdateDescription);
         }
     }
 }

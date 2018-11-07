@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -18,8 +19,11 @@ import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.mvp.AddPhrasePresenter;
 import com.scp.adminforquiz.mvp.AddPhraseView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+
 import java.util.Objects;
+
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class AddPhraseFragment extends MvpAppCompatFragment implements AddPhraseView {
 
@@ -83,6 +87,11 @@ public class AddPhraseFragment extends MvpAppCompatFragment implements AddPhrase
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setColorEnableButton(boolean isValid) {
+        btnOK.setTextColor(isValid ? getResources().getColor(R.color.buttonAuthColor) : getResources().getColor(R.color.backGroundColor));
     }
 
     @Override
