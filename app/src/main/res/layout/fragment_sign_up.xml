@@ -81,7 +81,7 @@
         android:layout_marginStart="38dp"
         android:layout_marginEnd="38dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/button_auth_screen"
+        android:background="@drawable/button_auth_screen_enable"
         android:gravity="center"
         android:text="@string/registrationRu"
         android:textColor="#FFFFFF"

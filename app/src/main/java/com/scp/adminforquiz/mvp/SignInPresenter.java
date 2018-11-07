@@ -44,7 +44,10 @@ public class SignInPresenter extends MvpPresenter<SignInView> {
                 (login, password) ->
                         !TextUtils.isEmpty(login) && Patterns.EMAIL_ADDRESS.matcher(login).matches() && !TextUtils.isEmpty(password)
         )
-                .subscribe(isValid -> getViewState().enableButton(isValid)));
+                .subscribe(isValid -> {
+                    getViewState().enableButton(isValid);
+                    getViewState().setColorEnableButton(isValid);
+                }));
     }
 
     private void goToAllQuizFragment() {

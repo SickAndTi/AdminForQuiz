@@ -7,4 +7,6 @@ public interface SignInView extends MvpView {
     void showError(String errorMessage);
 
     void enableButton(boolean enableButton);
+
+    void setColorEnableButton(boolean isValid);
 }

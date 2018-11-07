@@ -43,7 +43,10 @@ public class SignUpPresenter extends MvpPresenter<SignUpView> {
                 passwordRelayReg,
                 passwordRepeatRelayReg,
                 (name, login, password, passwordRepeat) -> !TextUtils.isEmpty(name) && !TextUtils.isEmpty(login) && !TextUtils.isEmpty(password) && password.matches(passwordRepeat))
-                .subscribe(isValid -> getViewState().enableButton(isValid))
+                .subscribe(isValid -> {
+                    getViewState().enableButton(isValid);
+                    getViewState().setColorEnableButton(isValid);
+                })
         );
     }
 

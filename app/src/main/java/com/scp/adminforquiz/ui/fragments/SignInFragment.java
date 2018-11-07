@@ -74,6 +74,12 @@ public class SignInFragment extends MvpAppCompatFragment implements SignInView {
     }
 
     @Override
+    public void setColorEnableButton(boolean isValid) {
+        btnEnter.setTextColor(isValid ? getResources().getColor(R.color.backGroundColor) : getResources().getColor(R.color.selectTabColor));
+        btnEnter.setBackground(isValid ? getResources().getDrawable(R.drawable.button_auth_screen_enable) : getResources().getDrawable(R.drawable.button_auth_screen_disable));
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         compositeDisposable.clear();

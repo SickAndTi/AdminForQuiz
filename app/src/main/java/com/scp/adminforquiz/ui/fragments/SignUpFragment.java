@@ -70,6 +70,12 @@ public class SignUpFragment extends MvpAppCompatFragment implements SignUpView {
     }
 
     @Override
+    public void setColorEnableButton(boolean isValid) {
+        btnOK.setTextColor(isValid ? getResources().getColor(R.color.backGroundColor) : getResources().getColor(R.color.selectTabColor));
+        btnOK.setBackground(isValid ? getResources().getDrawable(R.drawable.button_auth_screen_enable) : getResources().getDrawable(R.drawable.button_auth_screen_disable));
+    }
+
+    @Override
     public void showError(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
     }
