@@ -100,16 +100,13 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterById() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(true);
-            preferences.setUserSortFieldName("id");
-            return new Object();
-        })
-                .map(o -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(true);
+        preferences.setUserSortFieldName(Constants.ID);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEach(listNotification -> {
+                .doOnTerminate(() -> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
@@ -122,12 +119,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByDateCreated() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(true);
-            preferences.setUserSortFieldName("created");
-            return new Object();
-        })
-                .map(o -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(true);
+        preferences.setUserSortFieldName(Constants.CREATED);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -144,12 +138,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByDateUpdated() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(true);
-            preferences.setUserSortFieldName("updated");
-            return new Object();
-        })
-                .map(o -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(true);
+        preferences.setUserSortFieldName(Constants.UPDATED);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -166,12 +157,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByApproved() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(true);
-            preferences.setUserSortFieldName("approve");
-            return new Object();
-        })
-                .map(o -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(true);
+        preferences.setUserSortFieldName(Constants.APPROVE);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -188,12 +176,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByIdDesc() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(false);
-            preferences.setUserSortFieldName("id");
-            return new Object();
-        })
-                .map(o -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(false);
+        preferences.setUserSortFieldName(Constants.ID);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -210,12 +195,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByDateCreatedDesc() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(false);
-            preferences.setUserSortFieldName("created");
-            return new Object();
-        })
-                .map(t -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(false);
+        preferences.setUserSortFieldName(Constants.CREATED);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -232,12 +214,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByDateUpdatedDesc() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(false);
-            preferences.setUserSortFieldName("updated");
-            return new Object();
-        })
-                .map(t -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(false);
+        preferences.setUserSortFieldName(Constants.UPDATED);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -254,12 +233,9 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterByApprovedDesc() {
-        compositeDisposable.add(Flowable.fromCallable(() -> {
-            preferences.setUserFilterAscending(false);
-            preferences.setUserSortFieldName("approve");
-            return new Object();
-        })
-                .map(o -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+        preferences.setUserFilterAscending(false);
+        preferences.setUserSortFieldName(Constants.APPROVE);
+        compositeDisposable.add(Flowable.fromCallable(() -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
