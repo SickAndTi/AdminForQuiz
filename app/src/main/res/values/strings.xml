@@ -80,6 +80,7 @@
     <string name="updateQuizTranslationDescriptionRu">Обновить описание</string>
     <string name="addTranslationPhraseRu">Добавить фразу для Доктора</string>
     <string name="enterTranslationPhraseRu">Введите фразу</string>
+    <string name="addTranslationRu">Добавить перевод</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

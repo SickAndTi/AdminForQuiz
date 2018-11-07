@@ -111,7 +111,6 @@
                 android:text="@string/OK"
                 android:textColor="@color/backGroundColor"
                 tools:ignore="ButtonStyle" />
-
         </LinearLayout>
     </LinearLayout>
 
