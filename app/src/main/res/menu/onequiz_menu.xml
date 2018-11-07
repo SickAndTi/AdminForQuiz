@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/editQuiz"
-        android:icon="@drawable/ic_edit_white_24dp"
-        android:title="@string/editQuiz"
+        android:id="@+id/addTranslation"
+        android:icon="@drawable/ic_delete_forever_white_24dp"
+        android:title="@string/addTranslation"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/deleteQuiz"
+        android:icon="@drawable/ic_delete_forever_white_24dp"
+        android:title="@string/deleteQuiz"
         app:showAsAction="always" />
 
 </menu>

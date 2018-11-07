@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.di.GlideApp;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
+import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.ui.OneQuizRecyclerViewItem;
 import com.scp.adminforquiz.util.DateTypeConverter;
 import com.scp.adminforquiz.util.DimensionUtils;
@@ -24,6 +26,24 @@ import java.util.List;
 import timber.log.Timber;
 
 public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
+
+    private EditInterface editInterface;
+
+    public interface EditInterface {
+        void onTranslationEditClicked(QuizTranslation quizTranslation);
+
+        void onTranslationDeleteClicked(QuizTranslation quizTranslation);
+
+        void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase);
+
+        void onTranslationAddPhraseClicked(QuizTranslation quizTranslation);
+
+        void onApproveQuizClicked(Quiz quiz);
+    }
+
+    public OneQuizRecyclerViewAdapter(EditInterface editInterface) {
+        this.editInterface = editInterface;
+    }
 
     private List<OneQuizRecyclerViewItem> oneQuizRecyclerViewItemList = new ArrayList<>();
 
@@ -61,11 +81,10 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 OneQuizViewHolder viewHolder = (OneQuizViewHolder) holder;
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
-                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
-                    viewHolder.tvTitleTranslation.setText(quizTranslation.translation);
-                }
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
+                viewHolder.approveQuiz.setChecked(quiz.approved);
+                viewHolder.approveQuiz.setOnClickListener(v -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.flagLayout.removeAllViews();
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
@@ -118,17 +137,18 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     static class OneQuizViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvScpNumber, tvTitleTranslation;
+        TextView tvScpNumber;
         ImageView imageView, userIcon;
+        Switch approveQuiz;
         TextView dateCreated, dateUpdated;
         LinearLayout flagLayout;
 
         OneQuizViewHolder(@NonNull View itemView) {
             super(itemView);
             tvScpNumber = itemView.findViewById(R.id.tvScpNumber);
-            tvTitleTranslation = itemView.findViewById(R.id.tvTitleTranslation);
             imageView = itemView.findViewById(R.id.imageView);
             userIcon = itemView.findViewById(R.id.userIcon);
+            approveQuiz = itemView.findViewById(R.id.approveQuiz);
             dateCreated = itemView.findViewById(R.id.dateCreated);
             dateUpdated = itemView.findViewById(R.id.dateUpdated);
             flagLayout = itemView.findViewById(R.id.flagLayout);

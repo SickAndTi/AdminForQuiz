@@ -26,34 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
-    private EditInterface editInterface;
 
-    public interface EditInterface {
-        void onTranslationEditClicked(QuizTranslation quizTranslation);
-
-        void onTranslationDeleteClicked(QuizTranslation quizTranslation);
-
-        void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase);
-
-        void onTranslationAddPhraseClicked(QuizTranslation quizTranslation);
-
-        void onApproveQuizClicked(Quiz quiz);
-    }
-
-    public EditQuizRecyclerViewAdapter(EditInterface editInterface) {
-        this.editInterface = editInterface;
-    }
-
-    private List<OneQuizRecyclerViewItem> oneQuizRecyclerViewItemList = new ArrayList<>();
-
-    public void setEditQuiz(Quiz quiz) {
-        oneQuizRecyclerViewItemList.clear();
-        oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ));
-        for (int i = 0; i < quiz.quizTranslations.size(); i++) {
-            oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz.quizTranslations.get(i), OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
-        }
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
@@ -75,7 +48,6 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 EditOneQuizViewHolder viewHolder = (EditOneQuizViewHolder) holder;
                 Quiz quiz = (Quiz) oneQuizRecyclerViewItemList.get(position).data;
                 viewHolder.approved.setChecked(quiz.approved);
-                viewHolder.approved.setOnCheckedChangeListener((buttonView, isChecked) -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
                     viewHolder.etEnterTitle.setText(quizTranslation.translation);

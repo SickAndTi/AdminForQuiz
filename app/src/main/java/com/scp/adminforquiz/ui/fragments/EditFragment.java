@@ -69,33 +69,7 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         super.onViewCreated(view, savedInstanceState);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.edit_menu);
-        toolbar.setOnMenuItemClickListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.addTranslation:
-                    editPresenter.goToAddTranslationFragment();
-                    break;
-                case R.id.deleteNwQuiz:
-                    LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
-                    @SuppressLint("InflateParams")
-                    View viewDelete = inflaterDelete.inflate(R.layout.dialog_delete, null);
-                    AlertDialog.Builder mDialogBuilderDelete = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    mDialogBuilderDelete.setView(viewDelete);
-                    mDialogBuilderDelete
-                            .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    (dialog, id) -> {
-                                        editPresenter.deleteNwQuizById();
-                                        dialog.cancel();
-                                    })
-                            .setNegativeButton("Cancel",
-                                    (dialog, id) -> dialog.cancel());
 
-                    AlertDialog alertDialogDelete = mDialogBuilderDelete.create();
-                    alertDialogDelete.show();
-                    break;
-            }
-            return super.onOptionsItemSelected(menuItem);
-        });
         recyclerViewEditQuiz = view.findViewById(R.id.recyclerViewEditQuiz);
         progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
         recyclerViewEditQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -190,26 +164,4 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         alertDialogDeleteTranslationPhrase.show();
     }
 
-    @Override
-    public void onApproveQuizClicked(Quiz quiz) {
-        LayoutInflater inflaterApprove = LayoutInflater.from(getContext());
-        @SuppressLint("InflateParams") View viewApprove = inflaterApprove.inflate(R.layout.dialog_approve_quiz, null);
-        AlertDialog.Builder mDialogBuilderApprove = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        mDialogBuilderApprove.setView(viewApprove);
-        mDialogBuilderApprove
-                .setCancelable(false)
-                .setPositiveButton("APPROVE",
-                        (dialog, id) -> {
-                            editPresenter.approveNwQuizById(quiz.id, true);
-                            dialog.cancel();
-                        })
-                .setNegativeButton("DISAPPROVE",
-                        (dialog, id) -> {
-                            editPresenter.approveNwQuizById(quiz.id, false);
-                            dialog.cancel();
-                        });
-
-        AlertDialog alertDialogApprove = mDialogBuilderApprove.create();
-        alertDialogApprove.show();
-    }
 }

@@ -21,7 +21,7 @@
     <string name="createNwQuiz">Create Quiz</string>
     <string name="updateQuizTranslationDescription">Update Description</string>
     <string name="delete">Delete?</string>
-    <string name="deleteNwQuiz">Delete Quiz</string>
+    <string name="deleteQuiz">Delete Quiz</string>
     <string name="enterScpNumber">Enter ScpNumber</string>
     <string name="enterImageUrl">Enter Image Url</string>
     <string name="deleteTranslation">Delete Translation</string>

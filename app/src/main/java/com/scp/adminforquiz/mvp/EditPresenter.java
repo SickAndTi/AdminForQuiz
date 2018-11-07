@@ -69,17 +69,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
         compositeDisposable.clear();
     }
 
-    public void deleteNwQuizById() {
-        compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
-                .map(aBoolean -> quizDao.deleteQuizById(quizId))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
-                .subscribe(integer -> backToAllQuizFragment(),
-                        error -> getViewState().showError(error.toString())
-                ));
-    }
+
 
     public void deleteNwQuizTranslationById(Long nwQuizTranslationId) {
         compositeDisposable.add(apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
@@ -105,25 +95,7 @@ public class EditPresenter extends MvpPresenter<EditView> {
                 ));
     }
 
-    public void approveNwQuizById(Long nwQuizId, Boolean approve) {
-        compositeDisposable.add(apiClient.approveNwQuizById(nwQuizId, approve)
-                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgress(false))
-                .subscribe(aLong -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
-    }
 
-    private void backToAllQuizFragment() {
-        router.backTo(Constants.ALL_QUIZ_SCREEN);
-    }
-
-    public void goToAddTranslationFragment() {
-        router.navigateTo(Constants.ADD_TRANSLATION_SCREEN, quizId);
-    }
 
     public void goToAddPhraseFragment(Long quizTranslationId) {
         router.navigateTo(Constants.ADD_PHRASE_SCREEN, quizTranslationId);

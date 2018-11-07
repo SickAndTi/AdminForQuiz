@@ -19,7 +19,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvScp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
@@ -44,16 +43,6 @@
                 tools:ignore="LabelFor,NestedWeights"
                 tools:text="1209" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvTitleTranslation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"

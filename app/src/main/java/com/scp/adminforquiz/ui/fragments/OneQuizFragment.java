@@ -1,8 +1,10 @@
 package com.scp.adminforquiz.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,8 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
+import com.scp.adminforquiz.model.db.QuizTranslation;
+import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.mvp.OneQuizPresenter;
 import com.scp.adminforquiz.mvp.OneQuizView;
 import com.scp.adminforquiz.ui.adapters.OneQuizRecyclerViewAdapter;
@@ -25,7 +29,7 @@ import java.util.Objects;
 
 import timber.log.Timber;
 
-public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView {
+public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView, OneQuizRecyclerViewAdapter.EditInterface {
     @InjectPresenter
     OneQuizPresenter oneQuizPresenter;
     RecyclerView recyclerViewOneQuiz;
@@ -55,8 +59,11 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
         toolbar.inflateMenu(R.menu.onequiz_menu);
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
-                case R.id.editQuiz:
-                    oneQuizPresenter.goToEditQuiz();
+                case R.id.addTranslation:
+                    oneQuizPresenter.goToAddTranslationFragment();
+                    break;
+                case R.id.deleteQuiz:
+                    showDeleteQuizDialog();
                     break;
             }
             return super.onOptionsItemSelected(menuItem);
@@ -64,8 +71,28 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
         progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
         recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
-        oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter();
+        oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter(this);
         recyclerViewOneQuiz.setAdapter(oneQuizRecyclerViewAdapter);
+    }
+
+    private void showDeleteQuizDialog() {
+        LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams")
+        View viewDelete = inflaterDelete.inflate(R.layout.dialog_delete, null);
+        AlertDialog.Builder mDialogBuilderDelete = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderDelete.setView(viewDelete);
+        mDialogBuilderDelete
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            oneQuizPresenter.deleteQuiz();
+                            dialog.cancel();
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+
+        AlertDialog alertDialogDelete = mDialogBuilderDelete.create();
+        alertDialogDelete.show();
     }
 
     @ProvidePresenterTag(presenterClass = OneQuizPresenter.class)
@@ -94,5 +121,48 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Override
     public void showProgressBar(boolean showProgressBar) {
         progressBarEdit.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onTranslationEditClicked(QuizTranslation quizTranslation) {
+
+    }
+
+    @Override
+    public void onTranslationDeleteClicked(QuizTranslation quizTranslation) {
+
+    }
+
+    @Override
+    public void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase) {
+
+    }
+
+    @Override
+    public void onTranslationAddPhraseClicked(QuizTranslation quizTranslation) {
+
+    }
+
+    @Override
+    public void onApproveQuizClicked(Quiz quiz) {
+        LayoutInflater inflaterApprove = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewApprove = inflaterApprove.inflate(R.layout.dialog_approve_quiz, null);
+        AlertDialog.Builder mDialogBuilderApprove = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderApprove.setView(viewApprove);
+        mDialogBuilderApprove
+                .setCancelable(false)
+                .setPositiveButton("APPROVE",
+                        (dialog, id) -> {
+                            oneQuizPresenter.approveQuizById(quiz.id, true);
+                            dialog.cancel();
+                        })
+                .setNegativeButton("DISAPPROVE",
+                        (dialog, id) -> {
+                            oneQuizPresenter.approveQuizById(quiz.id, false);
+                            dialog.cancel();
+                        });
+
+        AlertDialog alertDialogApprove = mDialogBuilderApprove.create();
+        alertDialogApprove.show();
     }
 }
