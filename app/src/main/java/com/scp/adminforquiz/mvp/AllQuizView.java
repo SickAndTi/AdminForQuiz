@@ -18,4 +18,6 @@ public interface AllQuizView extends MvpView {
     void showBottomProgress(boolean showBottomProgress);
 
     void enableScrollListner(boolean enableScrollListener);
+
+    void showBottomSheet(boolean showBottomSheet);
 }

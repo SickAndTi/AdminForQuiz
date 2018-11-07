@@ -1,114 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/backGroundColor"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/tvFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/filter"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
+    android:padding="6dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/ascSwitch"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOff="@string/byDesc"
-        android:textOn="@string/byAsc" />
+        android:layout_gravity="center"
+        android:text="@string/byAsc"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:padding="16dp">
 
         <RadioButton
             android:id="@+id/filterById"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="16dp"
-            android:text="@string/filterbyid"
+            android:padding="8dp"
+            android:text="@string/filterById"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <RadioButton
             android:id="@+id/filterByDateUpdated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="16dp"
+            android:padding="8dp"
             android:text="@string/filterByDateUpdated"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <RadioButton
             android:id="@+id/filterByDateCreated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="16dp"
+            android:padding="8dp"
             android:text="@string/filterByDateCreated"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <RadioButton
             android:id="@+id/filterByApproved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="16dp"
+            android:padding="8dp"
             android:text="@string/filterByApproved"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
     </RadioGroup>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="4dp"
         android:orientation="horizontal"
-        android:padding="16dp">
-
-        <Button
-            android:id="@+id/btnOK"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/OK"
-            tools:ignore="ButtonStyle" />
+        android:padding="2dp">
 
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:background="@color/white"
+            android:padding="2dp"
             android:text="@string/cancel"
+            android:textColor="@color/buttonAuthColor"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/btnOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="2dp"
+            android:text="@string/OK"
+            android:textColor="@color/buttonAuthColor"
             tools:ignore="ButtonStyle" />
 
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/flProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
 
 </LinearLayout>

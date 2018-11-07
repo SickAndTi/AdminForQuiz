@@ -8,6 +8,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
+import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import timber.log.Timber;
 
 @Dao
 public abstract class QuizDao {
@@ -35,29 +38,29 @@ public abstract class QuizDao {
     @Query("SELECT * FROM Quiz ORDER BY id ASC")
     public abstract Flowable<List<Quiz>> getAll();
 
-    @Query("SELECT * FROM Quiz ORDER BY id DESC")
-    public abstract Flowable<List<Quiz>> getAllDesc();
-
-    @Query("SELECT * FROM Quiz ORDER BY created ASC")
-    public abstract Flowable<List<Quiz>> getAllByDateCreatedAsc();
-
-    @Query("SELECT * FROM Quiz ORDER BY created DESC")
-    public abstract Flowable<List<Quiz>> getAllByDateCreatedDesc();
-
-    @Query("SELECT * FROM Quiz ORDER BY updated ASC")
-    public abstract Flowable<List<Quiz>> getAllByDateUpeatedAsc();
-
-    @Query("SELECT * FROM Quiz ORDER BY updated DESC")
-    public abstract Flowable<List<Quiz>> getAllByDateUpeatedDesc();
-
-    @Query("SELECT * FROM Quiz ORDER BY approved ASC")
-    public abstract Flowable<List<Quiz>> getAllByApprovedAsc();
-
-    @Query("SELECT * FROM Quiz ORDER BY approved DESC")
-    public abstract Flowable<List<Quiz>> getAllByApprovedDesc();
-
     @Query("SELECT id FROM Quiz ORDER BY id ASC")
     public abstract List<Long> getAllQuizIds();
+
+    @Query("SELECT id FROM Quiz ORDER BY id DESC")
+    public abstract List<Long> getAllQuizIdsDesc();
+
+    @Query("SELECT id FROM Quiz ORDER BY created ASC")
+    public abstract List<Long> getAllQuizIdsByDateCreatedAsc();
+
+    @Query("SELECT id FROM Quiz ORDER BY created DESC")
+    public abstract List<Long> getAllQuizIdsByDateCreatedDesc();
+
+    @Query("SELECT id FROM Quiz ORDER BY updated ASC")
+    public abstract List<Long> getAllQuizIdsByDateUpdatedAsc();
+
+    @Query("SELECT id FROM Quiz ORDER BY updated DESC")
+    public abstract List<Long> getAllQuizIdsByDateUpdatedDesc();
+
+    @Query("SELECT id FROM Quiz ORDER BY approved ASC")
+    public abstract List<Long> getAllQuizIdsByApprovedAsc();
+
+    @Query("SELECT id FROM Quiz ORDER BY approved DESC")
+    public abstract List<Long> getAllQuizIdsByApprovedDesc();
 
     @Query("SELECT * FROM Quiz ORDER BY RANDOM() LIMIT :count")
     public abstract Flowable<List<Quiz>> getRandomQuizes(int count);
@@ -225,10 +228,69 @@ public abstract class QuizDao {
     }
 
     @Transaction
-    public List<Quiz> getAllQuizzesWithTranslationsAndPhrases() {
+    public List<Quiz> getAllQuizzesWithTranslationsAndPhrases(boolean ascending, String sortFieldName) {
         List<Quiz> quizList = new ArrayList<>();
-        for (Long quizId : getAllQuizIds()) {
-            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+        if (sortFieldName != null) {
+            if (ascending) {
+                switch (sortFieldName) {
+                    case Constants.CREATED:
+                        for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST true created %s:", quizList);
+                        }
+                        break;
+                    case Constants.UPDATED:
+                        for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST true updated %s:", quizList);
+                        }
+                        break;
+                    case Constants.APPROVE:
+                        for (Long quizId : getAllQuizIdsByApprovedAsc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST true approve %s:", quizList);
+                        }
+                        break;
+                    case Constants.ID:
+                        for (Long quizId : getAllQuizIds()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST true id %s:", quizList);
+                        }
+                        break;
+                }
+            } else {
+                switch (sortFieldName) {
+                    case Constants.CREATED:
+                        for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST false created %s:", quizList);
+                        }
+                        break;
+                    case Constants.UPDATED:
+                        for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST false updated %s:", quizList);
+                        }
+                        break;
+                    case Constants.APPROVE:
+                        for (Long quizId : getAllQuizIdsByApprovedDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST false approve %s:", quizList.toString());
+                        }
+                        break;
+                    case Constants.ID:
+                        for (Long quizId : getAllQuizIdsDesc()) {
+                            quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                            Timber.d("QUIZLIST false id %s:", quizList);
+                        }
+                        break;
+                }
+            }
+        } else {
+            for (Long quizId : getAllQuizIds()) {
+                quizList.add(getQuizWithTranslationsAndPhrases(quizId));
+                Timber.d("QUIZLIST sorted field = null %s:", quizList);
+            }
         }
         return quizList;
     }

@@ -33,20 +33,20 @@ public class MyPreferenceManager {
         return preferences.getString(Constants.REFRESH_TOKEN, null);
     }
 
-    public void setUserForAuth(String userForAuth) {
-        preferences.edit().putString(Constants.USER_FOR_AUTH, userForAuth).apply();
+    public void setUserFilterAscending(boolean ascending) {
+        preferences.edit().putBoolean(Constants.USER_FILTER_ASCENDING, ascending).apply();
     }
 
-    public String getUserForAuth() {
-        return preferences.getString(Constants.USER_FOR_AUTH, null);
+    public boolean getUserFilterAscending() {
+        return preferences.getBoolean(Constants.USER_FILTER_ASCENDING, true);
     }
 
-    public void setPasswordForAuth(String passwordForAuth) {
-        preferences.edit().putString(Constants.PASSWORD_FOR_AUTH, passwordForAuth).apply();
+    public void setUserSortFieldName(String sortFieldName) {
+        preferences.edit().putString(Constants.USER_SORT_FIELD_NAME, sortFieldName).apply();
     }
 
-    public String getPasswordForAuth() {
-        return preferences.getString(Constants.PASSWORD_FOR_AUTH, null);
+    public String getUserSortFieldName() {
+        return preferences.getString(Constants.USER_SORT_FIELD_NAME, null);
     }
 }
 

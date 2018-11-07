@@ -1,6 +1,5 @@
 package com.scp.adminforquiz.ui.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,7 +43,6 @@ import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKList;
 
@@ -134,7 +132,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                                     .doOnSuccess(tokenResponse -> {
                                         preferences.setAccessToken(tokenResponse.accessToken);
                                         preferences.setRefreshToken(tokenResponse.refreshToken);
-
                                     })
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -213,15 +210,10 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
             public void onError(VKError error) {
                 Timber.d("Error ; %s", error.toString());
             }
-        }))
-
-
-        {
+        })) {
             return;
         }
-        switch (requestCode)
-
-        {
+        switch (requestCode) {
             case REQUEST_CODE_GOOGLE:
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());

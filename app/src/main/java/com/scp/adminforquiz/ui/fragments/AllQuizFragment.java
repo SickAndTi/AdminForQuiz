@@ -9,10 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -22,24 +25,34 @@ import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.mvp.AllQuizPresenter;
 import com.scp.adminforquiz.mvp.AllQuizView;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;
 
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
+import toothpick.Toothpick;
 
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
     @InjectPresenter
     AllQuizPresenter allQuizPresenter;
+    @Inject
+    MyPreferenceManager preferences;
     RecyclerView recyclerView;
     AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
     View progressBarAllQuiz;
     SwipeRefreshLayout swipeRefreshLayout;
     Toolbar toolbar;
     BottomSheetBehavior bottomSheetBehavior;
+    View bottomSheet;
+    SwitchCompat ascSwitch;
+    RadioGroup radioGroup;
+    Button btnOK, btnCancel;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
@@ -55,6 +68,16 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+        bottomSheet = view.findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        ascSwitch = view.findViewById(R.id.ascSwitch);
+        ascSwitch.setChecked(preferences.getUserFilterAscending());
+        radioGroup = view.findViewById(R.id.radioGroup);
+        btnOK = view.findViewById(R.id.btnOK);
+        btnOK.setOnClickListener(v -> filterQuizzes());
+        btnCancel = view.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(v -> outFromBottomSheet());
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.allquiz_menu);
         toolbar.setTitle(R.string.app_name);
@@ -64,27 +87,11 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 case R.id.createQuiz:
                     allQuizPresenter.goToCreateQuizFragment();
                     break;
-
-                case R.id.logout:
-                    LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
-                    @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
-                    AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                    mDialogBuilderLogout.setView(viewLogout);
-                    mDialogBuilderLogout
-                            .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    (dialog, id) -> {
-                                        allQuizPresenter.logout();
-                                        dialog.cancel();
-                                    })
-                            .setNegativeButton("Cancel",
-                                    (dialog, id) -> dialog.cancel());
-                    AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
-                    alertDialogLogout.show();
-                    break;
-
                 case R.id.filter:
-                    allQuizPresenter.goToFilterFragment();
+                    toggleBottomSheet();
+                    break;
+                case R.id.logout:
+                    showLogoutDialog();
                     break;
             }
             return super.onOptionsItemSelected(menuItem);
@@ -95,13 +102,92 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
-        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.setQuizzesFromDb());
+        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromPage(1));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private void filterQuizzes() {
+        if (ascSwitch.isChecked()) {
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case -1:
+                    Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();
+                    break;
+                case R.id.filterById:
+                    allQuizPresenter.filterById();
+                    Timber.d("TRUE BY ID CALLED");
+                    break;
+                case R.id.filterByDateCreated:
+                    allQuizPresenter.filterByDateCreated();
+                    Timber.d("TRUE BY CREATED CALLED");
+                    break;
+                case R.id.filterByDateUpdated:
+                    allQuizPresenter.filterByDateUpdated();
+                    Timber.d("TRUE BY UPDATED CALLED");
+                    break;
+                case R.id.filterByApproved:
+                    allQuizPresenter.filterByApproved();
+                    Timber.d("TRUE BY APPROVE CALLED");
+                    break;
+            }
+        } else {
+            switch (radioGroup.getCheckedRadioButtonId()) {
+                case -1:
+                    Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();
+                    break;
+                case R.id.filterById:
+                    allQuizPresenter.filterByIdDesc();
+                    Timber.d("FALSE BY ID CALLED");
+                    break;
+                case R.id.filterByDateCreated:
+                    allQuizPresenter.filterByDateCreatedDesc();
+                    Timber.d("FALSE BY CREATED CALLED");
+                    break;
+                case R.id.filterByDateUpdated:
+                    allQuizPresenter.filterByDateUpdatedDesc();
+                    Timber.d("FALSE BY UPDATED CALLED");
+                    break;
+                case R.id.filterByApproved:
+                    allQuizPresenter.filterByApprovedDesc();
+                    Timber.d("FALSE BY APPROVE CALLED");
+                    break;
+            }
+        }
+    }
+
+
+    private void outFromBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
     public void showProgressBar(boolean showProgressBar) {
         progressBarAllQuiz.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+    }
+
+    public void toggleBottomSheet() {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+    }
+
+    public void showLogoutDialog() {
+        LayoutInflater inflaterLogout = LayoutInflater.from(getContext());
+        @SuppressLint("InflateParams") View viewLogout = inflaterLogout.inflate(R.layout.dialog_logout, null);
+        AlertDialog.Builder mDialogBuilderLogout = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        mDialogBuilderLogout.setView(viewLogout);
+        mDialogBuilderLogout
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) -> {
+                            allQuizPresenter.logout();
+                            dialog.cancel();
+                        })
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+        AlertDialog alertDialogLogout = mDialogBuilderLogout.create();
+        alertDialogLogout.show();
     }
 
     @Override
@@ -142,5 +228,10 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 }
             });
         }
+    }
+
+    @Override
+    public void showBottomSheet(boolean showBottomSheet) {
+        bottomSheetBehavior.setState(showBottomSheet ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_HIDDEN);
     }
 }
