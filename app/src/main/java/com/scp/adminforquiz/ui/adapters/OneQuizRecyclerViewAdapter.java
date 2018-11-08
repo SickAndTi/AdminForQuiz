@@ -130,7 +130,11 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 oneQuizTranslationViewHolder.imvUpdateDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvAddPhrase.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvDropDown.setOnClickListener(v -> editInterface.onDropDownClicked(quizTranslation));
-                oneQuizTranslationViewHolder.imvFlag.setCountryCode(quizTranslation.langCode);
+                if (quizTranslation.langCode.contains("en")) {
+                    oneQuizTranslationViewHolder.imvFlag.setCountryCode("gb");
+                } else {
+                    oneQuizTranslationViewHolder.imvFlag.setCountryCode(quizTranslation.langCode);
+                }
                 oneQuizTranslationViewHolder.tvLangCode.setText(quizTranslation.langCode);
                 oneQuizTranslationViewHolder.tvUserName.setText(quizTranslation.author.fullName);
                 GlideApp
