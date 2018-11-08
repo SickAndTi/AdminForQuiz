@@ -70,19 +70,6 @@ public class EditPresenter extends MvpPresenter<EditView> {
     }
 
 
-
-    public void deleteNwQuizTranslationById(Long nwQuizTranslationId) {
-        compositeDisposable.add(apiClient.deleteNwQuizTranslationById(nwQuizTranslationId)
-                .map(aBoolean -> quizDao.deleteQuizTranslationById(nwQuizTranslationId))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgress(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgress(false))
-                .subscribe(integer -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
-    }
-
     public void deleteNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId) {
         compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(nwQuizTranslationPhraseId)
                 .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(nwQuizTranslationPhraseId))
@@ -101,7 +88,4 @@ public class EditPresenter extends MvpPresenter<EditView> {
         router.navigateTo(Constants.ADD_PHRASE_SCREEN, quizTranslationId);
     }
 
-    public void goToUpdateTranslationDescriptionFragment(Long quizTranslationId) {
-        router.navigateTo(Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN, quizTranslationId);
-    }
 }

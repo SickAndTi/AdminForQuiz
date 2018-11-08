@@ -95,4 +95,33 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                         }, error -> getViewState().showError(error.toString())
                 ));
     }
+
+    public void approveTranslationById(Long translationId, boolean approve) {
+        compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
+                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(aLong -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
+    }
+
+    public void deleteTranslationById(Long translationId) {
+        compositeDisposable.add(apiClient.deleteNwQuizTranslationById(translationId)
+                .map(aBoolean -> quizDao.deleteQuizTranslationById(translationId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(integer -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
+    }
+
+    public void goToUpdateTranslationDescriptionFragment(Long translationId) {
+        router.navigateTo(Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN, translationId);
+    }
+}
 }

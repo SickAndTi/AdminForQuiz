@@ -22,6 +22,8 @@ import com.scp.adminforquiz.model.ui.OneQuizRecyclerViewItem;
 import com.scp.adminforquiz.util.DimensionUtils;
 import com.haipq.android.flagkit.FlagImageView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +120,12 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tvQuizDescription;
         LinearLayout etPhrasesLayout;
         ImageView imvDeleteTranslation, imvUpdateDescription;
+        Switch approveTranslation;
+        ImageView imvDropDown;
+        ImageView imvFlag;
+        TextView langCode;
+        Text tvUserName;
+        ImageView userIcon;
 
         EditOneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,6 +134,13 @@ public class EditQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             tvQuizDescription = itemView.findViewById(R.id.tvQuizDescription);
             imvDeleteTranslation = itemView.findViewById(R.id.imvDeleteTranslation);
             imvUpdateDescription = itemView.findViewById(R.id.imvUpdateDescription);
+            imvDropDown = itemView.findViewById(R.id.imvDropDown);
+            imvFlag = itemView.findViewById(R.id.imvFlag);
+            langCode = itemView.findViewById(R.id.tvLangCode);
+            tvUserName = itemView.findViewById(R.id.tvUserName);
+            userIcon = itemView.findViewById(R.id.userIcon);
+            approveTranslation = itemView.findViewById(R.id.approveTranslation);
+
         }
     }
 }

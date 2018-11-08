@@ -114,35 +114,13 @@ public class EditFragment extends MvpAppCompatFragment implements EditView, Edit
         progressBarEdit.setVisibility(showProgress ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void onTranslationEditClicked(QuizTranslation quizTranslation) {
-        editPresenter.goToUpdateTranslationDescriptionFragment(quizTranslation.id);
-    }
+
 
     @Override
     public void onTranslationAddPhraseClicked(QuizTranslation quizTranslation) {
         editPresenter.goToAddPhraseFragment(quizTranslation.id);
     }
 
-    @Override
-    public void onTranslationDeleteClicked(QuizTranslation quizTranslation) {
-        LayoutInflater inflaterDeleteTranslation = LayoutInflater.from(getContext());
-        @SuppressLint("InflateParams") View viewDeleteTranslation = inflaterDeleteTranslation.inflate(R.layout.dialog_delete, null);
-        AlertDialog.Builder mDialogBuilderDeleteTranslation = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-        mDialogBuilderDeleteTranslation.setView(viewDeleteTranslation);
-        mDialogBuilderDeleteTranslation
-                .setCancelable(false)
-                .setPositiveButton("OK",
-                        (dialog, id) -> {
-                            editPresenter.deleteNwQuizTranslationById(quizTranslation.id);
-                            dialog.cancel();
-                        })
-                .setNegativeButton("Cancel",
-                        (dialog, id) -> dialog.cancel());
-
-        AlertDialog alertDialogDeleteTranslation = mDialogBuilderDeleteTranslation.create();
-        alertDialogDeleteTranslation.show();
-    }
 
     @Override
     public void onTranslationPhraseDeleteClicked(QuizTranslationPhrase quizTranslationPhrase) {
