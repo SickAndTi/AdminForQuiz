@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.haipq.android.flagkit.FlagImageView;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.di.GlideApp;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -18,14 +19,9 @@ import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.ui.OneQuizRecyclerViewItem;
 import com.scp.adminforquiz.util.DateTypeConverter;
 import com.scp.adminforquiz.util.DimensionUtils;
-import com.haipq.android.flagkit.FlagImageView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
@@ -43,6 +39,10 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         void onApproveQuizClicked(Quiz quiz);
 
         void onApproveTranslationClicked(QuizTranslation quizTranslation);
+
+        void onDropDownClicked(QuizTranslation quizTranslation);
+
+        void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase);
     }
 
     public OneQuizRecyclerViewAdapter(EditInterface editInterface) {
@@ -54,8 +54,8 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
     public void setQuiz(Quiz quiz) {
         oneQuizRecyclerViewItemList.clear();
         oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ));
-        for (int i = 0; i < quiz.quizTranslations.size(); i++) {
-            oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quiz.quizTranslations.get(i), OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
+        for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+            oneQuizRecyclerViewItemList.add(new OneQuizRecyclerViewItem(quizTranslation, OneQuizRecyclerViewItem.RecyclerAdapterItemType.QUIZ_TRANSLATION));
         }
         notifyDataSetChanged();
     }
@@ -128,21 +128,33 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 oneQuizTranslationViewHolder.approveTranslation.setOnClickListener(v -> editInterface.onApproveTranslationClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvUpdateDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
-                oneQuizTranslationViewHolder.imvDropDown.setOnClickListener(v ->);//TODO
-                oneQuizTranslationViewHolder.imvFlag.setCountryCode(quizTranslation.langCode);//TODO
+                oneQuizTranslationViewHolder.imvAddPhrase.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
+                oneQuizTranslationViewHolder.imvDropDown.setOnClickListener(v -> editInterface.onDropDownClicked(quizTranslation));
+                oneQuizTranslationViewHolder.imvFlag.setCountryCode(quizTranslation.langCode);
                 oneQuizTranslationViewHolder.tvLangCode.setText(quizTranslation.langCode);
                 oneQuizTranslationViewHolder.tvUserName.setText(quizTranslation.author.fullName);
                 GlideApp
                         .with(holder.itemView.getContext())
-                        .load(quiz.author.avatar)
+                        .load(quizTranslation.author.avatar)
                         .placeholder(R.drawable.ic_launcher_background)
                         .centerCrop()
-                        .into(viewHolder.userIcon);
+                        .into(oneQuizTranslationViewHolder.userIcon);
 
                 oneQuizTranslationViewHolder.phrasesLayout.removeAllViews();
-                for (int i = 0; i < quizTranslation.quizTranslationPhrases.size(); i++) {
-                    View phraseView = new PhraseViewHolder(LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.phrases_layout, holder.itemView, false));
-
+                for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
+                    View phraseView = LayoutInflater.from(oneQuizTranslationViewHolder.itemView.getContext()).inflate(R.layout.phrases_layout, oneQuizTranslationViewHolder.phrasesLayout, false);
+                    PhraseViewHolder phraseViewHolder = new PhraseViewHolder(phraseView);
+                    phraseViewHolder.tvPhraseText.setText(quizTranslationPhrase.translation);
+                    phraseViewHolder.tvUserName.setText(quizTranslationPhrase.author.fullName);
+                    phraseViewHolder.approvePhrase.setChecked(quizTranslationPhrase.approved);
+                    phraseViewHolder.approvePhrase.setOnClickListener(v -> editInterface.onApprovePhraseClicked(quizTranslationPhrase));
+                    phraseViewHolder.imvDeletePhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
+                    GlideApp
+                            .with(holder.itemView.getContext())
+                            .load(quizTranslationPhrase.author.avatar)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .centerCrop()
+                            .into(phraseViewHolder.userIcon);
                     oneQuizTranslationViewHolder.phrasesLayout.addView(phraseView);
                 }
                 break;
@@ -185,6 +197,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tvLangCode;
         TextView tvUserName;
         ImageView userIcon;
+        ImageView imvAddPhrase;
 
         OneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -199,26 +212,26 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             tvUserName = itemView.findViewById(R.id.tvUserName);
             userIcon = itemView.findViewById(R.id.userIcon);
             approveTranslation = itemView.findViewById(R.id.approveTranslation);
+            imvAddPhrase = itemView.findViewById(R.id.imvAddPhrase);
         }
     }
 
-    static class PhraseViewHolder extends RecyclerView.ViewHolder {
+    class PhraseViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvPhraseText;
-        ImageView iserIcon;
+        ImageView userIcon;
         TextView tvUserName;
         Switch approvePhrase;
         ImageView imvDeletePhrase;
 
-        public PhraseViewHolder(@NonNull View itemView) {
+        PhraseViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvPhraseText = itemView.findViewById(R.id.tvPhraseText);
-            iserIcon = itemView.findViewById(R.id.userIcon);
+            userIcon = itemView.findViewById(R.id.userIcon);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             approvePhrase = itemView.findViewById(R.id.approvePhrase);
             imvDeletePhrase = itemView.findViewById(R.id.imvDeletePhrase);
         }
     }
-
 }

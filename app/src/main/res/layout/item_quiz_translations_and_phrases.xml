@@ -83,6 +83,16 @@
             android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
 
+            <ImageView
+                android:id="@+id/imvAddPhrase"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="12dp"
+                android:src="@drawable/ic_library_add_black_24dp"
+                tools:ignore="ContentDescription" />
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
