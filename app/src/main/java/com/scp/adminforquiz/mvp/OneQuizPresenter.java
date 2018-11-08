@@ -3,6 +3,8 @@ package com.scp.adminforquiz.mvp;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.api.ApiClient;
+import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
@@ -28,6 +30,11 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     QuizDao quizDao;
     @Inject
     Router router;
+    @Inject
+    ApiClient apiClient;
+    @Inject
+    QuizConverter quizConverter;
+
     private Long quizId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -61,7 +68,90 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         compositeDisposable.clear();
     }
 
-    public void goToEditQuiz() {
-        router.navigateTo(Constants.EDIT_SCREEN, quizId);
+    public void deleteQuiz() {
+        compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
+                .map(aBoolean -> quizDao.deleteQuizById(quizId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(integer -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
+                        error -> getViewState().showError(error.toString())
+                ));
     }
+
+    public void goToAddTranslationFragment() {
+        router.navigateTo(Constants.ADD_TRANSLATION_SCREEN, quizId);
+    }
+
+    public void approveQuizById(Long quizId, boolean approve) {
+        compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
+                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(aLong -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
+    }
+
+//    public void approveTranslationById(Long translationId, boolean approve) {
+//        compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
+//                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+//                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+//                .subscribe(aLong -> {
+//                        }, error -> getViewState().showError(error.toString())
+//                ));
+//    }  TODO
+
+
+    public void deleteTranslationById(Long translationId) {
+        compositeDisposable.add(apiClient.deleteNwQuizTranslationById(translationId)
+                .map(aBoolean -> quizDao.deleteQuizTranslationById(translationId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(integer -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
+    }
+
+    public void goToUpdateTranslationDescriptionFragment(Long translationId) {
+        router.navigateTo(Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN, translationId);
+    }
+
+    public void deletePhraseById(Long phraseId) {
+        compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(phraseId)
+                .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(phraseId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(integer -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
+    }
+
+    public void goToAddPhraseFragment(Long quizTranslationId) {
+        router.navigateTo(Constants.ADD_PHRASE_SCREEN, quizTranslationId);
+    }
+
+//    public void approvePhraseById(Long phraseId, boolean approve) {
+//        compositeDisposable.add(apiClient.approveNwQuizTranslationPhraseById(phraseId, approve)
+//                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+//                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+//                .subscribe(aLong -> {
+//                        }, error -> getViewState().showError(error.toString())
+//                ));
+//    }
+
 }
+

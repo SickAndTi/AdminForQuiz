@@ -66,7 +66,7 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
     }
 
     public void cancel() {
-        router.backTo(Constants.EDIT_SCREEN);
+        router.backTo(Constants.ONE_QUIZ_SCREEN);
     }
 
     public void addTranslation() {
@@ -76,7 +76,7 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> router.navigateTo(Constants.EDIT_SCREEN, quizId),
+                .subscribe(aLong -> router.navigateTo(Constants.ONE_QUIZ_SCREEN, quizId),
                         error -> getViewState().showError(error.toString())
                 ));
     }
