@@ -201,7 +201,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
         OneQuizTranslationViewHolder(@NonNull View itemView) {
             super(itemView);
-            phrasesLayout = itemView.findViewById(R.id.etPhrasesLayout);
+            phrasesLayout = itemView.findViewById(R.id.phrasesLayout);
             tvQuizTitle = itemView.findViewById(R.id.tvQuizTitle);
             tvQuizDescription = itemView.findViewById(R.id.tvQuizDescription);
             imvDeleteTranslation = itemView.findViewById(R.id.imvDeleteTranslation);

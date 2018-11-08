@@ -62,7 +62,7 @@ public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTr
     }
 
     public void cancel() {
-        router.backTo(Constants.EDIT_SCREEN);
+        router.backTo(Constants.ONE_QUIZ_SCREEN);
     }
 
     public void updateDescription() {
@@ -72,7 +72,7 @@ public class UpdateTranslationDescriptionPresenter extends MvpPresenter<UpdateTr
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> router.backTo(Constants.EDIT_SCREEN),
+                .subscribe(aLong -> router.backTo(Constants.ONE_QUIZ_SCREEN),
                         error -> getViewState().showError(error.toString())
                 ));
     }

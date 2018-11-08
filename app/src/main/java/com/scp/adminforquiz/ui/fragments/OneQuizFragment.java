@@ -34,7 +34,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     OneQuizPresenter oneQuizPresenter;
     RecyclerView recyclerViewOneQuiz;
     OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter;
-    View progressBarEdit;
+    View flProgressBar;
     Toolbar toolbar;
     public final static String EXTRA_QUIZ_ID = "EXTRA_QUIZ_ID";
 
@@ -68,7 +68,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
             }
             return super.onOptionsItemSelected(menuItem);
         });
-        progressBarEdit = view.findViewById(R.id.flProgressBarEdit);
+        flProgressBar = view.findViewById(R.id.flProgressBar);
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
         recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
         oneQuizRecyclerViewAdapter = new OneQuizRecyclerViewAdapter(this);
@@ -100,7 +100,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
 
     @Override
     public void showProgressBar(boolean showProgressBar) {
-        progressBarEdit.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
+        flProgressBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
     }
 
     @Override

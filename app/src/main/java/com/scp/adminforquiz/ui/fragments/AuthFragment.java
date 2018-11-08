@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -136,7 +137,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
-                                            Throwable::toString));
+                                            error -> Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show())
+                            );
                         }
 
                         @Override
