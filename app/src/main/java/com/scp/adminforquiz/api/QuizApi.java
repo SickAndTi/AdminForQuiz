@@ -7,6 +7,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -48,17 +49,17 @@ public interface QuizApi {
             @Query("text") String text
     );
 
-    @GET("quiz/delete/{id}")
+    @DELETE("quiz/delete/{id}")
     Single<Boolean> deleteNwQuizById(
             @Path("id") Long id
     );
 
-    @GET("quiz/translations/delete/{id}")
+    @DELETE("quiz/translations/delete/{id}")
     Single<Boolean> deleteNwQuizTranslationById(
             @Path("id") Long id
     );
 
-    @GET("quiz/translations/phrases/delete/{id}")
+    @DELETE("quiz/translations/phrases/delete/{id}")
     Single<Boolean> deleteNwQuizTranslationPhraseById(
             @Path("id") Long id
     );

@@ -217,11 +217,6 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     }
 
     @Override
-    public void onDropDownClicked(QuizTranslation quizTranslation) {
-
-    }
-
-    @Override
     public void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase) {
         LayoutInflater inflaterApprove = LayoutInflater.from(getContext());
         @SuppressLint("InflateParams") View viewApprove = inflaterApprove.inflate(R.layout.dialog_approve_phrase, null);

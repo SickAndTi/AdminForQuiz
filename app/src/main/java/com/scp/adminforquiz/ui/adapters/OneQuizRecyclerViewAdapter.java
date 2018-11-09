@@ -27,6 +27,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private EditInterface editInterface;
 
+
     public interface EditInterface {
         void onTranslationEditClicked(QuizTranslation quizTranslation);
 
@@ -39,8 +40,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         void onApproveQuizClicked(Quiz quiz);
 
         void onApproveTranslationClicked(QuizTranslation quizTranslation);
-
-        void onDropDownClicked(QuizTranslation quizTranslation);
 
         void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase);
     }
@@ -87,6 +86,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
+//                viewHolder.approveQuiz.setClickable();
                 viewHolder.approveQuiz.setChecked(quiz.approved);
                 viewHolder.approveQuiz.setOnClickListener(v -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.flagLayout.removeAllViews();
@@ -129,7 +129,15 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 oneQuizTranslationViewHolder.imvDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvUpdateDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvAddPhrase.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
-                oneQuizTranslationViewHolder.imvDropDown.setOnClickListener(v -> editInterface.onDropDownClicked(quizTranslation));
+                oneQuizTranslationViewHolder.imvDropDown.setOnClickListener(v -> {
+                    if (oneQuizTranslationViewHolder.phrasesLayout.getVisibility() == View.GONE) {
+                        oneQuizTranslationViewHolder.phrasesLayout.setVisibility(View.VISIBLE);
+                        oneQuizTranslationViewHolder.imvDropDown.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+                    } else if (oneQuizTranslationViewHolder.phrasesLayout.getVisibility() == View.VISIBLE) {
+                        oneQuizTranslationViewHolder.phrasesLayout.setVisibility(View.GONE);
+                        oneQuizTranslationViewHolder.imvDropDown.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+                    }
+                });
                 if (quizTranslation.langCode.contains("en")) {
                     oneQuizTranslationViewHolder.imvFlag.setCountryCode("gb");
                 } else {
@@ -230,7 +238,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
         PhraseViewHolder(@NonNull View itemView) {
             super(itemView);
-
             tvPhraseText = itemView.findViewById(R.id.tvPhraseText);
             userIcon = itemView.findViewById(R.id.userIcon);
             tvUserName = itemView.findViewById(R.id.tvUserName);
