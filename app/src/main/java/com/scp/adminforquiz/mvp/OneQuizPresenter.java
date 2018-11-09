@@ -75,7 +75,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(integer -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
+                .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
                         error -> getViewState().showError(error.toString())
                 ));
     }

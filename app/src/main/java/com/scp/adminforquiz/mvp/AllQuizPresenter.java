@@ -6,8 +6,12 @@ import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.Quiz;
+import com.scp.adminforquiz.model.db.QuizTranslation;
+import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -15,9 +19,10 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Triple;
 import ru.terrakok.cicerone.Router;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -33,36 +38,51 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     @Inject
     MyPreferenceManager preferences;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private boolean dataUpdatedFromApi;
 
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        loadQuizzesFromPage(1);
+        compositeDisposable.add(Flowable.combineLatest(
+                quizDao.getAll(),
+                quizDao.getAllQuizTranslation(),
+                quizDao.getAllQuizTranslationPhrase(),
+                (Function3<List<Quiz>, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) Triple::new
+                )
+                        .map(triple -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(quizzes -> {
+                                    if (!dataUpdatedFromApi) {
+                                        loadQuizzesFromApi(1);
+                                        dataUpdatedFromApi = true;
+                                    }
+                                    getViewState().showQuizList(quizzes);
+                                },
+                                error -> getViewState().showError(error.toString()))
+        );
     }
 
-    public void loadQuizzesFromPage(int page) {
+    public void loadQuizzesFromApi(int page) {
 //        getViewState().enableScrollListner(false);
-        if (page > 1) {
-            getViewState().showBottomProgress(true);
-        }
+//        if (page > 1) {
+//            getViewState().showBottomProgress(true);
+//        }
         compositeDisposable.add(apiClient.getAllWithUser()
                 .map(nwQuizList -> quizConverter.convert(nwQuizList))
                 .map(quizList -> quizDao.insertQuizesWithQuizTranslations(quizList))
-                .map(longs -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
                 .doOnEvent((longs, throwable) -> {
                     getViewState().showProgressBar(false);
                     getViewState().showSwipeRefresherBar(false);
-                    if (page > 1) {
-                        getViewState().showBottomProgress(false);
-                    }
+//                    if (page > 1) {
+//                        getViewState().showBottomProgress(false);
+//                    }
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("FILTER ASCENDING , FILTER SORTFIELD : %s,%s", preferences.getUserFilterAscending(), preferences.getUserSortFieldName());
+                .subscribe(longs -> {
                         },
                         error -> getViewState().showError(error.toString())
                 ));
@@ -110,10 +130,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -129,10 +146,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -148,10 +162,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -167,10 +178,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -186,10 +194,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -205,10 +210,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -224,10 +226,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }
@@ -243,10 +242,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                     getViewState().showProgressBar(false);
                     getViewState().showBottomSheet(false);
                 })
-                .subscribe(quizzes -> {
-                            getViewState().showQuizList(quizzes);
-                            Timber.d("SORT FIELD,ASCENDING:%s,%s", preferences.getUserSortFieldName(), preferences.getUserFilterAscending());
-                        },
+                .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
     }

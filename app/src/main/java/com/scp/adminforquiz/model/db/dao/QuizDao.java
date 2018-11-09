@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import timber.log.Timber;
 
@@ -37,6 +38,12 @@ public abstract class QuizDao {
      */
     @Query("SELECT * FROM Quiz ORDER BY id ASC")
     public abstract Flowable<List<Quiz>> getAll();
+
+    @Query("SELECT * FROM QuizTranslation ORDER BY id ASC")
+    public abstract Flowable<List<QuizTranslation>> getAllQuizTranslation();
+
+    @Query("SELECT * FROM QuizTranslationPhrase ORDER BY id ASC")
+    public abstract Flowable<List<QuizTranslationPhrase>> getAllQuizTranslationPhrase();
 
     @Query("SELECT id FROM Quiz ORDER BY id ASC")
     public abstract List<Long> getAllQuizIds();
@@ -236,25 +243,21 @@ public abstract class QuizDao {
                     case Constants.CREATED:
                         for (Long quizId : getAllQuizIdsByDateCreatedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST true created %s:", quizList);
                         }
                         break;
                     case Constants.UPDATED:
                         for (Long quizId : getAllQuizIdsByDateUpdatedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST true updated %s:", quizList);
                         }
                         break;
                     case Constants.APPROVE:
                         for (Long quizId : getAllQuizIdsByApprovedAsc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST true approve %s:", quizList);
                         }
                         break;
                     case Constants.ID:
                         for (Long quizId : getAllQuizIds()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST true id %s:", quizList);
                         }
                         break;
                 }
@@ -263,25 +266,21 @@ public abstract class QuizDao {
                     case Constants.CREATED:
                         for (Long quizId : getAllQuizIdsByDateCreatedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST false created %s:", quizList);
                         }
                         break;
                     case Constants.UPDATED:
                         for (Long quizId : getAllQuizIdsByDateUpdatedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST false updated %s:", quizList);
                         }
                         break;
                     case Constants.APPROVE:
                         for (Long quizId : getAllQuizIdsByApprovedDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST false approve %s:", quizList.toString());
                         }
                         break;
                     case Constants.ID:
                         for (Long quizId : getAllQuizIdsDesc()) {
                             quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                            Timber.d("QUIZLIST false id %s:", quizList);
                         }
                         break;
                 }
@@ -289,7 +288,6 @@ public abstract class QuizDao {
         } else {
             for (Long quizId : getAllQuizIds()) {
                 quizList.add(getQuizWithTranslationsAndPhrases(quizId));
-                Timber.d("QUIZLIST sorted field = null %s:", quizList);
             }
         }
         return quizList;

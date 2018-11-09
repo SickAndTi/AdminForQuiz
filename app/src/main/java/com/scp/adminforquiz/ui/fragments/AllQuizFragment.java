@@ -102,7 +102,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
-        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromPage(1));
+        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromApi(1));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -114,19 +114,15 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                     break;
                 case R.id.filterById:
                     allQuizPresenter.filterById();
-                    Timber.d("TRUE BY ID CALLED");
                     break;
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreated();
-                    Timber.d("TRUE BY CREATED CALLED");
                     break;
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdated();
-                    Timber.d("TRUE BY UPDATED CALLED");
                     break;
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApproved();
-                    Timber.d("TRUE BY APPROVE CALLED");
                     break;
             }
         } else {
@@ -136,24 +132,19 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                     break;
                 case R.id.filterById:
                     allQuizPresenter.filterByIdDesc();
-                    Timber.d("FALSE BY ID CALLED");
                     break;
                 case R.id.filterByDateCreated:
                     allQuizPresenter.filterByDateCreatedDesc();
-                    Timber.d("FALSE BY CREATED CALLED");
                     break;
                 case R.id.filterByDateUpdated:
                     allQuizPresenter.filterByDateUpdatedDesc();
-                    Timber.d("FALSE BY UPDATED CALLED");
                     break;
                 case R.id.filterByApproved:
                     allQuizPresenter.filterByApprovedDesc();
-                    Timber.d("FALSE BY APPROVE CALLED");
                     break;
             }
         }
     }
-
 
     private void outFromBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -224,7 +215,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener() {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount) {
-                    allQuizPresenter.loadQuizzesFromPage(totalItemsCount / Constants.PAGE_SIZE + 1);
+                    allQuizPresenter.loadQuizzesFromApi(totalItemsCount / Constants.PAGE_SIZE + 1);
                 }
             });
         }
