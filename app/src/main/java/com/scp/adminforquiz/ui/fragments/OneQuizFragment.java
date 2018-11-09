@@ -204,12 +204,12 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
                 .setCancelable(false)
                 .setPositiveButton("APPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approveTranslationById(quizTranslation.id, true);TODO
+                            oneQuizPresenter.approveTranslationById(quizTranslation.id, true);
                             dialog.cancel();
                         })
                 .setNegativeButton("DISAPPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approveTranslationById(quizTranslation.id, false);
+                            oneQuizPresenter.approveTranslationById(quizTranslation.id, false);
                             dialog.cancel();
                         });
         AlertDialog alertDialogApprove = mDialogBuilderApprove.create();
@@ -217,7 +217,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     }
 
     @Override
-    public void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase) {
+    public void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase, Long quizTranslationId) {
         LayoutInflater inflaterApprove = LayoutInflater.from(getContext());
         @SuppressLint("InflateParams") View viewApprove = inflaterApprove.inflate(R.layout.dialog_approve_phrase, null);
         AlertDialog.Builder mDialogBuilderApprove = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -226,12 +226,12 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
                 .setCancelable(false)
                 .setPositiveButton("APPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, true);
+                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, quizTranslationId, true);
                             dialog.cancel();
                         })
                 .setNegativeButton("DISAPPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, false);TODO
+                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, quizTranslationId, false);
                             dialog.cancel();
                         });
         AlertDialog alertDialogApprove = mDialogBuilderApprove.create();

@@ -7,6 +7,7 @@ import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
+import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
@@ -70,6 +71,14 @@ public class ApiClient {
 
     public Single<NwQuiz> approveNwQuizById(Long nwQuizId, Boolean approve) {
         return quizApi.approveNwQuizById(nwQuizId, approve);
+    }
+
+    public Single<NwQuizTranslation> approveNwQuizTranslationById(Long nwQuizTranslationId, Boolean approve) {
+        return quizApi.approveNwQuizTranslationById(nwQuizTranslationId, approve);
+    }
+
+    public Single<NwQuizTranslationPhrase> approveNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId, Boolean approve) {
+        return quizApi.approveNwQuizTranslationPhraseById(nwQuizTranslationPhraseId, approve);
     }
 
     public Single<NwQuiz> addNwQuizTranslation(Long nwQuizId, String nwQuizTranslationLangCode, String nwQuizTranslationText, String nwQuizTranslationDescription) {

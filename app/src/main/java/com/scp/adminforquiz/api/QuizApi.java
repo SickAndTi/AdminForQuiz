@@ -2,6 +2,7 @@ package com.scp.adminforquiz.api;
 
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
+import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 
 import java.util.List;
 
@@ -25,6 +26,18 @@ public interface QuizApi {
 
     @POST("quiz/{id}/approve")
     Single<NwQuiz> approveNwQuizById(
+            @Path("id") Long id,
+            @Query("approve") Boolean approve
+    );
+
+    @POST("quiz/translations/{id}/approve")
+    Single<NwQuizTranslation> approveNwQuizTranslationById(
+            @Path("id") Long id,
+            @Query("approve") Boolean approve
+    );
+
+    @POST("quiz/translations/phrases/{id}/approve")
+    Single<NwQuizTranslationPhrase> approveNwQuizTranslationPhraseById(
             @Path("id") Long id,
             @Query("approve") Boolean approve
     );

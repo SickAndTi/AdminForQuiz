@@ -129,6 +129,9 @@ public abstract class QuizDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract List<Long> insertQuizTranslationPhrases(List<QuizTranslationPhrase> list);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract Long insertQuizTranslationPhrase(QuizTranslationPhrase phrase);
+
     @Update
     public abstract int update(Quiz quiz);
 

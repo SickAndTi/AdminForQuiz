@@ -41,7 +41,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
         void onApproveTranslationClicked(QuizTranslation quizTranslation);
 
-        void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase);
+        void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase, Long quizTranslationId);
     }
 
     public OneQuizRecyclerViewAdapter(EditInterface editInterface) {
@@ -159,7 +159,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     phraseViewHolder.tvPhraseText.setText(quizTranslationPhrase.translation);
                     phraseViewHolder.tvUserName.setText(quizTranslationPhrase.author.fullName);
                     phraseViewHolder.approvePhrase.setChecked(quizTranslationPhrase.approved);
-                    phraseViewHolder.approvePhrase.setOnClickListener(v -> editInterface.onApprovePhraseClicked(quizTranslationPhrase));
+                    phraseViewHolder.approvePhrase.setOnClickListener(v -> editInterface.onApprovePhraseClicked(quizTranslationPhrase, quizTranslation.id));
                     phraseViewHolder.imvDeletePhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
                     GlideApp
                             .with(holder.itemView.getContext())
