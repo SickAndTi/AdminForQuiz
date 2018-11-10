@@ -15,6 +15,6 @@ public class User {
     //content
     public String fullName;
     public String avatar;
-    public List<NwUserAuthorities> authorities = null;
+    public List<UserAuthorities> authorities;
 
 }

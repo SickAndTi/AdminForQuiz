@@ -105,7 +105,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void approveQuizById(Long quizId, boolean approve) {
-        if (quizAuthorId.equals(preferences.getUserId())) {
+        if (preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
                     .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
                     .subscribeOn(Schedulers.io())
@@ -115,19 +115,21 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(aLong -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("Вы можете удалять только созданное собой");
+        } else getViewState().showError("У вас нет таких прав");
     }
 
     public void approveTranslationById(Long translationId, boolean approve) {
-        compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
-                .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
+        if (preferences.getIsAdmin()) {
+            compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
+                    .map(nwQuizTranslation -> quizDao.insertQuizTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                    .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                    .subscribe(aLong -> {
+                            }, error -> getViewState().showError(error.toString())
+                    ));
+        } else getViewState().showError("У вас нет таких прав");
     }
 
     public void deleteTranslationById(Long translationId) {
@@ -167,15 +169,17 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void approvePhraseById(Long phraseId, Long translationId, boolean approve) {
-        compositeDisposable.add(apiClient.approveNwQuizTranslationPhraseById(phraseId, approve)
-                .map(nwQuizTranslationPhrase -> quizDao.insertQuizTranslationPhrase(quizConverter.convertTranslationPhrase(nwQuizTranslationPhrase, translationId)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
+        if (preferences.getIsAdmin()) {
+            compositeDisposable.add(apiClient.approveNwQuizTranslationPhraseById(phraseId, approve)
+                    .map(nwQuizTranslationPhrase -> quizDao.insertQuizTranslationPhrase(quizConverter.convertTranslationPhrase(nwQuizTranslationPhrase, translationId)))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                    .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                    .subscribe(aLong -> {
+                            }, error -> getViewState().showError(error.toString())
+                    ));
+        } else getViewState().showError("У вас нет таких прав");
     }
 }
 

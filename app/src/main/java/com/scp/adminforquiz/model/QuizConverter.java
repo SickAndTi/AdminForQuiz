@@ -111,25 +111,25 @@ public class QuizConverter {
         user.id = nwUser.id;
         user.fullName = nwUser.fullName;
         user.avatar = nwUser.avatar;
-        user.authorities = convertUserAuthority(nwUser.authorities);
+//        user.authorities = convertUserAuthority(nwUser.authorities);
         return user;
     }
-
-    public UserAuthorities convertUserAuthority(NwUserAuthorities nwUserAuthorities) {
-        UserAuthorities userAuthority = new UserAuthorities();
-        userAuthority.id = nwUserAuthorities.userId;
-        userAuthority.authority = nwUserAuthorities.authority;
-        return userAuthority;
-    }
-
-    public List<UserAuthorities> convertUserAuthority(List<NwUserAuthorities> nwUserAuthoritiesList) {
-        List<UserAuthorities> authoritiesList = new ArrayList<>();
-        for (int i = 0; i < nwUserAuthoritiesList.size(); i++) {
-            NwUserAuthorities nwUserAuthorities = nwUserAuthoritiesList.get(i);
-            UserAuthorities userAuthorities = convertUserAuthority(nwUserAuthorities);
-            authoritiesList.add(userAuthorities);
-        }
-        return authoritiesList;
-    }
+//
+//    public UserAuthorities convertUserAuthority(NwUserAuthorities nwUserAuthorities) {
+//        UserAuthorities userAuthority = new UserAuthorities();
+//        userAuthority.id = nwUserAuthorities.userId;
+//        userAuthority.authority = nwUserAuthorities.authority;
+//        return userAuthority;
+//    }
+//
+//    public List<UserAuthorities> convertUserAuthority(List<NwUserAuthorities> nwUserAuthoritiesList) {
+//        List<UserAuthorities> authoritiesList = new ArrayList<>();
+//        for (int i = 0; i < nwUserAuthoritiesList.size(); i++) {
+//            NwUserAuthorities nwUserAuthorities = nwUserAuthoritiesList.get(i);
+//            UserAuthorities userAuthorities = convertUserAuthority(nwUserAuthorities);
+//            authoritiesList.add(userAuthorities);
+//        }
+//        return authoritiesList;
+//    }
 
 }

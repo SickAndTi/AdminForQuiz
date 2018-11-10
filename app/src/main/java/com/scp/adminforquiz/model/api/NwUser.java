@@ -12,6 +12,6 @@ public class NwUser {
     @SerializedName("avatar")
     public String avatar;
     @SerializedName("authorities")
-    public List<NwUserAuthorities> authorities = null;
+    public List<NwUserAuthorities> authorities;
 
 }

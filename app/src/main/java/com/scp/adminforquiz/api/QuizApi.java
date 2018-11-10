@@ -3,6 +3,7 @@ package com.scp.adminforquiz.api;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
+import com.scp.adminforquiz.model.api.NwUser;
 import com.scp.adminforquiz.model.db.User;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface QuizApi {
     Single<List<NwQuiz>> getAllWithUser();
 
     @GET("user/me?showFull=true")
-    Single<User> whoAreMe(
+    Single<NwUser> whoAreMe(
     );
 
     @POST("quiz/create")

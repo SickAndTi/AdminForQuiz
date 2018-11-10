@@ -144,7 +144,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSuccess(user -> {
                             preferences.setUserId(user.id);
-                            preferences.setIsAdmin(user.authorities.);
+                            preferences.setIsAdmin(user.authorities.size() > 1);
                         })
                         .subscribe(user -> {
                                 },
