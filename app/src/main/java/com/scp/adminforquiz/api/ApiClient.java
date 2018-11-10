@@ -8,6 +8,7 @@ import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
+import com.scp.adminforquiz.model.db.User;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
@@ -63,6 +64,10 @@ public class ApiClient {
 
     public Single<List<NwQuiz>> getAllWithUser() {
         return quizApi.getAllWithUser();
+    }
+
+    public Single<User> whoAreMe() {
+        return quizApi.whoAreMe();
     }
 
     public Single<NwQuiz> createNwQuiz(NwQuiz nwQuiz) {

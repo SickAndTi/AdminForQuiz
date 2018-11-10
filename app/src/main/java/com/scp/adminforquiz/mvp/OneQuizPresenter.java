@@ -9,6 +9,7 @@ import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Triple;
 import ru.terrakok.cicerone.Router;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -34,6 +36,8 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     ApiClient apiClient;
     @Inject
     QuizConverter quizConverter;
+    @Inject
+    MyPreferenceManager preferences;
 
     private Long quizId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -50,6 +54,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+        Timber.d("User Id from pref : %s", preferences.getUserId());
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getQuizByIdOrErrorWithUpdates(quizId),
                 quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId),

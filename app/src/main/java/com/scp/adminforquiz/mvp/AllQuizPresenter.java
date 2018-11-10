@@ -44,6 +44,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+        setUser();
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getAll(),
                 quizDao.getAllQuizTranslation(),
@@ -109,6 +110,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
             preferences.setRefreshToken(null);
             preferences.setUserSortFieldName(null);
             preferences.setUserFilterAscending(true);
+            preferences.setUserId((long) 0);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -133,6 +135,18 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
+    }
+
+    private void setUser() {
+        compositeDisposable.add(
+                apiClient.whoAreMe()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSuccess(user -> preferences.setUserId(user.id))
+                        .subscribe(user -> {
+                                },
+                                error -> getViewState().showError(error.toString()))
+        );
     }
 
     public void filterByDateCreated() {

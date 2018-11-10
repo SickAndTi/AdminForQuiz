@@ -96,7 +96,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             }
             return super.onOptionsItemSelected(menuItem);
         });
-
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
