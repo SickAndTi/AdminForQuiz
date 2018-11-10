@@ -1,8 +1,11 @@
 package com.scp.adminforquiz.mvp;
 
+import android.widget.Toast;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -15,7 +18,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function3;
@@ -38,6 +43,9 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     QuizConverter quizConverter;
     @Inject
     MyPreferenceManager preferences;
+    private Long quizAuthorId;
+    private Long quizTranslationAuthorId;
+    private Long quizTranslationPhraseAuthorId;
 
     private Long quizId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -49,6 +57,13 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     public void setQuizId(Long quizId) {
         this.quizId = quizId;
     }
+
+//    public Long getQuizAuthorId() {
+//        return Single.fromCallable(
+//                () -> quizDao.getAuthorIdByQuizId(quizId))
+//                .blockingGet();
+//    }
+
 
     @Override
     protected void onFirstViewAttach() {
@@ -64,7 +79,17 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                 .map(o -> quizDao.getQuizWithTranslationsAndPhrases(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(quiz -> getViewState().showQuiz(quiz)));
+                .subscribe(quiz -> {
+                    quizAuthorId = quiz.authorId;
+                    for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                        quizTranslationAuthorId = quizTranslation.authorId;
+                        for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
+                            quizTranslationPhraseAuthorId = quizTranslationPhrase.authorId;
+                        }
+                    }
+
+                    getViewState().showQuiz(quiz);
+                }));
     }
 
     @Override
@@ -74,15 +99,18 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void deleteQuiz() {
-        compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
-                .map(aBoolean -> quizDao.deleteQuizById(quizId))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
-                        error -> getViewState().showError(error.toString())
-                ));
+        Timber.d("QuizAuthorId : %s", quizAuthorId);
+        if (quizAuthorId.equals(preferences.getUserId())) {
+            compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
+                    .map(aBoolean -> quizDao.deleteQuizById(quizId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                    .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                    .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
+                            error -> getViewState().showError(error.toString())
+                    ));
+        } else getViewState().showError("Вы можете удалять только созданное собой");
     }
 
     public void goToAddTranslationFragment() {

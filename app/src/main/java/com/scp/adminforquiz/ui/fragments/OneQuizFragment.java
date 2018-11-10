@@ -17,21 +17,28 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
+import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.mvp.OneQuizPresenter;
 import com.scp.adminforquiz.mvp.OneQuizView;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.OneQuizRecyclerViewAdapter;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import timber.log.Timber;
+import toothpick.Toothpick;
 
 public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView, OneQuizRecyclerViewAdapter.EditInterface {
     @InjectPresenter
     OneQuizPresenter oneQuizPresenter;
+    @Inject
+    MyPreferenceManager preferences;
     RecyclerView recyclerViewOneQuiz;
     OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter;
     View flProgressBar;
@@ -55,6 +62,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.onequiz_menu);
         toolbar.setOnMenuItemClickListener(menuItem -> {
