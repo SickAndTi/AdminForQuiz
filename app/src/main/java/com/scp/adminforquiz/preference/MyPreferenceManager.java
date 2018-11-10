@@ -56,6 +56,14 @@ public class MyPreferenceManager {
     public Long getUserId() {
         return preferences.getLong(Constants.USER_ID, 0);
     }
+
+    public void setIsAdmin(boolean isAdmin) {
+        preferences.edit().putBoolean(Constants.IS_ADMIN, isAdmin).apply();
+    }
+
+    public boolean getIsAdmin() {
+        return preferences.getBoolean(Constants.IS_ADMIN, false);
+    }
 }
 
 

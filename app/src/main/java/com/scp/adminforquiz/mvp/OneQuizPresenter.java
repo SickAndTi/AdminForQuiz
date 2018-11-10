@@ -1,11 +1,8 @@
 package com.scp.adminforquiz.mvp;
 
-import android.widget.Toast;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
-import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -18,9 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function3;
@@ -58,13 +53,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         this.quizId = quizId;
     }
 
-//    public Long getQuizAuthorId() {
-//        return Single.fromCallable(
-//                () -> quizDao.getAuthorIdByQuizId(quizId))
-//                .blockingGet();
-//    }
-
-
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -99,7 +87,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void deleteQuiz() {
-        Timber.d("QuizAuthorId : %s", quizAuthorId);
         if (quizAuthorId.equals(preferences.getUserId())) {
             compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
                     .map(aBoolean -> quizDao.deleteQuizById(quizId))
@@ -118,15 +105,17 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void approveQuizById(Long quizId, boolean approve) {
-        compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
-                .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(aLong -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
+        if (quizAuthorId.equals(preferences.getUserId())) {
+            compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
+                    .map(nwQuiz -> quizDao.insert(quizConverter.convert(nwQuiz)))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                    .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                    .subscribe(aLong -> {
+                            }, error -> getViewState().showError(error.toString())
+                    ));
+        } else getViewState().showError("Вы можете удалять только созданное собой");
     }
 
     public void approveTranslationById(Long translationId, boolean approve) {
@@ -141,17 +130,18 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                 ));
     }
 
-
     public void deleteTranslationById(Long translationId) {
-        compositeDisposable.add(apiClient.deleteNwQuizTranslationById(translationId)
-                .map(aBoolean -> quizDao.deleteQuizTranslationById(translationId))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(integer -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
+        if (quizTranslationAuthorId.equals(preferences.getUserId())) {
+            compositeDisposable.add(apiClient.deleteNwQuizTranslationById(translationId)
+                    .map(aBoolean -> quizDao.deleteQuizTranslationById(translationId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                    .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                    .subscribe(integer -> {
+                            }, error -> getViewState().showError(error.toString())
+                    ));
+        } else getViewState().showError("Вы можете удалять только созданное собой");
     }
 
     public void goToUpdateTranslationDescriptionFragment(Long translationId) {
@@ -159,15 +149,17 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void deletePhraseById(Long phraseId) {
-        compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(phraseId)
-                .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(phraseId))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
-                .subscribe(integer -> {
-                        }, error -> getViewState().showError(error.toString())
-                ));
+        if (quizTranslationPhraseAuthorId.equals(preferences.getUserId())) {
+            compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(phraseId)
+                    .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(phraseId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                    .doOnEvent((integer, throwable) -> getViewState().showProgressBar(false))
+                    .subscribe(integer -> {
+                            }, error -> getViewState().showError(error.toString())
+                    ));
+        } else getViewState().showError("Вы можете удалять только созданное собой");
     }
 
     public void goToAddPhraseFragment(Long quizTranslationId) {

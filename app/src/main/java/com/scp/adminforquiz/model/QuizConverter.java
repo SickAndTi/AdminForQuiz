@@ -4,10 +4,12 @@ import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 import com.scp.adminforquiz.model.api.NwUser;
+import com.scp.adminforquiz.model.api.NwUserAuthorities;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.User;
+import com.scp.adminforquiz.model.db.UserAuthorities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +111,25 @@ public class QuizConverter {
         user.id = nwUser.id;
         user.fullName = nwUser.fullName;
         user.avatar = nwUser.avatar;
+        user.authorities = convertUserAuthority(nwUser.authorities);
         return user;
     }
+
+    public UserAuthorities convertUserAuthority(NwUserAuthorities nwUserAuthorities) {
+        UserAuthorities userAuthority = new UserAuthorities();
+        userAuthority.id = nwUserAuthorities.userId;
+        userAuthority.authority = nwUserAuthorities.authority;
+        return userAuthority;
+    }
+
+    public List<UserAuthorities> convertUserAuthority(List<NwUserAuthorities> nwUserAuthoritiesList) {
+        List<UserAuthorities> authoritiesList = new ArrayList<>();
+        for (int i = 0; i < nwUserAuthoritiesList.size(); i++) {
+            NwUserAuthorities nwUserAuthorities = nwUserAuthoritiesList.get(i);
+            UserAuthorities userAuthorities = convertUserAuthority(nwUserAuthorities);
+            authoritiesList.add(userAuthorities);
+        }
+        return authoritiesList;
+    }
+
 }

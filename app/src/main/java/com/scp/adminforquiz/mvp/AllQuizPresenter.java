@@ -142,7 +142,10 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 apiClient.whoAreMe()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSuccess(user -> preferences.setUserId(user.id))
+                        .doOnSuccess(user -> {
+                            preferences.setUserId(user.id);
+                            preferences.setIsAdmin(user.authorities.);
+                        })
                         .subscribe(user -> {
                                 },
                                 error -> getViewState().showError(error.toString()))
