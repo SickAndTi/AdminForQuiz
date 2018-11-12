@@ -7,7 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
-import com.scp.adminforquiz.model.db.dao.QuizDao;
+import com.scp.adminforquiz.db.QuizDao;
 
 import javax.inject.Inject;
 

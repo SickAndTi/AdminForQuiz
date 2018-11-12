@@ -10,7 +10,6 @@ import com.scp.adminforquiz.util.DateTypeConverter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class QuizTranslationPhrase {

@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.model.db.dao;
+package com.scp.adminforquiz.db;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -9,7 +9,6 @@ import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import com.scp.adminforquiz.Constants;
-import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
@@ -19,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import timber.log.Timber;
 
 @Dao
 public abstract class QuizDao {

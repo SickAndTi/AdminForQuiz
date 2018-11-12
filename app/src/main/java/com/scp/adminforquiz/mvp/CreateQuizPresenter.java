@@ -8,7 +8,7 @@ import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.api.NwQuiz;
-import com.scp.adminforquiz.model.db.dao.QuizDao;
+import com.scp.adminforquiz.db.QuizDao;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import javax.inject.Inject;

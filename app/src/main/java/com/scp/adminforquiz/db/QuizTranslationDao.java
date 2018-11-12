@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.model.db.dao;
+package com.scp.adminforquiz.db;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
