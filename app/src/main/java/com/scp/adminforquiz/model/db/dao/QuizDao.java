@@ -93,6 +93,15 @@ public abstract class QuizDao {
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
     public abstract Flowable<List<QuizTranslation>> getQuizTranslationsByQuizIdWithUpdates(Long id);
 
+    @Query("SELECT authorId FROM Quiz WHERE id = :quizId")
+    public abstract Long getAuthorIdByQuizId(Long quizId);
+
+    @Query("SELECT authorId FROM QuizTranslation WHERE id = :quizTranslationId")
+    public abstract Long getAuthorIdByQuizTranslationId(Long quizTranslationId);
+
+    @Query("SELECT authorId FROM QuizTranslationPhrase WHERE id = :quizTranslationPhraseId")
+    public abstract Long getAuthorIdByQuizTranslationPhraseId(Long quizTranslationPhraseId);
+
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id AND langCode = :lang")
     public abstract List<QuizTranslation> getQuizTranslationsByQuizIdAndLang(Long id, String lang);
 
@@ -128,6 +137,9 @@ public abstract class QuizDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract List<Long> insertQuizTranslationPhrases(List<QuizTranslationPhrase> list);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract Long insertQuizTranslationPhrase(QuizTranslationPhrase phrase);
 
     @Update
     public abstract int update(Quiz quiz);

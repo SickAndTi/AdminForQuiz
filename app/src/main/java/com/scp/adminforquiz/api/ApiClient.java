@@ -7,6 +7,9 @@ import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
+import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
+import com.scp.adminforquiz.model.api.NwUser;
+import com.scp.adminforquiz.model.db.User;
 import com.scp.adminforquiz.model.db.dao.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
@@ -64,12 +67,24 @@ public class ApiClient {
         return quizApi.getAllWithUser();
     }
 
+    public Single<NwUser> whoAreMe() {
+        return quizApi.whoAreMe();
+    }
+
     public Single<NwQuiz> createNwQuiz(NwQuiz nwQuiz) {
         return quizApi.createNwQuiz(nwQuiz);
     }
 
     public Single<NwQuiz> approveNwQuizById(Long nwQuizId, Boolean approve) {
         return quizApi.approveNwQuizById(nwQuizId, approve);
+    }
+
+    public Single<NwQuizTranslation> approveNwQuizTranslationById(Long nwQuizTranslationId, Boolean approve) {
+        return quizApi.approveNwQuizTranslationById(nwQuizTranslationId, approve);
+    }
+
+    public Single<NwQuizTranslationPhrase> approveNwQuizTranslationPhraseById(Long nwQuizTranslationPhraseId, Boolean approve) {
+        return quizApi.approveNwQuizTranslationPhraseById(nwQuizTranslationPhraseId, approve);
     }
 
     public Single<NwQuiz> addNwQuizTranslation(Long nwQuizId, String nwQuizTranslationLangCode, String nwQuizTranslationText, String nwQuizTranslationDescription) {

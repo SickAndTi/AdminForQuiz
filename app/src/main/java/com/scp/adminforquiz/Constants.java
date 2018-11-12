@@ -31,4 +31,8 @@ public class Constants {
     public static final String CREATED = "CREATED";
     public static final String UPDATED = "UPDATED";
     public static final String APPROVE = "APPROVE";
+    //user
+    public static final String USER_ID = "USER_ID";
+    public static final String IS_ADMIN = "IS_ADMIN";
+    public static final String ADMIN = "ADMIN";
 }

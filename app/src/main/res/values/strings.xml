@@ -84,6 +84,8 @@
     <string name="doctorPhrases">Doctor phrases</string>
     <string name="approveTranslation">Approve translation?</string>
     <string name="approvePhrase">Approve phrase?</string>
+    <string name="deleteToastText">Вы можете удалять только созданное Вами</string>
+    <string name="toastApproveDialog">У вас нет таких прав</string>
 
     <string-array name="authTabTitles">
         <item>SIGN IN</item>

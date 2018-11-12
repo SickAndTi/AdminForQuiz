@@ -5,6 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
+import com.scp.adminforquiz.model.api.NwUserAuthorities;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
@@ -44,6 +45,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+        setUser();
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getAll(),
                 quizDao.getAllQuizTranslation(),
@@ -109,6 +111,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
             preferences.setRefreshToken(null);
             preferences.setUserSortFieldName(null);
             preferences.setUserFilterAscending(true);
+            preferences.setUserId((long) 0);
+            preferences.setIsAdmin(false);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -133,6 +137,27 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
+    }
+
+    private void setUser() {
+        compositeDisposable.add(
+                apiClient.whoAreMe()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSuccess(user -> {
+                            preferences.setUserId(user.id);
+                            for (NwUserAuthorities nwUserAuthorities : user.authorities) {
+                                if (nwUserAuthorities.authority.equals(Constants.ADMIN)) {
+                                    preferences.setIsAdmin(true);
+                                    break;
+                                }
+                                preferences.setIsAdmin(false);
+                            }
+                        })
+                        .subscribe(user -> {
+                                },
+                                error -> getViewState().showError(error.toString()))
+        );
     }
 
     public void filterByDateCreated() {

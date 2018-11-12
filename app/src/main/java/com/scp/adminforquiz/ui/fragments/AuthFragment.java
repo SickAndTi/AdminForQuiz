@@ -107,28 +107,22 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager = view.findViewById(R.id.viewpager);
         vkImage = view.findViewById(R.id.vkImage);
-        vkImage.setOnClickListener(v -> {
-            authPresenter.regViaVk();
-            VKSdk.login(getActivity(), VKScope.EMAIL);
-
-        });
+        vkImage.setOnClickListener(v ->
+                VKSdk.login(getActivity(), VKScope.EMAIL)
+        );
         googleImage = view.findViewById(R.id.googleImage);
         googleImage.setOnClickListener(v -> {
-            authPresenter.regViaGoogle();
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
             startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE);
-
         });
         faceBookImage = view.findViewById(R.id.faceBookImage);
         faceBookImage.setOnClickListener(v -> {
-            authPresenter.regViaFacebook();
             callbackManager = CallbackManager.Factory.create();
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
             LoginManager.getInstance().registerCallback(callbackManager,
                     new FacebookCallback<LoginResult>() {
                         @Override
                         public void onSuccess(LoginResult loginResult) {
-                            Timber.d("LOGIN FB RESULT : %s", loginResult.getAccessToken().getToken());
                             compositeDisposable.add(apiClient.loginSocial(Constants.FACEBOOK, loginResult.getAccessToken().getToken())
                                     .doOnSuccess(tokenResponse -> {
                                         preferences.setAccessToken(tokenResponse.accessToken);
@@ -173,7 +167,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                 CommonUserData commonUserData = new CommonUserData();
                 commonUserData.email = vkAccessToken.email;
                 commonUserData.id = vkAccessToken.userId;
-                Timber.d("RESULT : %s,,,RESULT userID : %s", vkAccessToken.email, vkAccessToken.userId);
                 VKRequest request = VKApi.users().get();
                 request.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override
@@ -218,7 +211,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
         switch (requestCode) {
             case REQUEST_CODE_GOOGLE:
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                Timber.d("RESULT:%s", result.getSignInAccount().getIdToken());
                 compositeDisposable.add(apiClient.loginSocial(Constants.GOOGLE, result.getSignInAccount().getIdToken())
                         .doOnSuccess(tokenResponse -> {
                             preferences.setAccessToken(tokenResponse.accessToken);
@@ -243,6 +235,9 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
             googleApiClient = null;
         }
     }
+
+    @Override
+    public void showError(String errorMessage) {
+        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
 }
-
-

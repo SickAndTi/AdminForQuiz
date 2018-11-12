@@ -17,21 +17,28 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
+import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.mvp.OneQuizPresenter;
 import com.scp.adminforquiz.mvp.OneQuizView;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.OneQuizRecyclerViewAdapter;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import timber.log.Timber;
+import toothpick.Toothpick;
 
 public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView, OneQuizRecyclerViewAdapter.EditInterface {
     @InjectPresenter
     OneQuizPresenter oneQuizPresenter;
+    @Inject
+    MyPreferenceManager preferences;
     RecyclerView recyclerViewOneQuiz;
     OneQuizRecyclerViewAdapter oneQuizRecyclerViewAdapter;
     View flProgressBar;
@@ -55,6 +62,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.onequiz_menu);
         toolbar.setOnMenuItemClickListener(menuItem -> {
@@ -96,6 +104,11 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     public void showError(String errorMessage) {
         Timber.e(errorMessage);
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showError(int stringResource) {
+        Toast.makeText(getContext(), stringResource, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -204,12 +217,12 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
                 .setCancelable(false)
                 .setPositiveButton("APPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approveTranslationById(quizTranslation.id, true);TODO
+                            oneQuizPresenter.approveTranslationById(quizTranslation.id, true);
                             dialog.cancel();
                         })
                 .setNegativeButton("DISAPPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approveTranslationById(quizTranslation.id, false);
+                            oneQuizPresenter.approveTranslationById(quizTranslation.id, false);
                             dialog.cancel();
                         });
         AlertDialog alertDialogApprove = mDialogBuilderApprove.create();
@@ -217,7 +230,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     }
 
     @Override
-    public void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase) {
+    public void onApprovePhraseClicked(QuizTranslationPhrase quizTranslationPhrase, Long quizTranslationId) {
         LayoutInflater inflaterApprove = LayoutInflater.from(getContext());
         @SuppressLint("InflateParams") View viewApprove = inflaterApprove.inflate(R.layout.dialog_approve_phrase, null);
         AlertDialog.Builder mDialogBuilderApprove = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
@@ -226,12 +239,12 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
                 .setCancelable(false)
                 .setPositiveButton("APPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, true);
+                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, quizTranslationId, true);
                             dialog.cancel();
                         })
                 .setNegativeButton("DISAPPROVE",
                         (dialog, id) -> {
-//                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, false);TODO
+                            oneQuizPresenter.approvePhraseById(quizTranslationPhrase.id, quizTranslationId, false);
                             dialog.cancel();
                         });
         AlertDialog alertDialogApprove = mDialogBuilderApprove.create();

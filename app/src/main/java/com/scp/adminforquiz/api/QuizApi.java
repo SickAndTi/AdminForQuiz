@@ -2,6 +2,9 @@ package com.scp.adminforquiz.api;
 
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
+import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
+import com.scp.adminforquiz.model.api.NwUser;
+import com.scp.adminforquiz.model.db.User;
 
 import java.util.List;
 
@@ -18,6 +21,10 @@ public interface QuizApi {
     @GET("quiz/allWithUsers")
     Single<List<NwQuiz>> getAllWithUser();
 
+    @GET("user/me?showFull=true")
+    Single<NwUser> whoAreMe(
+    );
+
     @POST("quiz/create")
     Single<NwQuiz> createNwQuiz(
             @Body NwQuiz nwQuiz
@@ -25,6 +32,18 @@ public interface QuizApi {
 
     @POST("quiz/{id}/approve")
     Single<NwQuiz> approveNwQuizById(
+            @Path("id") Long id,
+            @Query("approve") Boolean approve
+    );
+
+    @POST("quiz/translations/{id}/approve")
+    Single<NwQuizTranslation> approveNwQuizTranslationById(
+            @Path("id") Long id,
+            @Query("approve") Boolean approve
+    );
+
+    @POST("quiz/translations/phrases/{id}/approve")
+    Single<NwQuizTranslationPhrase> approveNwQuizTranslationPhraseById(
             @Path("id") Long id,
             @Query("approve") Boolean approve
     );
