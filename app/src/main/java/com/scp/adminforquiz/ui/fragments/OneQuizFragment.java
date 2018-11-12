@@ -116,11 +116,6 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
         flProgressBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void onTranslationEditClicked(QuizTranslation quizTranslation) {
-        oneQuizPresenter.goToUpdateTranslationDescriptionFragment(quizTranslation.id);
-    }
-
     private void showDeleteQuizDialog() {
         LayoutInflater inflaterDelete = LayoutInflater.from(getContext());
         @SuppressLint("InflateParams")

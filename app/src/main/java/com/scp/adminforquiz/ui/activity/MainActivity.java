@@ -18,7 +18,6 @@ import com.scp.adminforquiz.ui.fragments.AllQuizFragment;
 import com.scp.adminforquiz.ui.fragments.AuthFragment;
 import com.scp.adminforquiz.ui.fragments.CreateQuizFragment;
 import com.scp.adminforquiz.ui.fragments.OneQuizFragment;
-import com.scp.adminforquiz.ui.fragments.UpdateTranslationDescriptionFragment;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
@@ -59,8 +58,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                     return AddTranslationFragment.newInstance((Long) data);
                 case Constants.ADD_PHRASE_SCREEN:
                     return AddPhraseFragment.newInstance((Long) data);
-                case Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN:
-                    return UpdateTranslationDescriptionFragment.newInstance((Long) data);
                 case Constants.AUTH_SCREEN:
                     return AuthFragment.newInstance();
                 default:
