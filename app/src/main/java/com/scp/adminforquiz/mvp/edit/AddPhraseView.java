@@ -1,8 +1,8 @@
-package com.scp.adminforquiz.mvp;
+package com.scp.adminforquiz.mvp.edit;
 
 import com.arellomobile.mvp.MvpView;
 
-public interface CreateQuizView extends MvpView {
+public interface AddPhraseView extends MvpView {
 
     void showProgressBar(boolean showProgressBar);
 

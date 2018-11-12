@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.mvp;
+package com.scp.adminforquiz.mvp.viewinfo;
 
 import com.arellomobile.mvp.MvpView;
 import com.scp.adminforquiz.model.db.Quiz;

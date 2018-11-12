@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments.edit;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.scp.adminforquiz.R;
-import com.scp.adminforquiz.mvp.CreateQuizPresenter;
-import com.scp.adminforquiz.mvp.CreateQuizView;
+import com.scp.adminforquiz.mvp.edit.CreateQuizPresenter;
+import com.scp.adminforquiz.mvp.edit.CreateQuizView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import io.reactivex.disposables.CompositeDisposable;

@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.mvp;
+package com.scp.adminforquiz.mvp.viewinfo;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;

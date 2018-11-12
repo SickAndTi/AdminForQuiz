@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments.viewinfo;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -23,8 +23,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
-import com.scp.adminforquiz.mvp.AllQuizPresenter;
-import com.scp.adminforquiz.mvp.AllQuizView;
+import com.scp.adminforquiz.mvp.viewinfo.AllQuizPresenter;
+import com.scp.adminforquiz.mvp.viewinfo.AllQuizView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;

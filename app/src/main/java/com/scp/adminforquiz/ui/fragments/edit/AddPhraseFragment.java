@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments.edit;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,14 +16,13 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenterTag;
 import com.scp.adminforquiz.R;
-import com.scp.adminforquiz.mvp.AddPhrasePresenter;
-import com.scp.adminforquiz.mvp.AddPhraseView;
+import com.scp.adminforquiz.mvp.edit.AddPhrasePresenter;
+import com.scp.adminforquiz.mvp.edit.AddPhraseView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.Objects;
 
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 public class AddPhraseFragment extends MvpAppCompatFragment implements AddPhraseView {
 

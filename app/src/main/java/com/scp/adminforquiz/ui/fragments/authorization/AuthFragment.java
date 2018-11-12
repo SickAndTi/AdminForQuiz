@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments.authorization;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +32,8 @@ import com.scp.adminforquiz.CommonUserData;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.mvp.AuthPresenter;
-import com.scp.adminforquiz.mvp.AuthView;
+import com.scp.adminforquiz.mvp.authorization.AuthPresenter;
+import com.scp.adminforquiz.mvp.authorization.AuthView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AuthPagerAdapter;
 import com.vk.sdk.VKAccessToken;

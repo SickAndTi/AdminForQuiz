@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments.viewinfo;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -22,8 +22,8 @@ import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
-import com.scp.adminforquiz.mvp.OneQuizPresenter;
-import com.scp.adminforquiz.mvp.OneQuizView;
+import com.scp.adminforquiz.mvp.viewinfo.OneQuizPresenter;
+import com.scp.adminforquiz.mvp.viewinfo.OneQuizView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.OneQuizRecyclerViewAdapter;
 

@@ -1,4 +1,4 @@
-package com.scp.adminforquiz.ui.fragments;
+package com.scp.adminforquiz.ui.fragments.authorization;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,8 +14,8 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
-import com.scp.adminforquiz.mvp.SignInPresenter;
-import com.scp.adminforquiz.mvp.SignInView;
+import com.scp.adminforquiz.mvp.authorization.SignInPresenter;
+import com.scp.adminforquiz.mvp.authorization.SignInView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 

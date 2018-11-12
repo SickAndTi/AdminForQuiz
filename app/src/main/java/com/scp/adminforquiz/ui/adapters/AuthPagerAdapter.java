@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.scp.adminforquiz.ui.fragments.SignInFragment;
-import com.scp.adminforquiz.ui.fragments.SignUpFragment;
+import com.scp.adminforquiz.ui.fragments.authorization.SignInFragment;
+import com.scp.adminforquiz.ui.fragments.authorization.SignUpFragment;
 
 public class AuthPagerAdapter extends FragmentPagerAdapter {
 
