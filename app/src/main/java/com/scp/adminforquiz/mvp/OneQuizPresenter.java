@@ -88,7 +88,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void deleteQuiz() {
-        if (quizAuthorId.equals(preferences.getUserId())) {
+        if (quizAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
                     .map(aBoolean -> quizDao.deleteQuizById(quizId))
                     .subscribeOn(Schedulers.io())
@@ -134,7 +134,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void deleteTranslationById(Long translationId) {
-        if (quizTranslationAuthorId.equals(preferences.getUserId())) {
+        if (quizTranslationAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizTranslationById(translationId)
                     .map(aBoolean -> quizDao.deleteQuizTranslationById(translationId))
                     .subscribeOn(Schedulers.io())
@@ -152,7 +152,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void deletePhraseById(Long phraseId) {
-        if (quizTranslationPhraseAuthorId.equals(preferences.getUserId())) {
+        if (quizTranslationPhraseAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(phraseId)
                     .map(aBoolean -> quizDao.deleteQuizTranslationPhraseById(phraseId))
                     .subscribeOn(Schedulers.io())
@@ -183,4 +183,3 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         } else getViewState().showError(R.string.toastApproveDialog);
     }
 }
-
