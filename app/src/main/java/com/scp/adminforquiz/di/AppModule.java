@@ -11,8 +11,8 @@ import com.scp.adminforquiz.api.response.TokenResponse;
 import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.QuizConverter;
-import com.scp.adminforquiz.model.db.DataBase;
-import com.scp.adminforquiz.model.db.dao.QuizDao;
+import com.scp.adminforquiz.db.DataBase;
+import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
 import okhttp3.Credentials;

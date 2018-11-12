@@ -4,7 +4,6 @@ import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 import com.scp.adminforquiz.model.api.NwUser;
-import com.scp.adminforquiz.model.db.User;
 
 import java.util.List;
 
