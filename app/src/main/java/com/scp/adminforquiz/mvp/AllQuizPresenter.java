@@ -5,6 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
+import com.scp.adminforquiz.model.api.NwUserAuthorities;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
@@ -138,13 +139,18 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     private void setUser() {
+        String admin = "ADMIN";
         compositeDisposable.add(
                 apiClient.whoAreMe()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSuccess(user -> {
                             preferences.setUserId(user.id);
-                            preferences.setIsAdmin(user.authorities.size() > 1);
+                            for (NwUserAuthorities nwUserAuthorities : user.authorities) {
+                                if (nwUserAuthorities.authority.contains(admin)) {
+                                    preferences.setIsAdmin(true);
+                                } else preferences.setIsAdmin(false);
+                            }
                         })
                         .subscribe(user -> {
                                 },
