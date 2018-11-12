@@ -29,7 +29,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
 
     public interface EditInterface {
-        void onTranslationEditClicked(QuizTranslation quizTranslation);
 
         void onTranslationDeleteClicked(QuizTranslation quizTranslation);
 
@@ -127,7 +126,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 oneQuizTranslationViewHolder.approveTranslation.setChecked(quizTranslation.approved);
                 oneQuizTranslationViewHolder.approveTranslation.setOnClickListener(v -> editInterface.onApproveTranslationClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
-                oneQuizTranslationViewHolder.imvUpdateDescription.setOnClickListener(v -> editInterface.onTranslationEditClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvAddPhrase.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvDropDown.setOnClickListener(v -> {
                     if (oneQuizTranslationViewHolder.phrasesLayout.getVisibility() == View.GONE) {
@@ -202,7 +200,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tvQuizTitle;
         TextView tvQuizDescription;
         LinearLayout phrasesLayout;
-        ImageView imvDeleteTranslation, imvUpdateDescription;
+        ImageView imvDeleteTranslation;
         Switch approveTranslation;
         ImageView imvDropDown;
         FlagImageView imvFlag;
@@ -217,7 +215,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
             tvQuizTitle = itemView.findViewById(R.id.tvQuizTitle);
             tvQuizDescription = itemView.findViewById(R.id.tvQuizDescription);
             imvDeleteTranslation = itemView.findViewById(R.id.imvDeleteTranslation);
-            imvUpdateDescription = itemView.findViewById(R.id.imvUpdateDescription);
             imvDropDown = itemView.findViewById(R.id.imvDropDown);
             imvFlag = itemView.findViewById(R.id.imvFlag);
             tvLangCode = itemView.findViewById(R.id.tvLangCode);

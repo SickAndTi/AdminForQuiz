@@ -147,10 +147,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         } else getViewState().showError(R.string.deleteToastText);
     }
 
-    public void goToUpdateTranslationDescriptionFragment(Long translationId) {
-        router.navigateTo(Constants.UPDATE_TRANSLATION_DESCRIPTION_SCREEN, translationId);
-    }
-
     public void deletePhraseById(Long phraseId) {
         if (quizTranslationPhraseAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(phraseId)

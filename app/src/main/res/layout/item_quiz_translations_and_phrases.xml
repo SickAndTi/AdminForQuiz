@@ -66,15 +66,6 @@
                 android:textSize="16sp"
                 tools:text="Description" />
 
-            <ImageView
-                android:id="@+id/imvUpdateDescription"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:background="?selectableItemBackgroundBorderless"
-                android:padding="12dp"
-                android:src="@drawable/ic_edit_lightblue_24dp"
-                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <LinearLayout
