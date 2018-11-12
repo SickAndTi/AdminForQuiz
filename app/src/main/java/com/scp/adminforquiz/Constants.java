@@ -34,4 +34,5 @@ public class Constants {
     //user
     public static final String USER_ID = "USER_ID";
     public static final String IS_ADMIN = "IS_ADMIN";
+    public static final String ADMIN = "ADMIN";
 }

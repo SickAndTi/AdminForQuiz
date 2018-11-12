@@ -112,6 +112,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
             preferences.setUserSortFieldName(null);
             preferences.setUserFilterAscending(true);
             preferences.setUserId((long) 0);
+            preferences.setIsAdmin(false);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -139,7 +140,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     private void setUser() {
-        String admin = "ADMIN";
         compositeDisposable.add(
                 apiClient.whoAreMe()
                         .subscribeOn(Schedulers.io())
@@ -147,9 +147,11 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .doOnSuccess(user -> {
                             preferences.setUserId(user.id);
                             for (NwUserAuthorities nwUserAuthorities : user.authorities) {
-                                if (nwUserAuthorities.authority.contains(admin)) {
+                                if (nwUserAuthorities.authority.equals(Constants.ADMIN)) {
                                     preferences.setIsAdmin(true);
-                                } else preferences.setIsAdmin(false);
+                                    break;
+                                }
+                                preferences.setIsAdmin(false);
                             }
                         })
                         .subscribe(user -> {

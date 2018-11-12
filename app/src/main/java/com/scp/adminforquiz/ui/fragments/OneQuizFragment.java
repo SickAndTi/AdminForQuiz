@@ -107,6 +107,11 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
     }
 
     @Override
+    public void showError(int stringResource) {
+        Toast.makeText(getContext(), stringResource, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void showProgressBar(boolean showProgressBar) {
         flProgressBar.setVisibility(showProgressBar ? View.VISIBLE : View.GONE);
     }

@@ -15,6 +15,4 @@ public class User {
     //content
     public String fullName;
     public String avatar;
-    public List<UserAuthorities> authorities;
-
 }

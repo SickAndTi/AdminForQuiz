@@ -4,12 +4,10 @@ import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 import com.scp.adminforquiz.model.api.NwUser;
-import com.scp.adminforquiz.model.api.NwUserAuthorities;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.User;
-import com.scp.adminforquiz.model.db.UserAuthorities;
 
 import java.util.ArrayList;
 import java.util.List;

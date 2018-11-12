@@ -3,6 +3,7 @@ package com.scp.adminforquiz.mvp;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
+import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -58,6 +59,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         Timber.d("User Id from pref : %s", preferences.getUserId());
+        Timber.d("isAdmin from PREF : %s", preferences.getIsAdmin());
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getQuizByIdOrErrorWithUpdates(quizId),
                 quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId),
@@ -75,7 +77,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                             quizTranslationPhraseAuthorId = quizTranslationPhrase.authorId;
                         }
                     }
-
                     getViewState().showQuiz(quiz);
                 }));
     }
@@ -97,7 +98,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
                             error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("Вы можете удалять только созданное собой");
+        } else getViewState().showError(R.string.deleteToastText);
     }
 
     public void goToAddTranslationFragment() {
@@ -115,7 +116,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(aLong -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("У вас нет таких прав");
+        } else getViewState().showError(R.string.toastApproveDialog);
     }
 
     public void approveTranslationById(Long translationId, boolean approve) {
@@ -129,7 +130,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(aLong -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("У вас нет таких прав");
+        } else getViewState().showError(R.string.toastApproveDialog);
     }
 
     public void deleteTranslationById(Long translationId) {
@@ -143,7 +144,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("Вы можете удалять только созданное собой");
+        } else getViewState().showError(R.string.deleteToastText);
     }
 
     public void goToUpdateTranslationDescriptionFragment(Long translationId) {
@@ -161,7 +162,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("Вы можете удалять только созданное собой");
+        } else getViewState().showError(R.string.deleteToastText);
     }
 
     public void goToAddPhraseFragment(Long quizTranslationId) {
@@ -179,7 +180,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(aLong -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError("У вас нет таких прав");
+        } else getViewState().showError(R.string.toastApproveDialog);
     }
 }
 
