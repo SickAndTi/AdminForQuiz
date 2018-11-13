@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "854558605045",
+    "firebase_url": "https://adminforquiz-1540848064534.firebaseio.com",
+    "project_id": "adminforquiz-1540848064534",
+    "storage_bucket": "adminforquiz-1540848064534.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854558605045:android:69c064cc0f53746b",
+        "android_client_info": {
+          "package_name": "com.scp.adminforquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854558605045-0n7agt7ehju6uea7irjc50m2ptvc2hb6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_Yn-NrrFeVcGcYLenvQuLGEuqfrZwp64"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

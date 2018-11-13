@@ -96,6 +96,7 @@ dependencies {
     implementation 'com.github.KaKaVip:Android-Flag-Kit:v0.1'
     //google
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.5'
     //vk
     implementation 'com.vk:androidsdk:1.6.9'
     //facebook
@@ -105,3 +106,4 @@ repositories {
     maven { url 'https://jitpack.io' }
     mavenCentral()
 }
+apply plugin: 'com.google.gms.google-services'

@@ -85,7 +85,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
-//                viewHolder.approveQuiz.setClickable();
                 viewHolder.approveQuiz.setChecked(quiz.approved);
                 viewHolder.approveQuiz.setOnClickListener(v -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.flagLayout.removeAllViews();
