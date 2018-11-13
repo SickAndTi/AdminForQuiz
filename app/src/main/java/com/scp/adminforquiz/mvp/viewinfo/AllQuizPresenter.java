@@ -45,7 +45,6 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-        setUser();
         compositeDisposable.add(Flowable.combineLatest(
                 quizDao.getAll(),
                 quizDao.getAllQuizTranslation(),
@@ -55,6 +54,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .map(triple -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .doOnEach(listNotification -> setUser())
                         .subscribe(quizzes -> {
                                     if (!dataUpdatedFromApi) {
                                         loadQuizzesFromApi(1);
