@@ -37,7 +37,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Inject
     OneQuizRecyclerViewAdapter() {
-        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
     }
 
     public interface EditInterface {
@@ -90,6 +89,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         switch (oneQuizRecyclerViewItemList.get(position).type) {
             case QUIZ:
                 OneQuizViewHolder viewHolder = (OneQuizViewHolder) holder;

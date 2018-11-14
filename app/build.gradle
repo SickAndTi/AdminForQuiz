@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -10,15 +11,18 @@ android {
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [toothpick_registry_package_name: 'com.scp.adminforquiz']
+            }
+        }
 
         if (rootProject.file("config/config.properties").exists()) {
             def properties = new Properties()
             properties.load(new FileInputStream(rootProject.file("config/config.properties")))
-
             //vps api
             buildConfigField('String', 'VPS_API_URL', '"' + properties.get("vpsApiUrl") + '"')
             buildConfigField('String', 'TEST_API_URL', '"' + properties.get("testApiUrl") + '"')
-
             //quiz api auth
             buildConfigField('String', 'CLIENT_ID', '"' + properties.get("clientId") + '"')
             buildConfigField('String', 'CLIENT_SECRET', '"' + properties.get("clientSecret") + '"')
@@ -96,7 +100,7 @@ dependencies {
     implementation 'com.github.KaKaVip:Android-Flag-Kit:v0.1'
     //google
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.google.firebase:firebase-core:16.0.5'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
     //vk
     implementation 'com.vk:androidsdk:1.6.9'
     //facebook
@@ -106,4 +110,3 @@ repositories {
     maven { url 'https://jitpack.io' }
     mavenCentral()
 }
-apply plugin: 'com.google.gms.google-services'
