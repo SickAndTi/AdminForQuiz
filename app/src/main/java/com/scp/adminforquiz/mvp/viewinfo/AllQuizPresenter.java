@@ -40,6 +40,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     MyPreferenceManager preferences;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private boolean dataUpdatedFromApi;
+    private boolean userIsSet;
 
     @Override
     protected void onFirstViewAttach() {
@@ -54,7 +55,12 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         .map(triple -> quizDao.getAllQuizzesWithTranslationsAndPhrases(preferences.getUserFilterAscending(), preferences.getUserSortFieldName()))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnEach(listNotification -> setUser())
+                        .doOnEach(listNotification -> {
+                            if (!userIsSet) {
+                                setUser();
+                                userIsSet = true;
+                            }
+                        })
                         .subscribe(quizzes -> {
                                     if (!dataUpdatedFromApi) {
                                         loadQuizzesFromApi(1);

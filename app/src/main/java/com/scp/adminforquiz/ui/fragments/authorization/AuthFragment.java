@@ -191,7 +191,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
 
                     @Override
                     public void onError(VKError error) {
-                        Timber.d("VKERROR : %s", error.toString());
+                        showError(error.toString());
                     }
 
                     @Override
