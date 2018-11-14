@@ -36,7 +36,8 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
 
     @Inject
-    public OneQuizRecyclerViewAdapter() {
+    OneQuizRecyclerViewAdapter() {
+        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
     }
 
     public interface EditInterface {
@@ -89,7 +90,6 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
         switch (oneQuizRecyclerViewItemList.get(position).type) {
             case QUIZ:
                 OneQuizViewHolder viewHolder = (OneQuizViewHolder) holder;
@@ -98,7 +98,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
                 viewHolder.approveQuiz.setChecked(quiz.approved);
-                viewHolder.approveQuiz.setClickable(preferences.getIsAdmin());
+                viewHolder.approveQuiz.setEnabled(preferences.getIsAdmin());
                 viewHolder.approveQuiz.setOnClickListener(v -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.flagLayout.removeAllViews();
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
@@ -136,7 +136,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 oneQuizTranslationViewHolder.tvQuizTitle.setText(quizTranslation.translation);
                 oneQuizTranslationViewHolder.tvQuizDescription.setText(quizTranslation.description);
                 oneQuizTranslationViewHolder.approveTranslation.setChecked(quizTranslation.approved);
-                oneQuizTranslationViewHolder.approveTranslation.setClickable(preferences.getIsAdmin());
+                oneQuizTranslationViewHolder.approveTranslation.setEnabled(preferences.getIsAdmin());
                 oneQuizTranslationViewHolder.approveTranslation.setOnClickListener(v -> editInterface.onApproveTranslationClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvDeleteTranslation.setOnClickListener(v -> editInterface.onTranslationDeleteClicked(quizTranslation));
                 oneQuizTranslationViewHolder.imvAddPhrase.setOnClickListener(v -> editInterface.onTranslationAddPhraseClicked(quizTranslation));
@@ -170,7 +170,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     phraseViewHolder.tvPhraseText.setText(quizTranslationPhrase.translation);
                     phraseViewHolder.tvUserName.setText(quizTranslationPhrase.author.fullName);
                     phraseViewHolder.approvePhrase.setChecked(quizTranslationPhrase.approved);
-                    phraseViewHolder.approvePhrase.setClickable(preferences.getIsAdmin());
+                    phraseViewHolder.approvePhrase.setEnabled(preferences.getIsAdmin());
                     phraseViewHolder.approvePhrase.setOnClickListener(v -> editInterface.onApprovePhraseClicked(quizTranslationPhrase, quizTranslation.id));
                     phraseViewHolder.imvDeletePhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
                     GlideApp

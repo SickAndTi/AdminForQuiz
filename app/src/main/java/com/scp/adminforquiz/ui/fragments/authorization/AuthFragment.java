@@ -28,7 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.scp.adminforquiz.CommonUserData;
+import com.scp.adminforquiz.model.CommonUserData;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
@@ -48,7 +48,6 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKList;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
