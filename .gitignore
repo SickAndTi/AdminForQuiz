@@ -7,3 +7,5 @@
 /captures
 .externalNativeBuild
 config/config.properties
+/keystore.properties
+/QuizAdminKey.jks

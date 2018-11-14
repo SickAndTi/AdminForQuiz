@@ -1,4 +1,10 @@
 <resources>
+    <string name="server_client_id" translatable="false">854558605045-937t3kgdt9619pumi4s2mgiqs3eeanob.apps.googleusercontent.com</string>
+    <integer name="com_vk_sdk_AppId">6736524</integer>
+    <string name="vk_key" translatable="false">BQI851DoTMlo8yk6fIzP</string>
+    <string name="service_vk_access_key" translatable="false">9b56d7ec9b56d7ec9b56d7ece19b301d6099b569b56d7ecc08eea61380bd08630dc59ec></string>
+    <string name="facebook_app_id" translatable="false">1513219612156286</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1513219612156286</string>
     <string name="app_name">AdminForQuiz</string>
     <string name="dateCreated">Date created</string>
     <string name="dateUpdated">Date updated</string>
@@ -46,12 +52,6 @@
     <string name="name">Name</string>
     <string name="scpText">SCP-</string>
     <string name="langText">Language</string>
-    <string name="server_client_id">854558605045-937t3kgdt9619pumi4s2mgiqs3eeanob.apps.googleusercontent.com</string>
-    <integer name="com_vk_sdk_AppId">6736524</integer>
-    <string name="vk_key">BQI851DoTMlo8yk6fIzP</string>
-    <string name="service_vk_access_key">9b56d7ec9b56d7ec9b56d7ece19b301d6099b569b56d7ecc08eea61380bd08630dc59ec></string>
-    <string name="facebook_app_id">1513219612156286</string>
-    <string name="fb_login_protocol_scheme">fb1513219612156286</string>
     <string name="byAsc">By ascending</string>
     <string name="byDesc">By descending</string>
     <string name="filterById">Filter By Id</string>
