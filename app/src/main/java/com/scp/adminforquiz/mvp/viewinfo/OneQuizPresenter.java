@@ -28,7 +28,6 @@ import toothpick.Toothpick;
 
 @InjectViewState
 public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
-
     @Inject
     QuizDao quizDao;
     @Inject
