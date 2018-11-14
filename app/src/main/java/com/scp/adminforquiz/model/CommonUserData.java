@@ -1,4 +1,4 @@
-package com.scp.adminforquiz;
+package com.scp.adminforquiz.model;
 
 public class CommonUserData {
  public String id = null;
