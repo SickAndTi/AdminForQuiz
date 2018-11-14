@@ -49,14 +49,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="@string/createNwQuizRu"
+            android:text="@string/createNwQuiz"
             android:textColor="@color/black"
             android:textSize="23sp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enterScpNumberRu">
+            android:hint="@string/enterScpNumber">
 
             <EditText
                 android:id="@+id/etEnterScpNumber"
@@ -72,7 +72,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enterImageUrlRu">
+            android:hint="@string/enterImageUrl">
 
             <EditText
                 android:id="@+id/etEnterImageUrl"

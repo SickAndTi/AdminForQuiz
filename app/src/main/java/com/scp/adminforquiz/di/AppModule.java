@@ -79,7 +79,6 @@ public class AppModule extends Module {
                     }
                     return response;
                 })
-
                 .build();
 
         bind(Retrofit.class).withName(QuizRetrofit.class).toInstance(new Retrofit.Builder()
@@ -106,6 +105,5 @@ public class AppModule extends Module {
         bind(QuizDao.class).toInstance(dataBase.quizDao());
 
         bind(QuizConverter.class).singletonInScope();
-
     }
 }

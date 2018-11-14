@@ -48,6 +48,7 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKList;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -155,7 +156,9 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
             textView.setText(tabTitles[i]);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(getResources().getColor(R.color.black));
-            tab.setCustomView(textView);
+            if (tab != null) {
+                tab.setCustomView(textView);
+            }
         }
     }
 

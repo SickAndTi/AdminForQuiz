@@ -100,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="@string/langTextRu"
+                    android:text="@string/langText"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -126,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="@string/dateCreatedRu"
+                    android:text="@string/dateCreated"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -152,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="@string/dateUpdatedRu"
+                    android:text="@string/dateUpdated"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 

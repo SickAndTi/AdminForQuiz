@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="@string/addTranslationRu"
+            android:text="@string/addTranslation"
             android:textColor="@color/black"
             android:textSize="23sp" />
 

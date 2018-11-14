@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">Админка для квизов</string>
+    <string name="dateCreated">Дата создания</string>
+    <string name="dateUpdated">Дата обновления</string>
+    <string name="authorID">ID автора</string>
+    <string name="approverID">ID модератора</string>
+    <string name="scpNumber">Номер объекта</string>
+    <string name="translation">Перевод</string>
+    <string name="phrases">Фразы Доктора</string>
+    <string name="approved">Подтверждено</string>
+    <string name="editQuiz">Редактировать объект</string>
+    <string name="saveChanges">Сохранить изменения</string>
+    <string name="addTranslation">Добавить перевод</string>
+    <string name="addTranslationPhrase">Добавить фразу для Доктора</string>
+    <string name="addText">Добавить текст</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
+    <string name="enterText">Введите текст</string>
+    <string name="enterLangCode">Введите код языка</string>
+    <string name="enterDescription">Введите описание объекта</string>
+    <string name="createNwQuiz">Создать объект</string>
+    <string name="delete">Удалить?</string>
+    <string name="deleteQuiz">Удалить объект</string>
+    <string name="enterScpNumber">Введите номер объекта</string>
+    <string name="enterImageUrl">URL ссылка на изображение</string>
+    <string name="deleteTranslation">Удалить перевод</string>
+    <string name="deleteTranslationPhrase">Удалить фразу Доктора</string>
+    <string name="enterTranslationPhrase">Введите фразу Доктора</string>
+    <string name="enterTitle">Введите название объекта</string>
+    <string name="enterLogin">Введите логин</string>
+    <string name="enterPassword">Введите пароль</string>
+    <string name="OK">OK</string>
+    <string name="authorization">Авторизация</string>
+    <string name="wrongLogPass">Неправильная авторизация</string>
+    <string name="approve">Подтвердить объект?</string>
+    <string name="logout">Разлогиниться</string>
+    <string name="http">http</string>
+    <string name="registration">Регистрация</string>
+    <string name="repeatPassword">Повторите пароль</string>
+    <string name="filter">Сортировать</string>
+    <string name="orConnectWith">Или с помощью …</string>
+    <string name="enter">Ввести</string>
+    <string name="confirmPassword">Подтвердить пароль</string>
+    <string name="password">Пароль</string>
+    <string name="email">E-mail</string>
+    <string name="name">Имя</string>
+    <string name="scpText">SCP-</string>
+    <string name="langText">Язык</string>
+    <string name="server_client_id">854558605045-937t3kgdt9619pumi4s2mgiqs3eeanob.apps.googleusercontent.com</string>
+    <integer name="com_vk_sdk_AppId">6736524</integer>
+    <string name="vk_key">BQI851DoTMlo8yk6fIzP</string>
+    <string name="service_vk_access_key">9b56d7ec9b56d7ec9b56d7ece19b301d6099b569b56d7ecc08eea61380bd08630dc59ec></string>
+    <string name="facebook_app_id">1513219612156286</string>
+    <string name="fb_login_protocol_scheme">fb1513219612156286</string>
+    <string name="byAsc">По возрастанию</string>
+    <string name="byDesc">По убыванию</string>
+    <string name="filterById">Сортировка по ID</string>
+    <string name="filterByDateUpdated">Сортировка по дате обновления</string>
+    <string name="filterByDateCreated">Сортировка по дате создания</string>
+    <string name="filterByApproved">Сортировка по подтверждённым</string>
+    <string name="nothingSelected">Ничего не выбрано</string>
+    <string name="enterPhrases">Введите фразы для доктора</string>
+    <string name="chooseFilter">Выберите фильтр</string>
+    <string name="approveTranslation">Подтвердить перевод?</string>
+    <string name="approvePhrase">Подтвердить фразу?</string>
+    <string name="deleteToastText">Вы можете удалять только созданное Вами</string>
+    <string name="toastApproveDialog">У вас нет таких прав</string>
+    <string-array name="authTabTitles">
+        <item>ВХОД</item>
+        <item>РЕГИСТРАЦИЯ</item>
+    </string-array>
+    <string-array name="toolBarAuthTitles">
+        <item>Авторизация</item>
+        <item>Регистрация</item>
+    </string-array>
+</resources>

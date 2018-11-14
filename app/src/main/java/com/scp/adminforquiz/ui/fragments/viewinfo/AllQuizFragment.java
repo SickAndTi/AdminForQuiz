@@ -109,7 +109,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         if (ascSwitch.isChecked()) {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case -1:
-                    Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.chooseFilter, Toast.LENGTH_LONG).show();
                     break;
                 case R.id.filterById:
                     allQuizPresenter.filterById();
@@ -127,7 +127,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         } else {
             switch (radioGroup.getCheckedRadioButtonId()) {
                 case -1:
-                    Toast.makeText(getContext(), R.string.chooseFilterRu, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.chooseFilter, Toast.LENGTH_LONG).show();
                     break;
                 case R.id.filterById:
                     allQuizPresenter.filterByIdDesc();

@@ -47,7 +47,7 @@ public class QuizConverter {
         return quiz;
     }
 
-    public List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList, Long quizId) {
+    private List<QuizTranslation> convertTranslation(List<NwQuizTranslation> nwQuizTranslationList, Long quizId) {
         List<QuizTranslation> quizTranslationList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationList.size(); i++) {
             NwQuizTranslation nwQuizTranslation = nwQuizTranslationList.get(i);
@@ -77,7 +77,7 @@ public class QuizConverter {
         return quizTranslation;
     }
 
-    public List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList, Long nwQuizTranslationId) {
+    private List<QuizTranslationPhrase> convertTranslationPhrase(List<NwQuizTranslationPhrase> nwQuizTranslationPhraseList, Long nwQuizTranslationId) {
         List<QuizTranslationPhrase> quizTranslationPhraseList = new ArrayList<>();
         for (int i = 0; i < nwQuizTranslationPhraseList.size(); i++) {
             NwQuizTranslationPhrase nwQuizTranslationPhrase = nwQuizTranslationPhraseList.get(i);
@@ -104,30 +104,11 @@ public class QuizConverter {
         return quizTranslationPhrase;
     }
 
-    public User convertUser(NwUser nwUser) {
+    private User convertUser(NwUser nwUser) {
         User user = new User();
         user.id = nwUser.id;
         user.fullName = nwUser.fullName;
         user.avatar = nwUser.avatar;
-//        user.authorities = convertUserAuthority(nwUser.authorities);
         return user;
     }
-//
-//    public UserAuthorities convertUserAuthority(NwUserAuthorities nwUserAuthorities) {
-//        UserAuthorities userAuthority = new UserAuthorities();
-//        userAuthority.id = nwUserAuthorities.userId;
-//        userAuthority.authority = nwUserAuthorities.authority;
-//        return userAuthority;
-//    }
-//
-//    public List<UserAuthorities> convertUserAuthority(List<NwUserAuthorities> nwUserAuthoritiesList) {
-//        List<UserAuthorities> authoritiesList = new ArrayList<>();
-//        for (int i = 0; i < nwUserAuthoritiesList.size(); i++) {
-//            NwUserAuthorities nwUserAuthorities = nwUserAuthoritiesList.get(i);
-//            UserAuthorities userAuthorities = convertUserAuthority(nwUserAuthorities);
-//            authoritiesList.add(userAuthorities);
-//        }
-//        return authoritiesList;
-//    }
-
 }

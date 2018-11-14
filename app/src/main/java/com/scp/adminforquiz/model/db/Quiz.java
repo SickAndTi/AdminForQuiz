@@ -14,7 +14,6 @@ import java.util.List;
 
 @Entity
 public class Quiz {
-
     //db
     @PrimaryKey
     public Long id;
@@ -30,21 +29,6 @@ public class Quiz {
     public Date created;
     @TypeConverters(DateTypeConverter.class)
     public Date updated;
-
-    @Override
-    public String toString() {
-        return "Quiz{" +
-                "id=" + id +
-                ", scpNumber='" + scpNumber + '\'' +
-//                ", imageUrl='" + imageUrl + '\'' +
-//                ", authorId=" + authorId +
-//                ", approved=" + approved +
-//                ", approverId=" + approverId +
-//                ", created=" + created +
-//                ", updated=" + updated +
-//                ", quizTranslations=" + quizTranslations +
-                '}';
-    }
 
     @Ignore
     public List<QuizTranslation> quizTranslations;

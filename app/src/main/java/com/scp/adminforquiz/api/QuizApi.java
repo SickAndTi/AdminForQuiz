@@ -55,12 +55,6 @@ public interface QuizApi {
             @Query("description") String description
     );
 
-    @POST("quiz/translations/{quizTranslationId}/update")
-    Single<NwQuizTranslation> updateNwQuizTranslationDescription(
-            @Path("quizTranslationId") Long quizTranslationId,
-            @Query("description") String description
-    );
-
     @POST("quiz/translations/phrases/add")
     Single<NwQuizTranslation> addNwQuizTranslationPhrase(
             @Query("quizTranslationId") Long quizTranslationId,

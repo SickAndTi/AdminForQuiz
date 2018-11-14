@@ -48,14 +48,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="@string/addTranslationPhraseRu"
+            android:text="@string/addTranslationPhrase"
             android:textColor="@color/black"
             android:textSize="23sp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enterTranslationPhraseRu">
+            android:hint="@string/enterTranslationPhrase">
 
             <EditText
                 android:id="@+id/etAddPhrase"

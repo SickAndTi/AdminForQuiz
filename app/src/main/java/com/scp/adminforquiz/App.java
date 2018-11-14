@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.scp.adminforquiz.di.AppModule;
-import com.scp.adminforquiz.util.SystemUtils;
 import com.vk.sdk.VKSdk;
 
 import timber.log.Timber;

@@ -3,13 +3,13 @@ package com.scp.adminforquiz.api;
 import com.scp.adminforquiz.BuildConfig;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.response.TokenResponse;
+import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.api.NwQuiz;
 import com.scp.adminforquiz.model.api.NwQuizTranslation;
 import com.scp.adminforquiz.model.api.NwQuizTranslationPhrase;
 import com.scp.adminforquiz.model.api.NwUser;
-import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
 import java.util.List;
@@ -88,10 +88,6 @@ public class ApiClient {
 
     public Single<NwQuiz> addNwQuizTranslation(Long nwQuizId, String nwQuizTranslationLangCode, String nwQuizTranslationText, String nwQuizTranslationDescription) {
         return quizApi.addNwQuizTranslation(nwQuizId, nwQuizTranslationLangCode, nwQuizTranslationText, nwQuizTranslationDescription);
-    }
-
-    public Single<NwQuizTranslation> updateNwQuizTranslationDescription(Long nwQuizTranslationId, String description) {
-        return quizApi.updateNwQuizTranslationDescription(nwQuizTranslationId, description);
     }
 
     public Single<NwQuizTranslation> addNwQuizTranslationPhrase(Long nwQuizTranslationId, String nwQuizTranslationPhrase) {
