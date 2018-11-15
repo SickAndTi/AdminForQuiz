@@ -1,5 +1,8 @@
 package com.scp.adminforquiz.mvp.viewinfo;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
@@ -31,6 +34,8 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     @Inject
     Repository repository;
     @Inject
+    Context context;
+    @Inject
     Router router;
     @Inject
     ApiClient apiClient;
@@ -41,7 +46,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     private Long quizAuthorId;
     private Long quizTranslationAuthorId;
     private Long quizTranslationPhraseAuthorId;
-
     private Long quizId;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -97,11 +101,11 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
                             error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError(R.string.deleteToastText);
+        } else showNoAuthorities();
     }
 
-    public void showNoAuthorities() {
-        //TODO
+    private void showNoAuthorities() {
+        Toast.makeText(context, R.string.deleteToastText, Toast.LENGTH_LONG).show();
     }
 
     public void goToAddTranslationFragment() {
@@ -109,31 +113,27 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void approveQuizById(Long quizId, boolean approve) {
-        if (preferences.getIsAdmin()) {
-            compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
-                    .map(nwQuiz -> repository.insertQuiz(quizConverter.convert(nwQuiz)))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                    .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                    .subscribe(aLong -> {
-                            }, error -> getViewState().showError(error.toString())
-                    ));
-        } else getViewState().showError(R.string.toastApproveDialog);
+        compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
+                .map(nwQuiz -> repository.insertQuiz(quizConverter.convert(nwQuiz)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(aLong -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
     }
 
     public void approveTranslationById(Long translationId, boolean approve) {
-        if (preferences.getIsAdmin()) {
-            compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
-                    .map(nwQuizTranslation -> repository.insertTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                    .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                    .subscribe(aLong -> {
-                            }, error -> getViewState().showError(error.toString())
-                    ));
-        } else getViewState().showError(R.string.toastApproveDialog);
+        compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
+                .map(nwQuizTranslation -> repository.insertTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(aLong -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
     }
 
     public void deleteTranslationById(Long translationId) {
@@ -147,7 +147,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError(R.string.deleteToastText);
+        } else showNoAuthorities();
     }
 
     public void deletePhraseById(Long phraseId) {
@@ -161,7 +161,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError(R.string.deleteToastText);
+        } else showNoAuthorities();
     }
 
     public void goToAddPhraseFragment(Long quizTranslationId) {
@@ -169,16 +169,14 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void approvePhraseById(Long phraseId, Long translationId, boolean approve) {
-        if (preferences.getIsAdmin()) {
-            compositeDisposable.add(apiClient.approveNwQuizTranslationPhraseById(phraseId, approve)
-                    .map(nwQuizTranslationPhrase -> repository.insertPhrase(quizConverter.convertTranslationPhrase(nwQuizTranslationPhrase, translationId)))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
-                    .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
-                    .subscribe(aLong -> {
-                            }, error -> getViewState().showError(error.toString())
-                    ));
-        } else getViewState().showError(R.string.toastApproveDialog);
+        compositeDisposable.add(apiClient.approveNwQuizTranslationPhraseById(phraseId, approve)
+                .map(nwQuizTranslationPhrase -> repository.insertPhrase(quizConverter.convertTranslationPhrase(nwQuizTranslationPhrase, translationId)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnEvent((aLong, throwable) -> getViewState().showProgressBar(false))
+                .subscribe(aLong -> {
+                        }, error -> getViewState().showError(error.toString())
+                ));
     }
 }

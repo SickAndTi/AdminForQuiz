@@ -105,7 +105,9 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                                 })
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
+                                .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
+                                        error -> getViewState().showError(error.toString()))
+                        );
                     }
 
                     @Override
@@ -123,6 +125,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
             @Override
             public void onError(VKError error) {
                 Timber.d("Error ; %s", error.toString());
+                getViewState().showError(error.toString());
             }
         })) {
             return;
@@ -139,7 +142,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
-                } else Timber.d("ERRORRRRR : %s", result.getStatus());
+                } else Timber.d("ERROR : %s", result.getStatus());
                 break;
             default:
                 callbackManager.onActivityResult(requestCode, resultCode, data);
