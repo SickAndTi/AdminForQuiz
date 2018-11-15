@@ -28,7 +28,7 @@ public abstract class QuizDao {
 
 
     @Query("SELECT COUNT(*) FROM Quiz")
-    public abstract Long getCount();
+    public abstract long getCount();
 
     /**
      * returns all quizes, sorted by ID ASC
@@ -70,73 +70,73 @@ public abstract class QuizDao {
     public abstract Flowable<List<Quiz>> getRandomQuizes(int count);
 
     @Query("SELECT * FROM Quiz WHERE id = :id")
-    public abstract Flowable<List<Quiz>> getByIdWithUpdates(Long id);
+    public abstract Flowable<List<Quiz>> getByIdWithUpdates(long id);
 
     @Query("SELECT * FROM Quiz WHERE id = :id")
-    public abstract Quiz getById(Long id);
+    abstract Quiz getById(long id);
 
     @Query("SELECT * FROM User WHERE id = :authorId")
-    public abstract User getUserById(Long authorId);
+    abstract User getUserById(long authorId);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
-    public abstract List<QuizTranslation> getQuizTranslationsByQuizId(Long id);
+    abstract List<QuizTranslation> getQuizTranslationsByQuizId(long id);
 
     @Query("SELECT quizId FROM QuizTranslation WHERE id =:quizTranslationId")
-    public abstract Long getQuizIdByQuizTranslationId(Long quizTranslationId);
+    abstract long getQuizIdByQuizTranslationId(long quizTranslationId);
 
     @Query("SELECT description FROM QuizTranslation WHERE id = :quizTranslationId")
-    public abstract Single<String> getQuizTranslationDescriptionByQuizTranslationId(Long quizTranslationId);
+    public abstract Single<String> getQuizTranslationDescriptionByQuizTranslationId(long quizTranslationId);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
-    public abstract Flowable<List<QuizTranslation>> getQuizTranslationsByQuizIdWithUpdates(Long id);
+    abstract Flowable<List<QuizTranslation>> getQuizTranslationsByQuizIdWithUpdates(long id);
 
     @Query("SELECT authorId FROM Quiz WHERE id = :quizId")
-    public abstract Long getAuthorIdByQuizId(Long quizId);
+    public abstract long getAuthorIdByQuizId(long quizId);
 
     @Query("SELECT authorId FROM QuizTranslation WHERE id = :quizTranslationId")
-    public abstract Long getAuthorIdByQuizTranslationId(Long quizTranslationId);
+    public abstract long getAuthorIdByQuizTranslationId(long quizTranslationId);
 
     @Query("SELECT authorId FROM QuizTranslationPhrase WHERE id = :quizTranslationPhraseId")
-    public abstract Long getAuthorIdByQuizTranslationPhraseId(Long quizTranslationPhraseId);
+    public abstract long getAuthorIdByQuizTranslationPhraseId(long quizTranslationPhraseId);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id AND langCode = :lang")
-    public abstract List<QuizTranslation> getQuizTranslationsByQuizIdAndLang(Long id, String lang);
+    public abstract List<QuizTranslation> getQuizTranslationsByQuizIdAndLang(long id, String lang);
 
     @Query("SELECT * FROM QuizTranslationPhrase WHERE quizTranslationId = :id")
-    public abstract List<QuizTranslationPhrase> getQuizTranslationPhrasesByQuizTranslationId(Long id);
+    public abstract List<QuizTranslationPhrase> getQuizTranslationPhrasesByQuizTranslationId(long id);
 
     @Query("SELECT * FROM quiz WHERE id = :id")
-    public abstract Single<Quiz> getByIdOrErrorOnce(Long id);
+    public abstract Single<Quiz> getByIdOrErrorOnce(long id);
 
     @Query("SELECT * FROM quiz WHERE id = :id")
-    public abstract Flowable<Quiz> getQuizByIdOrErrorWithUpdates(Long id);
+    public abstract Flowable<Quiz> getQuizByIdOrErrorWithUpdates(long id);
 
     @Query("SELECT * FROM quiz ORDER BY id ASC LIMIT 1")
     public abstract Single<Quiz> getFirst();
 
     @Query("SELECT id FROM quiz WHERE id > :quizId ORDER BY id ASC LIMIT 1")
-    public abstract Single<Long> getNextQuizId(Long quizId);
+    public abstract Single<Long> getNextQuizId(long quizId);
 
     @Query("SELECT * FROM QuizTranslationPhrase WHERE quizTranslationId IN (SELECT tr.id FROM QuizTranslation tr WHERE tr.quizId = :quizId)")
-    public abstract Flowable<List<QuizTranslationPhrase>> getQuizTranslationPhrasesByQuizIdWithUpdates(Long quizId);
+    public abstract Flowable<List<QuizTranslationPhrase>> getQuizTranslationPhrasesByQuizIdWithUpdates(long quizId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long insert(Quiz quiz);
+    public abstract long insert(Quiz quiz);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract List<Long> insertQuizTranslations(List<QuizTranslation> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long insertUser(User user);
+    public abstract long insertUser(User user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long insertQuizTranslation(QuizTranslation quizTranslation);
+    public abstract long insertQuizTranslation(QuizTranslation quizTranslation);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract List<Long> insertQuizTranslationPhrases(List<QuizTranslationPhrase> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract Long insertQuizTranslationPhrase(QuizTranslationPhrase phrase);
+    public abstract long insertQuizTranslationPhrase(QuizTranslationPhrase phrase);
 
     @Update
     public abstract int update(Quiz quiz);
@@ -145,13 +145,13 @@ public abstract class QuizDao {
     public abstract int delete(Quiz quiz);
 
     @Query("DELETE FROM quiz WHERE id = :quizId")
-    public abstract int deleteQuizById(Long quizId);
+    public abstract int deleteQuizById(long quizId);
 
     @Query("DELETE FROM QuizTranslation WHERE id = :quizTranslationId")
-    public abstract int deleteQuizTranslationById(Long quizTranslationId);
+    public abstract int deleteQuizTranslationById(long quizTranslationId);
 
     @Query("DELETE FROM QuizTranslationPhrase WHERE id = :quizTranslationPhraseId")
-    public abstract int deleteQuizTranslationPhraseById(Long quizTranslationPhraseId);
+    public abstract int deleteQuizTranslationPhraseById(long quizTranslationPhraseId);
 
     @Query("DELETE FROM Quiz")
     public abstract void deleteQuizTable();
@@ -170,7 +170,7 @@ public abstract class QuizDao {
     }
 
     @Transaction
-    public Long insertQuizWithQuizTranslations(Quiz quiz) {
+    public long insertQuizWithQuizTranslations(Quiz quiz) {
         insertUser(quiz.author);
         if (quiz.approver != null) {
             insertUser(quiz.approver);
@@ -199,7 +199,7 @@ public abstract class QuizDao {
     }
 
     @Transaction
-    public Long insertQuizTranslationWithPhrases(QuizTranslation quizTranslation) {
+    public long insertQuizTranslationWithPhrases(QuizTranslation quizTranslation) {
         insertUser(quizTranslation.author);
         if (quizTranslation.approver != null) {
             insertUser(quizTranslation.approver);
@@ -225,7 +225,7 @@ public abstract class QuizDao {
     }
 
     @Transaction
-    public Quiz getQuizWithTranslationsAndPhrases(Long id) {
+    Quiz getQuizWithTranslationsAndPhrases(long id) {
         Quiz quiz = getById(id);
         quiz.quizTranslations = getQuizTranslationsByQuizId(id);
         quiz.author = getUserById(quiz.authorId);

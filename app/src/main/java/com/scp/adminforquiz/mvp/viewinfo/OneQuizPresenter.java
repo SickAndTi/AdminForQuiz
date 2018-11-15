@@ -1,8 +1,5 @@
 package com.scp.adminforquiz.mvp.viewinfo;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
@@ -33,8 +30,6 @@ import toothpick.Toothpick;
 public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     @Inject
     Repository repository;
-    @Inject
-    Context context;
     @Inject
     Router router;
     @Inject
@@ -101,11 +96,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
                             error -> getViewState().showError(error.toString())
                     ));
-        } else showNoAuthorities();
-    }
-
-    private void showNoAuthorities() {
-        Toast.makeText(context, R.string.deleteToastText, Toast.LENGTH_LONG).show();
+        } else getViewState().showError(R.string.deleteToastText);
     }
 
     public void goToAddTranslationFragment() {
@@ -147,7 +138,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else showNoAuthorities();
+        } else getViewState().showError(R.string.deleteToastText);
     }
 
     public void deletePhraseById(Long phraseId) {
@@ -161,7 +152,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else showNoAuthorities();
+        } else getViewState().showError(R.string.deleteToastText);
     }
 
     public void goToAddPhraseFragment(Long quizTranslationId) {

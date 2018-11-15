@@ -18,19 +18,19 @@ public class Repository {
         this.quizDao = quizDao;
     }
 
-    public Quiz getFullQuizById(Long quizId) {
+    public Quiz getFullQuizById(long quizId) {
         return quizDao.getQuizWithTranslationsAndPhrases(quizId);
     }
 
-    public Flowable<Quiz> getQuizByIdFlowable(Long quizId) {
+    public Flowable<Quiz> getQuizByIdFlowable(long quizId) {
         return quizDao.getQuizByIdOrErrorWithUpdates(quizId);
     }
 
-    public Flowable<List<QuizTranslation>> getTranslationsByIdFlowable(Long quizId) {
+    public Flowable<List<QuizTranslation>> getTranslationsByIdFlowable(long quizId) {
         return quizDao.getQuizTranslationsByQuizIdWithUpdates(quizId);
     }
 
-    public Flowable<List<QuizTranslationPhrase>> getPhrasesByIdFlowable(Long quizId) {
+    public Flowable<List<QuizTranslationPhrase>> getPhrasesByIdFlowable(long quizId) {
         return quizDao.getQuizTranslationPhrasesByQuizIdWithUpdates(quizId);
     }
 
@@ -50,11 +50,11 @@ public class Repository {
         return quizDao.getAllQuizTranslationPhrase();
     }
 
-    public Long getQuizIdByTranslationId(Long quizTranslationId) {
+    public long getQuizIdByTranslationId(long quizTranslationId) {
         return quizDao.getQuizIdByQuizTranslationId(quizTranslationId);
     }
 
-    public Long insertQuiz(Quiz quiz) {
+    public long insertQuiz(Quiz quiz) {
         return quizDao.insertQuizWithQuizTranslations(quiz);
     }
 
@@ -62,23 +62,23 @@ public class Repository {
         return quizDao.insertQuizesWithQuizTranslations(quizzes);
     }
 
-    public Long insertTranslation(QuizTranslation quizTranslation) {
+    public long insertTranslation(QuizTranslation quizTranslation) {
         return quizDao.insertQuizTranslationWithPhrases(quizTranslation);
     }
 
-    public Long insertPhrase(QuizTranslationPhrase quizTranslationPhrase) {
+    public long insertPhrase(QuizTranslationPhrase quizTranslationPhrase) {
         return quizDao.insertQuizTranslationPhrase(quizTranslationPhrase);
     }
 
-    public int deleteQuiz(Long quizId) {
+    public int deleteQuiz(long quizId) {
         return quizDao.deleteQuizById(quizId);
     }
 
-    public int deleteTranslation(Long translationId) {
+    public int deleteTranslation(long translationId) {
         return quizDao.deleteQuizTranslationById(translationId);
     }
 
-    public int deletePhrase(Long phraseId) {
+    public int deletePhrase(long phraseId) {
         return quizDao.deleteQuizTranslationPhraseById(phraseId);
     }
 
