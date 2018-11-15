@@ -17,18 +17,10 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.scp.adminforquiz.model.CommonUserData;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
@@ -36,24 +28,13 @@ import com.scp.adminforquiz.mvp.authorization.AuthPresenter;
 import com.scp.adminforquiz.mvp.authorization.AuthView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AuthPagerAdapter;
-import com.vk.sdk.VKAccessToken;
-import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
-import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.model.VKApiUserFull;
-import com.vk.sdk.api.model.VKList;
 
 import java.util.Arrays;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 import ru.terrakok.cicerone.Router;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -68,7 +49,6 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     Router router;
     @Inject
     MyPreferenceManager preferences;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;

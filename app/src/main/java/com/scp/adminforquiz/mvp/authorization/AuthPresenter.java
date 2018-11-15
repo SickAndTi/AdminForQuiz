@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.model.CommonUserData;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.vk.sdk.VKAccessToken;
@@ -41,8 +40,6 @@ import toothpick.Toothpick;
 public class AuthPresenter extends MvpPresenter<AuthView> {
     @Inject
     ApiClient apiClient;
-    @Inject
-    QuizDao quizDao;
     @Inject
     Router router;
     @Inject
@@ -108,7 +105,9 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                                 })
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
+                                .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
+                                        error -> getViewState().showError(error.toString()))
+                        );
                     }
 
                     @Override
@@ -126,6 +125,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
             @Override
             public void onError(VKError error) {
                 Timber.d("Error ; %s", error.toString());
+                getViewState().showError(error.toString());
             }
         })) {
             return;
@@ -142,7 +142,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
-                } else Timber.d("ERRORRRRR : %s", result.getStatus());
+                } else Timber.d("ERROR : %s", result.getStatus());
                 break;
             default:
                 callbackManager.onActivityResult(requestCode, resultCode, data);
