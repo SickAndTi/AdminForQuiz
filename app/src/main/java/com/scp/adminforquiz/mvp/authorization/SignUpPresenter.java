@@ -20,7 +20,6 @@ import toothpick.Toothpick;
 
 @InjectViewState
 public class SignUpPresenter extends MvpPresenter<SignUpView> {
-
     @Inject
     Router router;
     @Inject

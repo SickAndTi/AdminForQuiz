@@ -5,11 +5,10 @@ import android.util.Patterns;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
-import com.jakewharton.rxrelay2.BehaviorRelay;
 
 import javax.inject.Inject;
 
@@ -24,8 +23,6 @@ import toothpick.Toothpick;
 public class SignInPresenter extends MvpPresenter<SignInView> {
     @Inject
     Router router;
-    @Inject
-    QuizDao quizDao;
     @Inject
     MyPreferenceManager preferences;
     @Inject
