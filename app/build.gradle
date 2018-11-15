@@ -16,25 +16,8 @@ android {
                 arguments = [toothpick_registry_package_name: 'com.scp.adminforquiz']
             }
         }
-
-        if (rootProject.file("config/config.properties").exists()) {
-            def properties = new Properties()
-            properties.load(new FileInputStream(rootProject.file("config/config.properties")))
-            //vps api
-            buildConfigField('String', 'VPS_API_URL', '"' + properties.get("vpsApiUrl") + '"')
-            buildConfigField('String', 'TEST_API_URL', '"' + properties.get("testApiUrl") + '"')
-            //quiz api auth
-            buildConfigField('String', 'CLIENT_ID', '"' + properties.get("clientId") + '"')
-            buildConfigField('String', 'CLIENT_SECRET', '"' + properties.get("clientSecret") + '"')
-
-        } else {
-            throw new GradleException(
-                    "You need to have projectRoot/config/config.properties file with "
-                            + "vpsApiUrl,"
-                            + " to build project"
-            )
-        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -55,9 +38,44 @@ android {
                     }
                 }
             }
-
             if (rootProject.file('keystore.properties').exists()) {
                 signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    flavorDimensions "mode"
+
+    productFlavors {
+        prod {
+            manifestPlaceholders = [myDebuggable: false]
+            buildConfigField "boolean", "TIMBER_ENABLE", "false"
+            dimension "mode"
+        }
+        dev {
+            dimension "mode"
+            manifestPlaceholders = [myDebuggable: true]
+            aaptOptions.cruncherEnabled = false
+            resConfigs("ru", "xxhdpi")
+        }
+
+        applicationVariants.all { variant ->
+            println("variantCore: " + variant.productFlavors[0].name)
+
+            if (rootProject.file("config/" + variant.productFlavors[0].name + "/config.properties").exists()) {
+                def properties = new Properties()
+                properties.load(new FileInputStream(rootProject.file("config/" + variant.productFlavors[0].name + "/config.properties")))
+
+                buildConfigField('String', 'API_URL', '"' + properties.get("apiUrl") + '"')
+                buildConfigField('String', 'CLIENT_ID', '"' + properties.get("clientId") + '"')
+                buildConfigField('String', 'CLIENT_SECRET', '"' + properties.get("clientSecret") + '"')
+
+            } else {
+                throw new GradleException(
+                        "You need to have projectRoot/config/config.properties file with "
+                                + "vpsApiUrl,"
+                                + " to build project"
+                )
             }
         }
     }

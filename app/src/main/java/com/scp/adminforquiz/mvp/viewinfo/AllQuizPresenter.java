@@ -24,6 +24,7 @@ import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Triple;
 import ru.terrakok.cicerone.Router;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 @InjectViewState
@@ -68,7 +69,10 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                                     }
                                     getViewState().showQuizList(quizzes);
                                 },
-                                error -> getViewState().showError(error.toString()))
+                                error -> {
+                                    getViewState().showError(error.toString());
+                                    Timber.e(error);
+                                })
         );
     }
 

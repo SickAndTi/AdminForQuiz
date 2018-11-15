@@ -42,7 +42,7 @@ public class AppModule extends Module {
                 .build();
 
         Retrofit authRetrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.TEST_API_URL)
+                .baseUrl(BuildConfig.API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClientAuth)
@@ -83,7 +83,7 @@ public class AppModule extends Module {
                 .build();
 
         bind(Retrofit.class).withName(QuizRetrofit.class).toInstance(new Retrofit.Builder()
-                .baseUrl(BuildConfig.TEST_API_URL)
+                .baseUrl(BuildConfig.API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClientQuiz)

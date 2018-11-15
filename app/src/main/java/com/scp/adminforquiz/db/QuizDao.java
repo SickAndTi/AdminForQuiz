@@ -76,7 +76,7 @@ public abstract class QuizDao {
     abstract Quiz getById(long id);
 
     @Query("SELECT * FROM User WHERE id = :authorId")
-    abstract User getUserById(long authorId);
+    abstract User getUserById(Long authorId);
 
     @Query("SELECT * FROM QuizTranslation WHERE quizId = :id")
     abstract List<QuizTranslation> getQuizTranslationsByQuizId(long id);
