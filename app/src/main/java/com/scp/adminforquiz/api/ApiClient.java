@@ -47,7 +47,8 @@ public class ApiClient {
                 provider,
                 tokenValue,
                 BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET
+                BuildConfig.CLIENT_SECRET,
+                Constants.ADMIN
         );
     }
 

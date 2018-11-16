@@ -33,7 +33,8 @@ public interface AuthApi {
             @Field("provider") String provider,
             @Field("token") String tokenValue,
             @Field("clientId") String clientId,
-            @Field("clientSecret") String clientSecret
+            @Field("clientSecret") String clientSecret,
+            @Field("clientApp") String clientApp
     );
 
     @FormUrlEncoded
