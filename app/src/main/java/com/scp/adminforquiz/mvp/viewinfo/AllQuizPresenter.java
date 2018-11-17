@@ -71,8 +71,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                                     getViewState().showQuizList(quizzes);
                                 },
                                 error -> {
-                                    getViewState().showError(error.toString());
                                     Timber.e(error);
+                                    getViewState().showError(error.toString());
                                 })
         );
     }

@@ -35,7 +35,6 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
@@ -193,7 +192,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showError(String errorMessage) {
-        Timber.e(errorMessage);
         Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
     }
 

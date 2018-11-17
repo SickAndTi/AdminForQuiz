@@ -141,7 +141,8 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                             })
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN)));
+                            .subscribe(tokenResponse -> router.navigateTo(Constants.ALL_QUIZ_SCREEN),
+                                    error -> getViewState().showError(error.toString())));
                 } else Timber.d("ERROR : %s", result.getStatus());
                 break;
             default:
