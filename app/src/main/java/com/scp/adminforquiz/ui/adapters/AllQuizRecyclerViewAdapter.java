@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.di.GlideApp;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -93,7 +94,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     GlideApp
                             .with(holder.itemView.getContext())
                             .load(quiz.author.avatar)
-                            .centerCrop()
+                            .apply(RequestOptions.circleCropTransform())
                             .placeholder(R.drawable.ic_launcher_background)
                             .into(viewHolder.userIcon);
                 }
