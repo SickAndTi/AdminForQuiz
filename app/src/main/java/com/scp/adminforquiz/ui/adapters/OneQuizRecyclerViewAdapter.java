@@ -123,12 +123,14 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                         .placeholder(R.drawable.ic_launcher_background)
                         .centerCrop()
                         .into(viewHolder.imageView);
-                GlideApp
-                        .with(holder.itemView.getContext())
-                        .load(quiz.author.avatar)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .centerCrop()
-                        .into(viewHolder.userIcon);
+                if (quiz.author != null) {
+                    GlideApp
+                            .with(holder.itemView.getContext())
+                            .load(quiz.author.avatar)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .centerCrop()
+                            .into(viewHolder.userIcon);
+                }
                 break;
             case QUIZ_TRANSLATION:
                 OneQuizTranslationViewHolder oneQuizTranslationViewHolder = (OneQuizTranslationViewHolder) holder;
@@ -155,30 +157,40 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     oneQuizTranslationViewHolder.imvFlag.setCountryCode(quizTranslation.langCode);
                 }
                 oneQuizTranslationViewHolder.tvLangCode.setText(quizTranslation.langCode);
-                oneQuizTranslationViewHolder.tvUserName.setText(quizTranslation.author.fullName);
-                GlideApp
-                        .with(holder.itemView.getContext())
-                        .load(quizTranslation.author.avatar)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .centerCrop()
-                        .into(oneQuizTranslationViewHolder.userIcon);
+                if (quizTranslation.author != null) {
+                    oneQuizTranslationViewHolder.tvUserName.setText(quizTranslation.author.fullName);
+                } else {
+                    oneQuizTranslationViewHolder.tvUserName.setText(null);
+                }
+                if (quizTranslation.author != null) {
+                    GlideApp
+                            .with(holder.itemView.getContext())
+                            .load(quizTranslation.author.avatar)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .centerCrop()
+                            .into(oneQuizTranslationViewHolder.userIcon);
+                }
 
                 oneQuizTranslationViewHolder.phrasesLayout.removeAllViews();
                 for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
                     View phraseView = LayoutInflater.from(oneQuizTranslationViewHolder.itemView.getContext()).inflate(R.layout.phrases_layout, oneQuizTranslationViewHolder.phrasesLayout, false);
                     PhraseViewHolder phraseViewHolder = new PhraseViewHolder(phraseView);
                     phraseViewHolder.tvPhraseText.setText(quizTranslationPhrase.translation);
-                    phraseViewHolder.tvUserName.setText(quizTranslationPhrase.author.fullName);
+                    if (quizTranslationPhrase.author != null) {
+                        phraseViewHolder.tvUserName.setText(quizTranslationPhrase.author.fullName);
+                    }
                     phraseViewHolder.approvePhrase.setChecked(quizTranslationPhrase.approved);
                     phraseViewHolder.approvePhrase.setEnabled(preferences.getIsAdmin());
                     phraseViewHolder.approvePhrase.setOnClickListener(v -> editInterface.onApprovePhraseClicked(quizTranslationPhrase, quizTranslation.id));
                     phraseViewHolder.imvDeletePhrase.setOnClickListener(v -> editInterface.onTranslationPhraseDeleteClicked(quizTranslationPhrase));
-                    GlideApp
-                            .with(holder.itemView.getContext())
-                            .load(quizTranslationPhrase.author.avatar)
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .centerCrop()
-                            .into(phraseViewHolder.userIcon);
+                    if (quizTranslationPhrase.author != null) {
+                        GlideApp
+                                .with(holder.itemView.getContext())
+                                .load(quizTranslationPhrase.author.avatar)
+                                .placeholder(R.drawable.ic_launcher_background)
+                                .centerCrop()
+                                .into(phraseViewHolder.userIcon);
+                    }
                     oneQuizTranslationViewHolder.phrasesLayout.addView(phraseView);
                 }
                 break;

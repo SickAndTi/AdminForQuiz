@@ -7,6 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
+import android.support.annotation.NonNull;
 
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -127,7 +128,7 @@ public abstract class QuizDao {
     public abstract List<Long> insertQuizTranslations(List<QuizTranslation> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract long insertUser(User user);
+    public abstract long insertUser(@NonNull User user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long insertQuizTranslation(QuizTranslation quizTranslation);
@@ -171,21 +172,27 @@ public abstract class QuizDao {
 
     @Transaction
     public long insertQuizWithQuizTranslations(Quiz quiz) {
-        insertUser(quiz.author);
+        if (quiz.author != null) {
+            insertUser(quiz.author);
+        }
         if (quiz.approver != null) {
             insertUser(quiz.approver);
         }
         if (quiz.quizTranslations != null) {
             for (QuizTranslation quizTranslation : quiz.quizTranslations) {
                 quizTranslation.quizId = quiz.id;
-                insertUser(quizTranslation.author);
+                if (quizTranslation.author != null) {
+                    insertUser(quizTranslation.author);
+                }
                 if (quizTranslation.approver != null) {
                     insertUser(quizTranslation.approver);
                 }
                 if (quizTranslation.quizTranslationPhrases != null) {
                     for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
                         quizTranslationPhrase.quizTranslationId = quizTranslation.id;
-                        insertUser(quizTranslationPhrase.author);
+                        if (quizTranslationPhrase.author != null) {
+                            insertUser(quizTranslationPhrase.author);
+                        }
                         if (quizTranslationPhrase.approver != null) {
                             insertUser(quizTranslationPhrase.approver);
                         }
@@ -200,13 +207,17 @@ public abstract class QuizDao {
 
     @Transaction
     public long insertQuizTranslationWithPhrases(QuizTranslation quizTranslation) {
-        insertUser(quizTranslation.author);
+        if (quizTranslation.author != null) {
+            insertUser(quizTranslation.author);
+        }
         if (quizTranslation.approver != null) {
             insertUser(quizTranslation.approver);
         }
         for (QuizTranslationPhrase quizTranslationPhrase : quizTranslation.quizTranslationPhrases) {
             quizTranslationPhrase.quizTranslationId = quizTranslation.id;
-            insertUser(quizTranslationPhrase.author);
+            if (quizTranslationPhrase.author != null) {
+                insertUser(quizTranslationPhrase.author);
+            }
             if (quizTranslationPhrase.approver != null) {
                 insertUser(quizTranslationPhrase.approver);
             }

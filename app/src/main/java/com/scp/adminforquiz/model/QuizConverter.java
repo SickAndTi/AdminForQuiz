@@ -9,6 +9,8 @@ import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.model.db.User;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,9 @@ public class QuizConverter {
         quiz.created = nwQuiz.created;
         quiz.updated = nwQuiz.updated;
         quiz.quizTranslations = convertTranslation(nwQuiz.quizTranslations, nwQuiz.id);
-        quiz.author = convertUser(nwQuiz.author);
+        if (nwQuiz.author != null) {
+            quiz.author = convertUser(nwQuiz.author);
+        }
         if (nwQuiz.approver != null) {
             quiz.approver = convertUser(nwQuiz.approver);
         }
@@ -70,7 +74,9 @@ public class QuizConverter {
         quizTranslation.quizId = quizId;
         quizTranslation.translation = nwQuizTranslation.translation;
         quizTranslation.quizTranslationPhrases = convertTranslationPhrase(nwQuizTranslation.quizTranslationPhrases, nwQuizTranslation.id);
-        quizTranslation.author = convertUser(nwQuizTranslation.author);
+        if (nwQuizTranslation.author != null) {
+            quizTranslation.author = convertUser(nwQuizTranslation.author);
+        }
         if (nwQuizTranslation.approver != null) {
             quizTranslation.approver = convertUser(nwQuizTranslation.approver);
         }
@@ -97,14 +103,16 @@ public class QuizConverter {
         quizTranslationPhrase.updated = nwQuizTranslationPhrase.updated;
         quizTranslationPhrase.quizTranslationId = nwQuizTranslationId;
         quizTranslationPhrase.translation = nwQuizTranslationPhrase.translation;
-        quizTranslationPhrase.author = convertUser(nwQuizTranslationPhrase.author);
+        if (nwQuizTranslationPhrase.author != null) {
+            quizTranslationPhrase.author = convertUser(nwQuizTranslationPhrase.author);
+        }
         if (nwQuizTranslationPhrase.approver != null) {
             quizTranslationPhrase.approver = convertUser(nwQuizTranslationPhrase.approver);
         }
         return quizTranslationPhrase;
     }
 
-    private User convertUser(NwUser nwUser) {
+    private User convertUser(@NotNull NwUser nwUser) {
         User user = new User();
         user.id = nwUser.id;
         user.fullName = nwUser.fullName;

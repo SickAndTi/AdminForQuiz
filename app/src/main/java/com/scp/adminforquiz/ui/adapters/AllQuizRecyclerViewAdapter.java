@@ -89,12 +89,14 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         .centerCrop()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(viewHolder.imageView);
-                GlideApp
-                        .with(holder.itemView.getContext())
-                        .load(quiz.author.avatar)
-                        .centerCrop()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .into(viewHolder.userIcon);
+                if (quiz.author != null) {
+                    GlideApp
+                            .with(holder.itemView.getContext())
+                            .load(quiz.author.avatar)
+                            .centerCrop()
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .into(viewHolder.userIcon);
+                }
                 viewHolder.itemView.setOnClickListener(view ->
                         onQuizClickListener.onQuizClick(quiz)
                 );

@@ -35,6 +35,7 @@ public class QuizTranslation {
     @Ignore
     public List<QuizTranslationPhrase> quizTranslationPhrases;
     @Ignore
+    @Nullable
     public User author;
     @Ignore
     @Nullable

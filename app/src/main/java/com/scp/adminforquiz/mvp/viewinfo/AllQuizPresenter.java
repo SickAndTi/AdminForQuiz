@@ -97,7 +97,10 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 })
                 .subscribe(longs -> {
                         },
-                        error -> getViewState().showError(error.toString())
+                        error -> {
+                            Timber.e(error);
+                            getViewState().showError(error.toString());
+                        }
                 ));
     }
 

@@ -30,6 +30,7 @@ public class QuizTranslationPhrase {
     public Date updated;
 
     @Ignore
+    @Nullable
     public User author;
     @Ignore
     @Nullable
