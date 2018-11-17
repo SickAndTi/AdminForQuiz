@@ -51,7 +51,7 @@
     <string name="email">E-mail</string>
     <string name="name">Name</string>
     <string name="scpText">SCP-</string>
-    <string name="langText">Language</string>
+    <string name="langText">Lang</string>
     <string name="byAsc">By ascending</string>
     <string name="byDesc">By descending</string>
     <string name="filterById">Filter By Id</string>
