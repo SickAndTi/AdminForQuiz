@@ -16,23 +16,28 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:adjustViewBounds="true"
-                android:padding="8dp"
-                android:scaleType="fitXY"
+                android:layout_margin="8dp"
+                android:scaleType="centerInside"
                 tools:ignore="ContentDescription" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/userIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
                 android:scaleType="centerCrop"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
@@ -74,16 +79,17 @@
 
                 <TextView
                     android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    tools:text="Скульптура" />
+                    tools:text="Скульптураs;lnb;plsnls;n;lsnb;lsn;lnbm;'smns;'m s;'ms' " />
 
                 <Switch
                     android:id="@+id/approved"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     android:padding="8dp" />
@@ -99,6 +105,7 @@
                     android:id="@+id/langText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:padding="8dp"
                     android:text="@string/langText"
                     android:textColor="@color/black"
@@ -112,9 +119,7 @@
                     android:padding="8dp">
 
                 </LinearLayout>
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,8 +128,9 @@
 
                 <TextView
                     android:id="@+id/tvDateCreated"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:padding="8dp"
                     android:text="@string/dateCreated"
                     android:textColor="@color/black"
@@ -132,9 +138,10 @@
 
                 <TextView
                     android:id="@+id/dateCreated"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="50dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textSize="12sp"
@@ -149,8 +156,9 @@
 
                 <TextView
                     android:id="@+id/tvDateUpdated"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:padding="8dp"
                     android:text="@string/dateUpdated"
                     android:textColor="@color/black"
@@ -159,10 +167,10 @@
 
                 <TextView
                     android:id="@+id/dateUpdated"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="50dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textSize="12sp"

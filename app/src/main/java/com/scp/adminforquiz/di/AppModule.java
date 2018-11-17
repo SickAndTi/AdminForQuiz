@@ -16,6 +16,8 @@ import com.scp.adminforquiz.db.DataBase;
 import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,6 +40,9 @@ public class AppModule extends Module {
         bind(MyPreferenceManager.class).toInstance(myPreferenceManager);
 
         OkHttpClient okHttpClientAuth = new OkHttpClient.Builder()
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .writeTimeout(90, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor(log -> Timber.d(log)).setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
 
@@ -53,6 +58,9 @@ public class AppModule extends Module {
         AuthApi authApi = authRetrofit.create(AuthApi.class);
 
         OkHttpClient okHttpClientQuiz = new OkHttpClient.Builder()
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .writeTimeout(90, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor(log -> Timber.d(log)).setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(chain -> {
                     Request request = chain.request();

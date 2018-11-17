@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.haipq.android.flagkit.FlagImageView;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
@@ -120,15 +121,15 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 GlideApp
                         .with(holder.itemView.getContext())
                         .load(quiz.imageUrl)
-                        .placeholder(R.drawable.ic_launcher_background)
                         .centerCrop()
+                        .placeholder(R.drawable.ic_launcher_background)
                         .into(viewHolder.imageView);
                 if (quiz.author != null) {
                     GlideApp
                             .with(holder.itemView.getContext())
                             .load(quiz.author.avatar)
+                            .apply(RequestOptions.circleCropTransform())
                             .placeholder(R.drawable.ic_launcher_background)
-                            .centerCrop()
                             .into(viewHolder.userIcon);
                 }
                 break;
@@ -166,8 +167,8 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                     GlideApp
                             .with(holder.itemView.getContext())
                             .load(quizTranslation.author.avatar)
+                            .apply(RequestOptions.circleCropTransform())
                             .placeholder(R.drawable.ic_launcher_background)
-                            .centerCrop()
                             .into(oneQuizTranslationViewHolder.userIcon);
                 }
 
@@ -187,8 +188,8 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                         GlideApp
                                 .with(holder.itemView.getContext())
                                 .load(quizTranslationPhrase.author.avatar)
+                                .apply(RequestOptions.circleCropTransform())
                                 .placeholder(R.drawable.ic_launcher_background)
-                                .centerCrop()
                                 .into(phraseViewHolder.userIcon);
                     }
                     oneQuizTranslationViewHolder.phrasesLayout.addView(phraseView);

@@ -11,8 +11,8 @@ import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
-import com.scp.adminforquiz.util.SystemUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,6 +43,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private boolean dataUpdatedFromApi;
     private boolean userIsSet;
+    private List<Quiz> quizListFromDb = new ArrayList<>();
 
     @Override
     protected void onFirstViewAttach() {
@@ -64,6 +65,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                             }
                         })
                         .subscribe(quizzes -> {
+                                    quizListFromDb.clear();
+                                    quizListFromDb.addAll(quizzes);
                                     if (!dataUpdatedFromApi) {
                                         loadQuizzesFromApi(1);
                                         dataUpdatedFromApi = true;
@@ -87,7 +90,13 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 .map(quizList -> repository.insertQuizzes(quizList))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
+                .doOnSubscribe(disposable -> {
+                    if (quizListFromDb.isEmpty()) {
+                        getViewState().showProgressBar(true);
+                    } else {
+                        getViewState().showSwipeRefresherBar(true);
+                    }
+                })
                 .doOnEvent((longs, throwable) -> {
                     getViewState().showProgressBar(false);
                     getViewState().showSwipeRefresherBar(false);
