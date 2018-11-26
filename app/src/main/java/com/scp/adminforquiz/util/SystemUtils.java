@@ -34,6 +34,7 @@ public class SystemUtils {
             for (final Signature signature : info.signatures) {
                 final MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
+                Timber.d("signature : %s", signature);
                 final String hashKey = new String(Base64.encode(md.digest(), 0));
                 Timber.i("printHashKey() Hash Key: %s", hashKey);
             }

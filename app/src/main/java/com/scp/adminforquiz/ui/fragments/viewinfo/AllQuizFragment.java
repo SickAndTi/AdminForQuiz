@@ -1,7 +1,12 @@
 package com.scp.adminforquiz.ui.fragments.viewinfo;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -9,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -68,6 +74,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
+
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         ascSwitch = view.findViewById(R.id.ascSwitch);
@@ -77,12 +84,34 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         btnOK.setOnClickListener(v -> filterQuizzes());
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> outFromBottomSheet());
+
+
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.allquiz_menu);
         toolbar.setTitle(R.string.app_name);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
+                case R.id.search:
+                    //TODO
+                    mQueryTextView = findViewById(R.id.textViewQuery);
+                    Intent intent = getIntent();
+
+                    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+
+                        String query = intent.getStringExtra(SearchManager.QUERY);
+                        mQueryTextView.setText(query);
+
+                        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(getActivity(),
+                                MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+                        suggestions.saveRecentQuery(query, null);
+                    }
+
+                    SearchManager searchManager = new SearchManager();
+                    searchManager.getSystemService(Context.SEARCH_SERVICE);
+                    SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                    searchView.setIconifiedByDefault(true);
                 case R.id.createQuiz:
                     allQuizPresenter.goToCreateQuizFragment();
                     break;
@@ -221,5 +250,14 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showBottomSheet(boolean showBottomSheet) {
         bottomSheetBehavior.setState(showBottomSheet ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    public class MySuggestionProvider extends SearchRecentSuggestionsProvider {
+        public final static String AUTHORITY = "com.scp.adminforquiz.ui.fragments.viewinfo.AllQuizFragment$MySuggestionProvider";
+        public final static int MODE = DATABASE_MODE_QUERIES;
+
+        public MySuggestionProvider() {
+            setupSuggestions(AUTHORITY, MODE);
+        }
     }
 }
