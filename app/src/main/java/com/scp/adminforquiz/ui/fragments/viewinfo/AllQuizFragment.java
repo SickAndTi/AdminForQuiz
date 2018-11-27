@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import toothpick.Toothpick;
 
-public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
+public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView, SearchView.OnQueryTextListener {
     @InjectPresenter
     AllQuizPresenter allQuizPresenter;
     @Inject
@@ -90,8 +91,9 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
-                case R.id.search:
-                    etSearch.setVisibility(View.VISIBLE);
+                case R.id.icSearch:
+//                    showSearchEditText();
+                    break;
 
                 case R.id.createQuiz:
                     allQuizPresenter.goToCreateQuizFragment();
@@ -105,6 +107,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             }
             return super.onOptionsItemSelected(menuItem);
         });
+
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -112,6 +115,23 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromApi(1));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String queryText) {
+        // This method can be used when query is submitted eg. creatting search history using SQLite DB
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String queryText) {
+        allQuizRecyclerViewAdapter.setQuizList();
+        return true;
+    }
+
+    public void showSearchEditText() {
+        toolbar.setVisibility(View.INVISIBLE);
+        etSearch.setVisibility(View.VISIBLE);
     }
 
     private void filterQuizzes() {

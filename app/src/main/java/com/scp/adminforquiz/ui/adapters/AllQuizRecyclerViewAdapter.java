@@ -28,6 +28,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private List<AllQuizRecyclerViewItem> allQuizRecyclerViewItemList = new ArrayList<>();
     private OnQuizClickListener onQuizClickListener;
 
+
     public AllQuizRecyclerViewAdapter(OnQuizClickListener onQuizClickListener) {
         this.onQuizClickListener = onQuizClickListener;
     }
@@ -36,6 +37,35 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         allQuizRecyclerViewItemList.clear();
         for (Quiz quiz : quizList) {
             allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+        }
+        notifyDataSetChanged();
+    }
+
+    public void setQuizList(List<Quiz> quizList, String queryText) {
+        allQuizRecyclerViewItemList.clear();
+        if (queryText.isEmpty()) {
+            for (Quiz quiz : quizList) {
+                allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+            }
+        } else {
+            for (AllQuizRecyclerViewItem itemQuiz : allQuizRecyclerViewItemList) {
+
+            }
+
+        }
+        notifyDataSetChanged();
+    }
+
+    public void filter(String queryText) {
+        list.clear();
+        if (queryText.isEmpty()) {
+            list.addAll(copyList);
+        } else {
+            for (String name : copyList) {
+                if (name.toLowerCase().contains(queryText.toLowerCase())) {
+                    list.add(name);
+                }
+            }
         }
         notifyDataSetChanged();
     }
