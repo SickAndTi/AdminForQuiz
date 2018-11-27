@@ -133,7 +133,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             @Override
             public boolean onQueryTextChange(String query) {
 //                allQuizRecyclerViewAdapter.setQuizList(query);
-
+                allQuizPresenter.getQuizzesBySearch(query);
                 return false;
             }
         });
@@ -224,6 +224,11 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showQuizList(List<Quiz> quizList) {
         allQuizRecyclerViewAdapter.setQuizList(quizList);
+    }
+
+    @Override
+    public void showQuizListBySearch(List<Quiz> quizList, String searchText) {
+        allQuizRecyclerViewAdapter.setQuizList(quizList, searchText);
     }
 
     @Override

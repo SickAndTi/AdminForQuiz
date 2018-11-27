@@ -7,11 +7,15 @@ import com.scp.adminforquiz.model.db.Quiz;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public interface AllQuizView extends MvpView {
 
     void showProgressBar(boolean showProgressBar);
 
     void showQuizList(List<Quiz> quizList);
+
+    void showQuizListBySearch(List<Quiz> quizList, String searchText);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showError(String errorMessage);

@@ -2,7 +2,6 @@ package com.scp.adminforquiz.mvp.viewinfo;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.db.Repository;
@@ -294,5 +293,16 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                 .subscribe(quizzes -> getViewState().showQuizList(quizzes),
                         error -> getViewState().showError(error.toString())
                 ));
+    }
+
+    public void getQuizzesBySearch(String queryText) {
+        compositeDisposable.add(
+                Flowable.fromCallable(() -> repository.getAllQuizzes())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .blockingFirst()
+                        .subscribe(quizzes -> getViewState().showQuizListBySearch(quizzes, queryText),
+                                error -> getViewState().showError(error.toString())
+                        ));
     }
 }
