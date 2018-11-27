@@ -2,6 +2,7 @@ package com.scp.adminforquiz.mvp.viewinfo;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.db.Repository;
@@ -41,6 +42,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     @Inject
     MyPreferenceManager preferences;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private BehaviorRelay<String> searchRelay = BehaviorRelay.create();
     private boolean dataUpdatedFromApi;
     private boolean userIsSet;
     private List<Quiz> quizListFromDb = new ArrayList<>();
@@ -111,6 +113,11 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                             getViewState().showError(error.toString());
                         }
                 ));
+    }
+
+    public void onSearchTextChanged(String searchText) {
+        searchRelay.accept(searchText);
+        //TODO
     }
 
     public void goToQuizFragment(Quiz quiz) {

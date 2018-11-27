@@ -66,6 +66,7 @@
     <string name="deleteToastText">You can delete only yours objects</string>
     <string name="toastApproveDialog">You got no authority </string>
     <string name="search_hint">Search</string>
+    <string name="search">Search</string>
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
         <item>SIGN UP</item>
