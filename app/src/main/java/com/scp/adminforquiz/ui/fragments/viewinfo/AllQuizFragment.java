@@ -13,16 +13,17 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -40,7 +41,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import toothpick.Toothpick;
 
-public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView, SearchView.OnQueryTextListener {
+public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
     @InjectPresenter
     AllQuizPresenter allQuizPresenter;
     @Inject
@@ -55,7 +56,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     SwitchCompat ascSwitch;
     RadioGroup radioGroup;
     Button btnOK, btnCancel;
-    EditText etSearch;
+    SearchView searchView;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
@@ -72,7 +73,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toothpick.inject(this, Toothpick.openScope(Constants.APP_SCOPE));
-
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         ascSwitch = view.findViewById(R.id.ascSwitch);
@@ -82,9 +82,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         btnOK.setOnClickListener(v -> filterQuizzes());
         btnCancel = view.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(v -> outFromBottomSheet());
-        etSearch = view.findViewById(R.id.etSearch);
-        compositeDisposable.add(RxTextView.textChanges(etSearch)
-                .subscribe(charSequence -> allQuizPresenter.onSearchTextChanged(charSequence.toString())));
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.allquiz_menu);
         toolbar.setTitle(R.string.app_name);
@@ -92,9 +89,8 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.icSearch:
-//                    showSearchEditText();
-                    break;
 
+                    break;
                 case R.id.createQuiz:
                     allQuizPresenter.goToCreateQuizFragment();
                     break;
@@ -118,21 +114,31 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     }
 
     @Override
-    public boolean onQueryTextSubmit(String queryText) {
-        // This method can be used when query is submitted eg. creatting search history using SQLite DB
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.allquiz_menu, menu);
+
+        MenuItem icSearch = menu.findItem(R.id.icSearch);
+        searchView = (SearchView) icSearch.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!searchView.isIconified()) {
+                    searchView.setIconified(true);
+                }
+                icSearch.collapseActionView();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+//                allQuizRecyclerViewAdapter.setQuizList(query);
+
+                return false;
+            }
+        });
     }
 
-    @Override
-    public boolean onQueryTextChange(String queryText) {
-        allQuizRecyclerViewAdapter.setQuizList();
-        return true;
-    }
-
-    public void showSearchEditText() {
-        toolbar.setVisibility(View.INVISIBLE);
-        etSearch.setVisibility(View.VISIBLE);
-    }
 
     private void filterQuizzes() {
         if (ascSwitch.isChecked()) {

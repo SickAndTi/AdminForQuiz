@@ -48,22 +48,14 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
             }
         } else {
-            for (AllQuizRecyclerViewItem itemQuiz : allQuizRecyclerViewItemList) {
-
-            }
-
-        }
-        notifyDataSetChanged();
-    }
-
-    public void filter(String queryText) {
-        list.clear();
-        if (queryText.isEmpty()) {
-            list.addAll(copyList);
-        } else {
-            for (String name : copyList) {
-                if (name.toLowerCase().contains(queryText.toLowerCase())) {
-                    list.add(name);
+            for (Quiz quiz : quizList) {
+                if (quiz.scpNumber.toLowerCase().contains(queryText.toLowerCase())) {
+                    allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+                }
+                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    if (quizTranslation.translation.toLowerCase().contains(queryText.toLowerCase())) {
+                        allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+                    }
                 }
             }
         }
