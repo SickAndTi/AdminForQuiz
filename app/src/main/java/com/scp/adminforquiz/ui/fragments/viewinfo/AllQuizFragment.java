@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -29,9 +30,12 @@ import com.scp.adminforquiz.mvp.viewinfo.AllQuizView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;
+
 import java.util.List;
 import java.util.Objects;
+
 import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 import toothpick.Toothpick;
@@ -111,6 +115,10 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 return true;
             }
         });
+
+        EditText searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
 
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
