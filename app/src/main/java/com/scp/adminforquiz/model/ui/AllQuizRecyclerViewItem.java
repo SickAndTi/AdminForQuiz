@@ -10,4 +10,12 @@ public class AllQuizRecyclerViewItem {
         this.data = data;
         this.type = type;
     }
+
+    public Object getData() {
+        return data;
+    }
+
+    public AllQuizRecyclerViewItemType getType() {
+        return type;
+    }
 }

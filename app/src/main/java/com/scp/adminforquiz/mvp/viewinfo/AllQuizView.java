@@ -1,21 +1,22 @@
 package com.scp.adminforquiz.mvp.viewinfo;
 
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.scp.adminforquiz.model.db.Quiz;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-
 public interface AllQuizView extends MvpView {
 
     void showProgressBar(boolean showProgressBar);
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     void showQuizList(List<Quiz> quizList);
 
-    void showQuizListBySearch(List<Quiz> quizList, String searchText);
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void filterQueryText(String queryText);
 
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showError(String errorMessage);

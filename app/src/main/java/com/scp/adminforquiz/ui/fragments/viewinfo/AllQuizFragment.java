@@ -13,9 +13,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,13 +29,11 @@ import com.scp.adminforquiz.mvp.viewinfo.AllQuizView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;
-
 import java.util.List;
 import java.util.Objects;
-
 import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
@@ -56,7 +51,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     SwitchCompat ascSwitch;
     RadioGroup radioGroup;
     Button btnOK, btnCancel;
-    SearchView searchView;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static AllQuizFragment newInstance() {
@@ -88,9 +82,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
-                case R.id.icSearch:
-
-                    break;
                 case R.id.createQuiz:
                     allQuizPresenter.goToCreateQuizFragment();
                     break;
@@ -104,6 +95,23 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             return super.onOptionsItemSelected(menuItem);
         });
 
+        SearchView searchView = (SearchView) toolbar.getMenu().findItem(R.id.icSearch).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Timber.d("ON QUERY TEXT SUBMIT : %s", query);
+                allQuizPresenter.onQueryTextChanged(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                Timber.d("ON QUERY TEXT CHANGE : %s", query);
+                allQuizPresenter.onQueryTextChanged(query);
+                return true;
+            }
+        });
+
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -112,33 +120,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromApi(1));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.allquiz_menu, menu);
-
-        MenuItem icSearch = menu.findItem(R.id.icSearch);
-        searchView = (SearchView) icSearch.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!searchView.isIconified()) {
-                    searchView.setIconified(true);
-                }
-                icSearch.collapseActionView();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-//                allQuizRecyclerViewAdapter.setQuizList(query);
-                allQuizPresenter.getQuizzesBySearch(query);
-                return false;
-            }
-        });
-    }
-
 
     private void filterQuizzes() {
         if (ascSwitch.isChecked()) {
@@ -223,12 +204,14 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showQuizList(List<Quiz> quizList) {
+        Timber.d("setQuizList : %s", quizList.size());
         allQuizRecyclerViewAdapter.setQuizList(quizList);
     }
 
     @Override
-    public void showQuizListBySearch(List<Quiz> quizList, String searchText) {
-        allQuizRecyclerViewAdapter.setQuizList(quizList, searchText);
+    public void filterQueryText(String queryText) {
+        Timber.d("FILTER QUERY TEXT : %s", queryText);
+        allQuizRecyclerViewAdapter.filter(queryText);
     }
 
     @Override
