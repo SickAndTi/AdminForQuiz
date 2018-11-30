@@ -90,6 +90,7 @@ public class AuthPresenter extends MvpPresenter<AuthView> {
                 request.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override
                     public void onComplete(VKResponse response) {
+                        //noinspection unchecked
                         VKApiUserFull user = ((VKList<VKApiUserFull>) response.parsedModel).get(0);
                         commonUserData.firstName = user.first_name;
                         commonUserData.lastName = user.last_name;

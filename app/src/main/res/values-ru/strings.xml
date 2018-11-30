@@ -59,6 +59,7 @@
     <string name="approvePhrase">Подтвердить фразу?</string>
     <string name="deleteToastText">Вы можете удалять только созданное Вами</string>
     <string name="toastApproveDialog">У вас нет таких прав</string>
+    <string name="search_hint">Поиск</string>
     <string-array name="authTabTitles">
         <item>ВХОД</item>
         <item>РЕГИСТРАЦИЯ</item>

@@ -9,12 +9,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 import toothpick.Toothpick;
 
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
@@ -95,6 +98,28 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
             }
             return super.onOptionsItemSelected(menuItem);
         });
+
+        SearchView searchView = (SearchView) toolbar.getMenu().findItem(R.id.icSearch).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Timber.d("ON QUERY TEXT SUBMIT : %s", query);
+                allQuizPresenter.onQueryTextChanged(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                Timber.d("ON QUERY TEXT CHANGE : %s", query);
+                allQuizPresenter.onQueryTextChanged(query);
+                return true;
+            }
+        });
+
+        EditText searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBarAllQuiz = view.findViewById(R.id.flProgressBarAllQuiz);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -187,7 +212,14 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showQuizList(List<Quiz> quizList) {
+        Timber.d("setQuizList : %s", quizList.size());
         allQuizRecyclerViewAdapter.setQuizList(quizList);
+    }
+
+    @Override
+    public void filterQueryText(String queryText) {
+        Timber.d("FILTER QUERY TEXT : %s", queryText);
+        allQuizRecyclerViewAdapter.filter(queryText);
     }
 
     @Override

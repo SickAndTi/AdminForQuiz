@@ -45,6 +45,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     private boolean userIsSet;
     private List<Quiz> quizListFromDb = new ArrayList<>();
 
+
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
@@ -78,6 +79,10 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                                     getViewState().showError(error.toString());
                                 })
         );
+    }
+
+    public void onQueryTextChanged(String queryText) {
+        getViewState().filterQueryText(queryText);
     }
 
     public void loadQuizzesFromApi(int page) {
@@ -294,4 +299,15 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                         error -> getViewState().showError(error.toString())
                 ));
     }
+
+//    public void getQuizzesBySearch(String queryText) {
+//        compositeDisposable.add(
+//                Flowable.fromCallable(() -> repository.getAllQuizzes())
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .blockingFirst()
+//                        .subscribe(quizzes -> getViewState().showQuizListBySearch(quizzes, queryText),
+//                                error -> getViewState().showError(error.toString())
+//                        ));
+//    }
 }

@@ -23,9 +23,12 @@ import com.haipq.android.flagkit.FlagImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<AllQuizRecyclerViewItem> allQuizRecyclerViewItemList = new ArrayList<>();
+    private List<AllQuizRecyclerViewItem> filterList = new ArrayList<>();
     private OnQuizClickListener onQuizClickListener;
 
     public AllQuizRecyclerViewAdapter(OnQuizClickListener onQuizClickListener) {
@@ -34,9 +37,63 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public void setQuizList(List<Quiz> quizList) {
         allQuizRecyclerViewItemList.clear();
+        filterList.clear();
         for (Quiz quiz : quizList) {
             allQuizRecyclerViewItemList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
         }
+        filterList.addAll(allQuizRecyclerViewItemList);
+        notifyDataSetChanged();
+    }
+
+//    public void setQuizList(List<Quiz> quizList, String queryText) {
+//        allQuizRecyclerViewItemList.clear();
+//        if (queryText.isEmpty()) {
+//            for (Quiz quiz : quizList) {
+//                filterList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+//            }
+//        } else {
+//            for (Quiz quiz : quizList) {
+//                if (quiz.scpNumber.toLowerCase().contains(queryText.toLowerCase())) {
+//                    filterList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+//                }
+//                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+//                    if (quizTranslation.translation.toLowerCase().contains(queryText.toLowerCase())) {
+//                        filterList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
+//                    }
+//                }
+//            }
+//        }
+//        allQuizRecyclerViewItemList.addAll(filterList);
+//        notifyDataSetChanged();
+//    }
+
+    public void filter(String queryText) {
+        Timber.d("FILTER in ADAPTER : %s", queryText);
+        filterList.clear();
+        if (queryText.isEmpty()) {
+            filterList.addAll(allQuizRecyclerViewItemList);
+            Timber.d("FILTER in ADAPTER empty text : %s", queryText);
+        } else {
+            for (AllQuizRecyclerViewItem allQuizRecyclerViewItem : allQuizRecyclerViewItemList) {
+                if (allQuizRecyclerViewItem.type == AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ) {
+                    Quiz quiz = (Quiz) (allQuizRecyclerViewItem.getData());
+                    if (quiz.scpNumber.toLowerCase().contains(queryText.toLowerCase())) {
+                        filterList.add(allQuizRecyclerViewItem);
+                        Timber.d("FILTER in ADAPTER  not empty text : %s", queryText);
+                    } else {
+                        for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                            if (quizTranslation.translation.toLowerCase().contains(queryText.toLowerCase())) {
+                                filterList.add(allQuizRecyclerViewItem);
+                                Timber.d("FILTER in ADAPTER  not empty text : %s", queryText);
+                            }
+                        }
+                    }
+                } else {
+                    filterList.add(allQuizRecyclerViewItem);
+                }
+            }
+        }
+        Timber.d("FILTER in ADAPTER  FINAL : %s", queryText);
         notifyDataSetChanged();
     }
 
@@ -55,10 +112,10 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch (allQuizRecyclerViewItemList.get(position).type) {
+        switch (filterList.get(position).type) {
             case QUIZ:
                 QuizViewHolder viewHolder = (QuizViewHolder) holder;
-                Quiz quiz = (Quiz) allQuizRecyclerViewItemList.get(position).data;
+                Quiz quiz = (Quiz) filterList.get(position).data;
                 viewHolder.tvScpNumber.setText(quiz.scpNumber);
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
                     viewHolder.tvTitle.setText(quizTranslation.translation);
@@ -109,12 +166,12 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return allQuizRecyclerViewItemList.size();
+        return filterList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return allQuizRecyclerViewItemList.get(position).type.ordinal();
+        return filterList.get(position).type.ordinal();
     }
 
     static class QuizViewHolder extends RecyclerView.ViewHolder {
@@ -150,6 +207,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnQuizClickListener {
         void onQuizClick(Quiz quiz);
+
     }
 
     public void showBottomProgress(boolean show) {
