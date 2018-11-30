@@ -43,7 +43,7 @@
             android:theme="@style/VK.Transparent" />
         <activity
             android:name="com.scp.adminforquiz.ui.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
