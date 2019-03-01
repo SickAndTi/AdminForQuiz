@@ -79,8 +79,20 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
                 .requestEmail()
                 .build();
         googleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), connectionResult -> Timber.d("ERROR"))
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+//                    @Override
+//                    public void onConnected(@Nullable Bundle bundle) {
+//                        Timber.d("onConnected: %s", bundle);
+//                    }
+//
+//                    @Override
+//                    public void onConnectionSuspended(int i) {
+//                        Timber.d("onConnectionSuspended: %s", i);
+//                    }
+//                })
+//                .addOnConnectionFailedListener(connectionResult -> Timber.d("addOnConnectionFailedListener : %s", connectionResult.getErrorMessage()))
+                .enableAutoManage(getActivity(), connectionResult -> Timber.e("ERROR : %s", connectionResult.getErrorMessage()))
                 .build();
         toolbarTitle = view.findViewById(R.id.toolbarTitle);
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -123,6 +135,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onPause() {
         super.onPause();
         if (googleApiClient != null) {
+            Timber.d("onPause Auth Fragment: stopAutoManage google Api client" );
             googleApiClient.stopAutoManage(getActivity());
             googleApiClient.disconnect();
         }
