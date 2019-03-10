@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.flexbox.FlexboxLayout;
 import com.haipq.android.flagkit.FlagImageView;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
@@ -102,6 +103,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 viewHolder.approveQuiz.setEnabled(preferences.getIsAdmin());
                 viewHolder.approveQuiz.setOnClickListener(v -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.flagLayout.removeAllViews();
+
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
                     String correctLangCode = quizTranslation.langCode;
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
@@ -205,7 +207,7 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
         ImageView imageView, userIcon;
         Switch approveQuiz;
         TextView dateCreated, dateUpdated;
-        LinearLayout flagLayout;
+        FlexboxLayout flagLayout;
 
         OneQuizViewHolder(@NonNull View itemView) {
             super(itemView);
