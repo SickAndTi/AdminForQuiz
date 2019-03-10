@@ -103,20 +103,16 @@ public class OneQuizRecyclerViewAdapter extends RecyclerView.Adapter {
                 viewHolder.approveQuiz.setOnClickListener(v -> editInterface.onApproveQuizClicked(quiz));
                 viewHolder.flagLayout.removeAllViews();
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
+                    String correctLangCode = quizTranslation.langCode;
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
-                    if (quizTranslation.langCode.contains("en")) {
-                        flagImage.setCountryCode("gb");
-                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
-                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
-                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
-                        viewHolder.flagLayout.addView(flagImage);
-                    } else if (quizTranslation.langCode.contains("ru")) {
-                        flagImage.setCountryCode("ru");
-                        flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
-                        flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
-                        flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
-                        viewHolder.flagLayout.addView(flagImage);
+                    if (quizTranslation.langCode.equals("en")) {
+                        correctLangCode = "gb";
                     }
+                    flagImage.setCountryCode(correctLangCode);
+                    flagImage.setMaxWidth(DimensionUtils.convertDpToPixels(70));
+                    flagImage.setMaxHeight(DimensionUtils.convertDpToPixels(50));
+                    flagImage.setPadding(DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8), DimensionUtils.convertDpToPixels(8));
+                    viewHolder.flagLayout.addView(flagImage);
                 }
                 GlideApp
                         .with(holder.itemView.getContext())
