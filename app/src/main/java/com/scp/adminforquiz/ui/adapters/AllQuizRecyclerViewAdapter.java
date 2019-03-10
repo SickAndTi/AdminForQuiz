@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.flexbox.FlexboxLayout;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.di.GlideApp;
 import com.scp.adminforquiz.model.db.Quiz;
@@ -125,6 +126,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 viewHolder.dateCreated.setText(DateTypeConverter.formatDate(quiz.created));
                 viewHolder.dateUpdated.setText(DateTypeConverter.formatDate(quiz.updated));
                 viewHolder.flagLayout.removeAllViews();
+
                 for (QuizTranslation quizTranslation : quiz.quizTranslations) {
                     String correctLangCode = quizTranslation.langCode;
                     FlagImageView flagImage = new FlagImageView(viewHolder.flagLayout.getContext());
@@ -178,7 +180,7 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         ImageView imageView, userIcon;
         TextView dateCreated, dateUpdated;
         TextView tvDateCreated, tvDateUpdated;
-        LinearLayout flagLayout;
+        FlexboxLayout flagLayout;
 
         QuizViewHolder(@NonNull View itemView) {
             super(itemView);
