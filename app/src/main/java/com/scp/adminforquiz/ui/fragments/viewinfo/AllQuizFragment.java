@@ -29,6 +29,7 @@ import com.scp.adminforquiz.mvp.viewinfo.AllQuizPresenter;
 import com.scp.adminforquiz.mvp.viewinfo.AllQuizView;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
+import com.scp.adminforquiz.util.DimensionUtils;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;
 
 import java.util.List;
@@ -125,7 +126,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         allQuizRecyclerViewAdapter = new AllQuizRecyclerViewAdapter(quiz -> allQuizPresenter.goToQuizFragment(quiz));
         recyclerView.setAdapter(allQuizRecyclerViewAdapter);
-        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromApi(1));
+        swipeRefreshLayout.setOnRefreshListener(() -> allQuizPresenter.loadQuizzesFromApi(Constants.OFFSET_ZERO));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -212,7 +213,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showQuizList(List<Quiz> quizList) {
-        Timber.d("setQuizList : %s", quizList.size());
         allQuizRecyclerViewAdapter.setQuizList(quizList);
     }
 
@@ -228,23 +228,29 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     }
 
     @Override
-    public void showSwipeRefresherBar(boolean showSwipeRefresherBar) {
+    public void showSwipeProgressBar(boolean showSwipeRefresherBar) {
+        swipeRefreshLayout.setProgressViewEndTarget(false, DimensionUtils.getActionBarHeight(getActivity()));
         swipeRefreshLayout.setRefreshing(showSwipeRefresherBar);
     }
 
     @Override
     public void showBottomProgress(boolean showBottomProgress) {
-        ((AllQuizRecyclerViewAdapter) Objects.requireNonNull(recyclerView.getAdapter())).showBottomProgress(showBottomProgress);
+        swipeRefreshLayout.setProgressViewEndTarget(false, DimensionUtils.getScreenHeight() - DimensionUtils.getActionBarHeight(getActivity()) * 3);
+        swipeRefreshLayout.setRefreshing(showBottomProgress);
     }
 
     @Override
-    public void enableScrollListner(boolean enableScrollListener) {
+    public void enableScrollListener(boolean enableScrollListener) {
         recyclerView.clearOnScrollListeners();
         if (enableScrollListener) {
             recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener() {
                 @Override
                 public void onLoadMore(int page, int totalItemsCount) {
-                    allQuizPresenter.loadQuizzesFromApi(totalItemsCount / Constants.PAGE_SIZE + 1);
+                    if (allQuizRecyclerViewAdapter.getItemCount() % Constants.PAGE_LIMIT != 0) {
+                        enableScrollListener(false);
+                    } else {
+                        allQuizPresenter.loadQuizzesFromApi(allQuizRecyclerViewAdapter.getItemCount());
+                    }
                 }
             });
         }

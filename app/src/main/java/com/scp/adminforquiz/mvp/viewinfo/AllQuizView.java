@@ -21,11 +21,11 @@ public interface AllQuizView extends MvpView {
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showError(String errorMessage);
 
-    void showSwipeRefresherBar(boolean showSwipeRefresherBar);
+    void showSwipeProgressBar(boolean showSwipeRefresherBar);
 
     void showBottomProgress(boolean showBottomProgress);
 
-    void enableScrollListner(boolean enableScrollListener);
+    void enableScrollListener(boolean enableScrollListener);
 
     void showBottomSheet(boolean showBottomSheet);
 }

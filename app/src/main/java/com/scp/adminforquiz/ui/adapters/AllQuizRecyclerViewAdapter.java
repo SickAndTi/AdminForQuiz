@@ -46,28 +46,6 @@ public class AllQuizRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         notifyDataSetChanged();
     }
 
-//    public void setQuizList(List<Quiz> quizList, String queryText) {
-//        allQuizRecyclerViewItemList.clear();
-//        if (queryText.isEmpty()) {
-//            for (Quiz quiz : quizList) {
-//                filterList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
-//            }
-//        } else {
-//            for (Quiz quiz : quizList) {
-//                if (quiz.scpNumber.toLowerCase().contains(queryText.toLowerCase())) {
-//                    filterList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
-//                }
-//                for (QuizTranslation quizTranslation : quiz.quizTranslations) {
-//                    if (quizTranslation.translation.toLowerCase().contains(queryText.toLowerCase())) {
-//                        filterList.add(new AllQuizRecyclerViewItem(quiz, AllQuizRecyclerViewItem.AllQuizRecyclerViewItemType.QUIZ));
-//                    }
-//                }
-//            }
-//        }
-//        allQuizRecyclerViewItemList.addAll(filterList);
-//        notifyDataSetChanged();
-//    }
-
     public void filter(String queryText) {
         Timber.d("FILTER in ADAPTER : %s", queryText);
         filterList.clear();

@@ -17,7 +17,8 @@ public class Constants {
     public static final String GRANT_TYPE = "password";
     public static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
     //scrollListener
-    public static final int PAGE_SIZE = 10;
+    public static final int PAGE_LIMIT = 10;
+    public static final int OFFSET_ZERO = 0;
     //social
     public static final String VK = "VK";
     public static final String GOOGLE = "GOOGLE";

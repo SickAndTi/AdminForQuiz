@@ -69,7 +69,7 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                                     quizListFromDb.clear();
                                     quizListFromDb.addAll(quizzes);
                                     if (!dataUpdatedFromApi) {
-                                        loadQuizzesFromApi(1);
+                                        loadQuizzesFromApi(Constants.OFFSET_ZERO);
                                         dataUpdatedFromApi = true;
                                     }
                                     getViewState().showQuizList(quizzes);
@@ -85,37 +85,37 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         getViewState().filterQueryText(queryText);
     }
 
-    public void loadQuizzesFromApi(int page) {
-//        getViewState().enableScrollListner(false);
-//        if (page > 1) {
-//            getViewState().showBottomProgress(true);
-//        }
-        compositeDisposable.add(apiClient.getAllWithUser()
-                .map(nwQuizList -> quizConverter.convert(nwQuizList))
-                .map(quizList -> repository.insertQuizzes(quizList))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> {
-                    if (quizListFromDb.isEmpty()) {
-                        getViewState().showProgressBar(true);
-                    } else {
-                        getViewState().showSwipeRefresherBar(true);
-                    }
-                })
-                .doOnEvent((longs, throwable) -> {
-                    getViewState().showProgressBar(false);
-                    getViewState().showSwipeRefresherBar(false);
-//                    if (page > 1) {
-//                        getViewState().showBottomProgress(false);
-//                    }
-                })
-                .subscribe(longs -> {
-                        },
-                        error -> {
-                            Timber.e(error);
-                            getViewState().showError(error.toString());
-                        }
-                ));
+    public void loadQuizzesFromApi(int offset) {
+        compositeDisposable.add(
+                apiClient.getAllWithUser(offset, Constants.PAGE_LIMIT)
+                        .map(nwQuizList -> quizConverter.convert(nwQuizList))
+                        .map(quizList -> repository.insertQuizzes(quizList))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> {
+                            if (offset > 0) {
+                                getViewState().showBottomProgress(true);
+                            } else {
+                                getViewState().showSwipeProgressBar(true);
+                            }
+                            if (quizListFromDb.isEmpty()) {
+                                getViewState().showProgressBar(true);
+                            } else {
+                                getViewState().showSwipeProgressBar(true);
+                            }
+                        })
+                        .doOnEvent((longs, throwable) -> {
+                            getViewState().enableScrollListener(true);
+                            getViewState().showProgressBar(false);
+                            getViewState().showSwipeProgressBar(false);
+                        })
+                        .subscribe(longs -> {
+                                },
+                                error -> {
+                                    Timber.e(error);
+                                    getViewState().showError(error.toString());
+                                }
+                        ));
     }
 
     public void goToQuizFragment(Quiz quiz) {
