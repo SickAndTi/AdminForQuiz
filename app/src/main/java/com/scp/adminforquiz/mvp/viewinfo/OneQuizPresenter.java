@@ -170,4 +170,8 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                         }, error -> getViewState().showError(error.toString())
                 ));
     }
+
+    public void onNavigationBackClicked() {
+        router.exit();
+    }
 }
