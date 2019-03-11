@@ -76,6 +76,7 @@ public class OneQuizFragment extends MvpAppCompatFragment implements OneQuizView
             }
             return super.onOptionsItemSelected(menuItem);
         });
+        toolbar.setNavigationOnClickListener(v -> oneQuizPresenter.onNavigationBackClicked());
         flProgressBar = view.findViewById(R.id.flProgressBar);
         recyclerViewOneQuiz = view.findViewById(R.id.recyclerViewOneQuiz);
         recyclerViewOneQuiz.setLayoutManager(new LinearLayoutManager(getContext()));
