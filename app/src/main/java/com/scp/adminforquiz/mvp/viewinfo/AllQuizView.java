@@ -28,4 +28,8 @@ public interface AllQuizView extends MvpView {
     void enableScrollListener(boolean enableScrollListener);
 
     void showBottomSheet(boolean showBottomSheet);
+
+    void setUserFilterAscendingType(boolean userFilterAscendingType);
+
+    void setUserSortFieldName(String userSortFieldName);
 }

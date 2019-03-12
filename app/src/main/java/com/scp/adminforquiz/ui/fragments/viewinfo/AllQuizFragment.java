@@ -27,15 +27,12 @@ import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.mvp.viewinfo.AllQuizPresenter;
 import com.scp.adminforquiz.mvp.viewinfo.AllQuizView;
-import com.scp.adminforquiz.preference.MyPreferenceManager;
 import com.scp.adminforquiz.ui.adapters.AllQuizRecyclerViewAdapter;
 import com.scp.adminforquiz.util.DimensionUtils;
 import com.scp.adminforquiz.util.EndlessRecyclerViewScrollListener;
 
 import java.util.List;
 import java.util.Objects;
-
-import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -44,8 +41,6 @@ import toothpick.Toothpick;
 public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView {
     @InjectPresenter
     AllQuizPresenter allQuizPresenter;
-    @Inject
-    MyPreferenceManager preferences;
     RecyclerView recyclerView;
     AllQuizRecyclerViewAdapter allQuizRecyclerViewAdapter;
     View progressBarAllQuiz;
@@ -75,7 +70,6 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
         bottomSheet = view.findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         ascSwitch = view.findViewById(R.id.ascSwitch);
-        ascSwitch.setChecked(preferences.getUserFilterAscending());
         radioGroup = view.findViewById(R.id.radioGroup);
         btnOK = view.findViewById(R.id.btnOK);
         btnOK.setOnClickListener(v -> filterQuizzes());
@@ -219,6 +213,8 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void filterQueryText(String queryText) {
         Timber.d("FILTER QUERY TEXT : %s", queryText);
+        swipeRefreshLayout.setEnabled(queryText.isEmpty());
+        enableScrollListener(queryText.isEmpty());
         allQuizRecyclerViewAdapter.filter(queryText);
     }
 
@@ -235,7 +231,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
 
     @Override
     public void showBottomProgress(boolean showBottomProgress) {
-        swipeRefreshLayout.setProgressViewEndTarget(false, DimensionUtils.getScreenHeight() - DimensionUtils.getActionBarHeight(getActivity()) * 3);
+        swipeRefreshLayout.setProgressViewEndTarget(false, DimensionUtils.getScreenHeight() - DimensionUtils.getActionBarHeight(getActivity()) * 2);
         swipeRefreshLayout.setRefreshing(showBottomProgress);
     }
 
@@ -248,6 +244,7 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
                 public void onLoadMore(int page, int totalItemsCount) {
                     if (allQuizRecyclerViewAdapter.getItemCount() % Constants.PAGE_LIMIT != 0) {
                         enableScrollListener(false);
+                        Timber.d("onLoadMOre:%s", allQuizRecyclerViewAdapter.getItemCount());
                     } else {
                         allQuizPresenter.loadQuizzesFromApi(allQuizRecyclerViewAdapter.getItemCount());
                     }
@@ -259,5 +256,28 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showBottomSheet(boolean showBottomSheet) {
         bottomSheetBehavior.setState(showBottomSheet ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    @Override
+    public void setUserFilterAscendingType(boolean userFilterAscendingType) {
+        ascSwitch.setChecked(userFilterAscendingType);
+    }
+
+    @Override
+    public void setUserSortFieldName(String userSortFieldName) {
+        switch (userSortFieldName) {
+            case Constants.ID:
+                radioGroup.check(R.id.filterById);
+                break;
+            case Constants.CREATED:
+                radioGroup.check(R.id.filterByDateCreated);
+                break;
+            case Constants.UPDATED:
+                radioGroup.check(R.id.filterByDateUpdated);
+                break;
+            case Constants.APPROVE:
+                radioGroup.check(R.id.filterByApproved);
+                break;
+        }
     }
 }

@@ -46,7 +46,7 @@ public class MyPreferenceManager {
     }
 
     public String getUserSortFieldName() {
-        return preferences.getString(Constants.USER_SORT_FIELD_NAME, null);
+        return preferences.getString(Constants.USER_SORT_FIELD_NAME, Constants.ID);
     }
 
     public void setUserId(Long userId) {
