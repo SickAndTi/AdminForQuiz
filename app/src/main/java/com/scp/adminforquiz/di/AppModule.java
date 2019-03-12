@@ -8,7 +8,7 @@ import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.api.AuthApi;
 import com.scp.adminforquiz.api.response.TokenResponse;
-import com.scp.adminforquiz.db.Repository;
+import com.scp.adminforquiz.db.QuizRepository;
 import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.QuizConverter;
@@ -104,7 +104,7 @@ public class AppModule extends Module {
                 .build();
         bind(DataBase.class).toInstance(dataBase);
 
-        bind(Repository.class).singletonInScope();
+        bind(QuizRepository.class).singletonInScope();
 
         Cicerone<Router> cicerone = Cicerone.create();
         bind(Cicerone.class).toInstance(cicerone);

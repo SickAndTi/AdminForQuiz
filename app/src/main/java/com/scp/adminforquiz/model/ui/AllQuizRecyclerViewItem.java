@@ -1,7 +1,7 @@
 package com.scp.adminforquiz.model.ui;
 
 public class AllQuizRecyclerViewItem {
-    public enum AllQuizRecyclerViewItemType {QUIZ, PROGRESSBAR}
+    public enum AllQuizRecyclerViewItemType {QUIZ}
 
     public Object data;
     public AllQuizRecyclerViewItemType type;
@@ -15,7 +15,4 @@ public class AllQuizRecyclerViewItem {
         return data;
     }
 
-    public AllQuizRecyclerViewItemType getType() {
-        return type;
-    }
 }

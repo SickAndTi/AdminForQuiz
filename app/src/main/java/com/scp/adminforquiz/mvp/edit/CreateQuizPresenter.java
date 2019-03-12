@@ -7,7 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.db.Repository;
+import com.scp.adminforquiz.db.QuizRepository;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.api.NwQuiz;
 
@@ -28,7 +28,7 @@ public class CreateQuizPresenter extends MvpPresenter<CreateQuizView> {
     @Inject
     ApiClient apiClient;
     @Inject
-    Repository repository;
+    QuizRepository quizRepository;
     @Inject
     QuizConverter quizConverter;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -69,7 +69,7 @@ public class CreateQuizPresenter extends MvpPresenter<CreateQuizView> {
         compositeDisposable.add(apiClient.createNwQuiz(nwQuiz)
                 .toFlowable()
                 .map(nwQuiz1 -> quizConverter.convert(nwQuiz1))
-                .map(quiz -> repository.insertQuiz(quiz))
+                .map(quiz -> quizRepository.insertQuiz(quiz))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(subscription -> getViewState().showProgressBar(true))

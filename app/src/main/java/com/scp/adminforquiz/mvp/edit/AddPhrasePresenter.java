@@ -6,7 +6,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.db.Repository;
+import com.scp.adminforquiz.db.QuizRepository;
 import com.scp.adminforquiz.model.QuizConverter;
 
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
     @Inject
     ApiClient apiClient;
     @Inject
-    Repository repository;
+    QuizRepository quizRepository;
     @Inject
     Router router;
     @Inject
@@ -44,7 +44,7 @@ public class AddPhrasePresenter extends MvpPresenter<AddPhraseView> {
 
     public void addPhrase() {
         compositeDisposable.add(apiClient.addNwQuizTranslationPhrase(quizTranslationId, phraseText)
-                .map(nwQuizTranslation -> repository.insertTranslation(quizConverter.convertTranslation(nwQuizTranslation, repository.getQuizIdByTranslationId(quizTranslationId))))
+                .map(nwQuizTranslation -> quizRepository.insertTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizRepository.getQuizIdByTranslationId(quizTranslationId))))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))

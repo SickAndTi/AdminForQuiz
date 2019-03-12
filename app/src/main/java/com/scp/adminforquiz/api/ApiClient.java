@@ -63,8 +63,8 @@ public class ApiClient {
         );
     }
 
-    public Single<List<NwQuiz>> getAllWithUser() {
-        return quizApi.getAllWithUser();
+    public Single<List<NwQuiz>> getAllWithUser(int offset, int limit) {
+        return quizApi.getAllWithUser(offset, limit);
     }
 
     public Single<NwUser> whoAreMe() {

@@ -1,21 +1,56 @@
 package com.scp.adminforquiz.db;
 
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
 import com.scp.adminforquiz.model.db.QuizTranslationPhrase;
+import com.scp.adminforquiz.preference.MyPreferenceManager;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
-public class Repository {
+public class QuizRepository {
     private QuizDao quizDao;
 
+    @NotNull
+    private MyPreferenceManager preferences;
+
+    private BehaviorRelay<Boolean> userFilterAscendingTypeRelay;
+
+    private BehaviorRelay<String> userSortFieldNameRelay;
+
+
     @Inject
-    public Repository(QuizDao quizDao) {
+    public QuizRepository(QuizDao quizDao, @NotNull MyPreferenceManager preferences) {
         this.quizDao = quizDao;
+        this.preferences = preferences;
+        userFilterAscendingTypeRelay = BehaviorRelay.createDefault(this.preferences.getUserFilterAscending());
+        userSortFieldNameRelay = BehaviorRelay.createDefault(this.preferences.getUserSortFieldName());
+    }
+
+    public Flowable<Boolean> getUserFilterAscendingType() {
+        return userFilterAscendingTypeRelay.toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    public void setUserFilterAscendingType(boolean userFilterAscendingType) {
+        preferences.setUserFilterAscending(userFilterAscendingType);
+        userFilterAscendingTypeRelay.accept(userFilterAscendingType);
+    }
+
+    public Flowable<String> getUserSortFieldName() {
+        return userSortFieldNameRelay.toFlowable(BackpressureStrategy.BUFFER);
+    }
+
+    public void setUserSortFieldName(String userSortFieldName) {
+        preferences.setUserSortFieldName(userSortFieldName);
+        userSortFieldNameRelay.accept(userSortFieldName);
     }
 
     public Quiz getFullQuizById(long quizId) {
@@ -82,7 +117,7 @@ public class Repository {
         return quizDao.deleteQuizTranslationPhraseById(phraseId);
     }
 
-    public void deleteAllTables() {
-        quizDao.deleteAllTables();
+    public void deleteAllQuizTables() {
+        quizDao.deleteAllQuizTables();
     }
 }

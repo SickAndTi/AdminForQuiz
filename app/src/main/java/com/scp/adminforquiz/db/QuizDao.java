@@ -164,7 +164,7 @@ public abstract class QuizDao {
     public abstract void deleteQuizTranslationPhraseTable();
 
     @Transaction
-    public void deleteAllTables() {
+    public void deleteAllQuizTables() {
         deleteQuizTable();
         deleteQuizTranslationTable();
         deleteQuizTranslationPhraseTable();

@@ -18,11 +18,13 @@ import retrofit2.http.Query;
 public interface QuizApi {
 
     @GET("quiz/allWithUsers")
-    Single<List<NwQuiz>> getAllWithUser();
+    Single<List<NwQuiz>> getAllWithUser(
+            @Query("offset") int offset,
+            @Query("limit") int limit
+    );
 
     @GET("user/me?showFull=true")
-    Single<NwUser> whoAreMe(
-    );
+    Single<NwUser> whoAreMe();
 
     @POST("quiz/create")
     Single<NwQuiz> createNwQuiz(

@@ -5,7 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.R;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.db.Repository;
+import com.scp.adminforquiz.db.QuizRepository;
 import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.model.db.QuizTranslation;
@@ -29,7 +29,7 @@ import toothpick.Toothpick;
 @InjectViewState
 public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     @Inject
-    Repository repository;
+    QuizRepository quizRepository;
     @Inject
     Router router;
     @Inject
@@ -59,12 +59,12 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
         Timber.d("User Id from pref : %s", preferences.getUserId());
         Timber.d("isAdmin from PREF : %s", preferences.getIsAdmin());
         compositeDisposable.add(Flowable.combineLatest(
-                repository.getQuizByIdFlowable(quizId),
-                repository.getTranslationsByIdFlowable(quizId),
-                repository.getPhrasesByIdFlowable(quizId),
+                quizRepository.getQuizByIdFlowable(quizId),
+                quizRepository.getTranslationsByIdFlowable(quizId),
+                quizRepository.getPhrasesByIdFlowable(quizId),
                 (Function3<Quiz, List<QuizTranslation>, List<QuizTranslationPhrase>, Triple>) Triple::new
         )
-                .map(o -> repository.getFullQuizById(quizId))
+                .map(o -> quizRepository.getFullQuizById(quizId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(quiz -> {
@@ -88,7 +88,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     public void deleteQuiz() {
         if (quizAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizById(quizId)
-                    .map(aBoolean -> repository.deleteQuiz(quizId))
+                    .map(aBoolean -> quizRepository.deleteQuiz(quizId))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -105,7 +105,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
 
     public void approveQuizById(Long quizId, boolean approve) {
         compositeDisposable.add(apiClient.approveNwQuizById(quizId, approve)
-                .map(nwQuiz -> repository.insertQuiz(quizConverter.convert(nwQuiz)))
+                .map(nwQuiz -> quizRepository.insertQuiz(quizConverter.convert(nwQuiz)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -117,7 +117,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
 
     public void approveTranslationById(Long translationId, boolean approve) {
         compositeDisposable.add(apiClient.approveNwQuizTranslationById(translationId, approve)
-                .map(nwQuizTranslation -> repository.insertTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
+                .map(nwQuizTranslation -> quizRepository.insertTranslation(quizConverter.convertTranslation(nwQuizTranslation, quizId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -130,7 +130,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     public void deleteTranslationById(Long translationId) {
         if (quizTranslationAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizTranslationById(translationId)
-                    .map(aBoolean -> repository.deleteTranslation(translationId))
+                    .map(aBoolean -> quizRepository.deleteTranslation(translationId))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -144,7 +144,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     public void deletePhraseById(Long phraseId) {
         if (quizTranslationPhraseAuthorId.equals(preferences.getUserId()) || preferences.getIsAdmin()) {
             compositeDisposable.add(apiClient.deleteNwQuizTranslationPhraseById(phraseId)
-                    .map(aBoolean -> repository.deletePhrase(phraseId))
+                    .map(aBoolean -> quizRepository.deletePhrase(phraseId))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
@@ -161,7 +161,7 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
 
     public void approvePhraseById(Long phraseId, Long translationId, boolean approve) {
         compositeDisposable.add(apiClient.approveNwQuizTranslationPhraseById(phraseId, approve)
-                .map(nwQuizTranslationPhrase -> repository.insertPhrase(quizConverter.convertTranslationPhrase(nwQuizTranslationPhrase, translationId)))
+                .map(nwQuizTranslationPhrase -> quizRepository.insertPhrase(quizConverter.convertTranslationPhrase(nwQuizTranslationPhrase, translationId)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))

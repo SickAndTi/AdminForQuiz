@@ -7,7 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
-import com.scp.adminforquiz.db.Repository;
+import com.scp.adminforquiz.db.QuizRepository;
 import com.scp.adminforquiz.model.QuizConverter;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
     @Inject
     Router router;
     @Inject
-    Repository repository;
+    QuizRepository quizRepository;
     @Inject
     ApiClient apiClient;
     @Inject
@@ -71,7 +71,7 @@ public class AddTranslationPresenter extends MvpPresenter<AddTranslationView> {
 
     public void addTranslation() {
         compositeDisposable.add(apiClient.addNwQuizTranslation(quizId, langCodeRelay.getValue(), titleRelay.getValue(), descriptionRelay.getValue())
-                .map(nwQuiz -> repository.insertQuiz(quizConverter.convert(nwQuiz)))
+                .map(nwQuiz -> quizRepository.insertQuiz(quizConverter.convert(nwQuiz)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> getViewState().showProgressBar(true))
