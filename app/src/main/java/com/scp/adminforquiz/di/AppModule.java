@@ -8,13 +8,14 @@ import com.scp.adminforquiz.Constants;
 import com.scp.adminforquiz.api.ApiClient;
 import com.scp.adminforquiz.api.AuthApi;
 import com.scp.adminforquiz.api.response.TokenResponse;
+import com.scp.adminforquiz.db.DataBase;
+import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.db.QuizRepository;
 import com.scp.adminforquiz.di.qualifier.AuthRetrofit;
 import com.scp.adminforquiz.di.qualifier.QuizRetrofit;
 import com.scp.adminforquiz.model.QuizConverter;
-import com.scp.adminforquiz.db.DataBase;
-import com.scp.adminforquiz.db.QuizDao;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
+import com.scp.adminforquiz.repository.FilterRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -104,8 +105,6 @@ public class AppModule extends Module {
                 .build();
         bind(DataBase.class).toInstance(dataBase);
 
-        bind(QuizRepository.class).singletonInScope();
-
         Cicerone<Router> cicerone = Cicerone.create();
         bind(Cicerone.class).toInstance(cicerone);
         bind(Router.class).toInstance(cicerone.getRouter());
@@ -116,5 +115,9 @@ public class AppModule extends Module {
         bind(QuizDao.class).toInstance(dataBase.quizDao());
 
         bind(QuizConverter.class).singletonInScope();
+
+        bind(FilterRepository.class).singletonInScope();
+
+        bind(QuizRepository.class).singletonInScope();
     }
 }

@@ -96,7 +96,9 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> router.backTo(Constants.ALL_QUIZ_SCREEN),
                             error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError(R.string.deleteToastText);
+        } else {
+            getViewState().showError(R.string.deleteToastText);
+        }
     }
 
     public void goToAddTranslationFragment() {
@@ -138,7 +140,9 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError(R.string.deleteToastText);
+        } else {
+            getViewState().showError(R.string.deleteToastText);
+        }
     }
 
     public void deletePhraseById(Long phraseId) {
@@ -152,7 +156,9 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
                     .subscribe(integer -> {
                             }, error -> getViewState().showError(error.toString())
                     ));
-        } else getViewState().showError(R.string.deleteToastText);
+        } else {
+            getViewState().showError(R.string.deleteToastText);
+        }
     }
 
     public void goToAddPhraseFragment(Long quizTranslationId) {
@@ -172,6 +178,6 @@ public class OneQuizPresenter extends MvpPresenter<OneQuizView> {
     }
 
     public void onNavigationBackClicked() {
-        router.exit();
+        router.backTo(Constants.ALL_QUIZ_SCREEN);
     }
 }

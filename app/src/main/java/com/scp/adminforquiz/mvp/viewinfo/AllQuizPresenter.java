@@ -10,6 +10,7 @@ import com.scp.adminforquiz.model.QuizConverter;
 import com.scp.adminforquiz.model.api.NwUserAuthorities;
 import com.scp.adminforquiz.model.db.Quiz;
 import com.scp.adminforquiz.preference.MyPreferenceManager;
+import com.scp.adminforquiz.repository.FilterRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     @Inject
     QuizRepository quizRepository;
     @Inject
+    FilterRepository filterRepository;
+    @Inject
     Router router;
     @Inject
     MyPreferenceManager preferences;
@@ -53,8 +56,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
                                 quizRepository.getAllQuizzes(),
                                 quizRepository.getAllTranslations(),
                                 quizRepository.getAllPhrases(),
-                                quizRepository.getUserFilterAscendingType(),
-                                quizRepository.getUserSortFieldName(),
+                                filterRepository.getUserFilterAscendingType(),
+                                filterRepository.getUserSortFieldName(),
                                 AllQuizData::new
                         )
                         .observeOn(Schedulers.io())
@@ -83,14 +86,23 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
         );
 
         compositeDisposable.add(
-                quizRepository.getUserFilterAscendingType()
-                        .subscribe(filterAscendingType -> getViewState().setUserFilterAscendingType(filterAscendingType)
+                filterRepository.getUserFilterAscendingType()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                filterAscendingType -> getViewState().setUserFilterAscendingType(filterAscendingType),
+                                error -> getViewState().showError(error.toString())
                         )
         );
 
         compositeDisposable.add(
-                quizRepository.getUserSortFieldName()
-                        .subscribe(sortFieldName -> getViewState().setUserSortFieldName(sortFieldName))
+                filterRepository.getUserSortFieldName()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                sortFieldName -> getViewState().setUserSortFieldName(sortFieldName),
+                                error -> getViewState().showError(error.toString())
+                        )
         );
     }
 
@@ -154,8 +166,8 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
             quizRepository.deleteAllQuizTables();
             preferences.setAccessToken(null);
             preferences.setRefreshToken(null);
-            quizRepository.setUserSortFieldName(Constants.ID);
-            quizRepository.setUserFilterAscendingType(true);
+            filterRepository.setUserSortFieldName(Constants.ID);
+            filterRepository.setUserFilterAscendingType(true);
             preferences.setUserId((long) 0);
             preferences.setIsAdmin(false);
         })
@@ -190,42 +202,42 @@ public class AllQuizPresenter extends MvpPresenter<AllQuizView> {
     }
 
     public void filterById() {
-        quizRepository.setUserFilterAscendingType(true);
-        quizRepository.setUserSortFieldName(Constants.ID);
+        filterRepository.setUserFilterAscendingType(true);
+        filterRepository.setUserSortFieldName(Constants.ID);
     }
 
     public void filterByDateCreated() {
-        quizRepository.setUserFilterAscendingType(true);
-        quizRepository.setUserSortFieldName(Constants.CREATED);
+        filterRepository.setUserFilterAscendingType(true);
+        filterRepository.setUserSortFieldName(Constants.CREATED);
     }
 
     public void filterByDateUpdated() {
-        quizRepository.setUserFilterAscendingType(true);
-        quizRepository.setUserSortFieldName(Constants.UPDATED);
+        filterRepository.setUserFilterAscendingType(true);
+        filterRepository.setUserSortFieldName(Constants.UPDATED);
     }
 
     public void filterByApproved() {
-        quizRepository.setUserFilterAscendingType(true);
-        quizRepository.setUserSortFieldName(Constants.APPROVE);
+        filterRepository.setUserFilterAscendingType(true);
+        filterRepository.setUserSortFieldName(Constants.APPROVE);
     }
 
     public void filterByIdDesc() {
-        quizRepository.setUserFilterAscendingType(false);
-        quizRepository.setUserSortFieldName(Constants.ID);
+        filterRepository.setUserFilterAscendingType(false);
+        filterRepository.setUserSortFieldName(Constants.ID);
     }
 
     public void filterByDateCreatedDesc() {
-        quizRepository.setUserFilterAscendingType(false);
-        quizRepository.setUserSortFieldName(Constants.CREATED);
+        filterRepository.setUserFilterAscendingType(false);
+        filterRepository.setUserSortFieldName(Constants.CREATED);
     }
 
     public void filterByDateUpdatedDesc() {
-        quizRepository.setUserFilterAscendingType(false);
-        quizRepository.setUserSortFieldName(Constants.UPDATED);
+        filterRepository.setUserFilterAscendingType(false);
+        filterRepository.setUserSortFieldName(Constants.UPDATED);
     }
 
     public void filterByApprovedDesc() {
-        quizRepository.setUserFilterAscendingType(false);
-        quizRepository.setUserSortFieldName(Constants.APPROVE);
+        filterRepository.setUserFilterAscendingType(false);
+        filterRepository.setUserSortFieldName(Constants.APPROVE);
     }
 }

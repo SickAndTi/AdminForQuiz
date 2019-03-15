@@ -60,6 +60,7 @@
     <string name="deleteToastText">Вы можете удалять только созданное Вами</string>
     <string name="toastApproveDialog">У вас нет таких прав</string>
     <string name="search_hint">Поиск</string>
+    <string name="close_bottom_sheet">Закрыть</string>
     <string-array name="authTabTitles">
         <item>ВХОД</item>
         <item>РЕГИСТРАЦИЯ</item>

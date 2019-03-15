@@ -3,6 +3,7 @@ package com.scp.adminforquiz.mvp.viewinfo;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy;
+import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.scp.adminforquiz.model.db.Quiz;
 
@@ -29,7 +30,9 @@ public interface AllQuizView extends MvpView {
 
     void showBottomSheet(boolean showBottomSheet);
 
+    @StateStrategyType(SingleStateStrategy.class)
     void setUserFilterAscendingType(boolean userFilterAscendingType);
 
+    @StateStrategyType(SingleStateStrategy.class)
     void setUserSortFieldName(String userSortFieldName);
 }
