@@ -9,3 +9,4 @@
 config/*/config.properties
 /keystore.properties
 /QuizAdminKey.jks
+google-services.json
