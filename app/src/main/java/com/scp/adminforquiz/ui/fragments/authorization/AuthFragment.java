@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,7 +53,8 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
-    ImageView vkImage, googleImage, faceBookImage;
+    ImageView vkImage, googleImage;
+    LoginButton faceBookImage;
     AuthPagerAdapter authPagerAdapter;
     TextView toolbarTitle;
     GoogleSignInOptions gso;
@@ -135,7 +137,7 @@ public class AuthFragment extends MvpAppCompatFragment implements AuthView {
     public void onPause() {
         super.onPause();
         if (googleApiClient != null) {
-            Timber.d("onPause Auth Fragment: stopAutoManage google Api client" );
+            Timber.d("onPause Auth Fragment: stopAutoManage google Api client");
             googleApiClient.stopAutoManage(getActivity());
             googleApiClient.disconnect();
         }
