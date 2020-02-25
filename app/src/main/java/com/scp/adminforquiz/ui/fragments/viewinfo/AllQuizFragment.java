@@ -208,6 +208,9 @@ public class AllQuizFragment extends MvpAppCompatFragment implements AllQuizView
     @Override
     public void showQuizList(List<Quiz> quizList) {
         allQuizRecyclerViewAdapter.setQuizList(quizList);
+        if (quizList.size() == 0) {
+            showError(getResources().getString(R.string.no_levels_text));
+        }
     }
 
     @Override

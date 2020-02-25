@@ -68,6 +68,7 @@
     <string name="search_hint">Search</string>
     <string name="search">Search</string>
     <string name="close_bottom_sheet">Close</string>
+    <string name="no_levels_text">If you dont see any object, you dont have full completed levels in ScpExam app</string>
     <string-array name="authTabTitles">
         <item>SIGN IN</item>
         <item>SIGN UP</item>
